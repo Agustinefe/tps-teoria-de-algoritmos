@@ -1,3 +1,7 @@
+import random as rnd
+import time
+import matplotlib.pyplot as plt
+
 def merge(arr1, arr2):
     # Ambos ya estan ordenados
     i = 0
@@ -37,11 +41,38 @@ def k_merge_rec(arrs, i, f):
 def k_merge(arrs):
     return k_merge_rec(arrs, 0, len(arrs)-1)
 
+# Crea una matriz de ejemplo con K arreglos de h elementos aleatorios
+def generate_sample_array(K, h):
+    arr = []
+    for _ in range(K): arr.append(sorted(rnd.sample(range(0, 100), h)))
 
-print(k_merge([
-    [5],
-    [4],
-    [-6],
-    [6],
-    [1],
-]))
+    return arr
+
+# Ejecuta el algoritmo "samples" veces para calcular los tiempos de ejecucion y devolver un promedio
+def get_mean_time(K, h, samples=100):
+    times = []
+    arr = generate_sample_array(K, h)
+
+    for _ in range(samples):
+        start = time.time()
+        k_merge(arr)
+        end = time.time()
+        times.append(end - start)
+
+    return sum(times) / samples
+
+
+x = []
+y = []
+
+# Crea las listas de coordenadas (x, y) para plotear luego
+# Si K = i, entonces lo que se incrementa son la cantidad de arreglos
+# Si h = 1, entonces lo que se incrementa es el tamaño de los arreglos
+for i in range(1, 101):
+    x.append(i)
+    y.append(get_mean_time(i, 10, samples=10000))
+
+print(y)
+
+plt.plot(x, y)
+plt.show()
