@@ -51,5 +51,5 @@ def plot_execution_time_mean(f, title):
     plt.show()
 
 
-plot_execution_time_mean(k_merge_dc, "Complejidad del algoritmo k-merge con D&C")
+#plot_execution_time_mean(k_merge_dc, "Complejidad del algoritmo k-merge con D&C")
 plot_execution_time_mean(k_merge_heap, "Complejidad del algoritmo k-merge con heap")
