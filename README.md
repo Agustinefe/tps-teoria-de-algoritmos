@@ -33,7 +33,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Por ultimo, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones tambien sera de O(n).
     
-    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2*T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n*log(K))
+    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log(K))
     
 
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
