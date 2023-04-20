@@ -21,6 +21,21 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 ### Consigna
 
 1. Determinar, utilizando el Teorema Maestro, cuál sería la complejidad del algoritmo propuesto.
+
+    El Teorema Maestro nos provee una forma sencilla de estimar la complejidad temporal de un algoritmo. Para su aplicacion debemos determinar los siguientes aspectos de nuestroa algoritmo:
+    - La cantidad de llamados recursivos que realiza el algoritmo.
+    - La proporcion del problema original que se pasa al llamado recursivo.
+    - La costo algoritmico de partir en subproblemas y juntar las subsoluciones. 
+    
+    El algoritmo propuesto describe que la lista de K arreglos original debe ser dividida en dos mitades, para posteriormente realizar llamados recursivos sobre ella. Esto nos permite inducir que se realizan dos llamados recursivos, donde la proporcion del problema evaluada en el llamado es de la mitad del problema.
+    
+    Por otra parte, partir el problema puede implementarse a traves de la actualizacion de indices que indiquen el inicio y final del subproblema, sin necesidad de realizar un slice sobre el problema original; esto puede realizarse en tiempo constante.
+    
+    Por ultimo, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones tambien sera de O(n).
+    
+    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2*T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n*log(K))
+    
+
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
 
     A continuación, se enuncia el algoritmo y en simultáneo se va detallando la complejidad de cada operación. El K-merge con heaps trabaja tomando al comienzo el primer elemento de cada uno de los K arreglos ordenados e insertándolos (encolándolos) en un heap de mínimos (en O(K), justamente por ser un heap), que servirá posteriormente para ir siempre sabiendo cuál es el elemento de valor más chico y así ir construyendo el arreglo final.
