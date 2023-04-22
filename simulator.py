@@ -12,7 +12,7 @@ def generate_sample_array(K, h):
     Crea una matriz de ejemplo con K arreglos de h elementos aleatorios
     """
     arr = []
-    for _ in range(K): arr.append(sorted(rnd.sample(range(0, 10001), h)))
+    for _ in range(K): arr.append(sorted(rnd.sample(range(0, h+1), h)))
     return arr
 
 def execute_multiple_times(K, h, f, samples):
@@ -58,7 +58,7 @@ def simulate_h_variation(sequence, times, algorithm):
 
     for i in sequence:
         # Hardcodeado para evaluar 1 array de i elementos
-        t = execute_multiple_times(1, i, algorithm, samples=times)
+        t = execute_multiple_times(2, i, algorithm, samples=times)
         print("Finished " + str(i))
         y[str(i)] = t
     
@@ -75,22 +75,23 @@ def do_simulation(sequence, times, algorithm, var):
 
 def main():
 
-    # Definicion de parametros de simulacion
-    start = 1
-    stop = 2*10**7+2
-    step = 2*10**6
-    times = 10
-    algorithm = k_merge_dc
-    var = "K"
+    # Configuracion de la simulacion
+    with open("simconfig.json", "r") as config_file:
+        config = json.load(config_file)
 
     # Guardado de los parametros en el json
-    results["start"] = start
-    results["stop"] = stop
-    results["step"] = step
-    results["times"] = times
-    results["algorithm"] = "k_merge_dc"
-    results["var"] = var   
-    results["results"] = do_simulation(range(start, stop, step), times, algorithm, var)
+    results["start"] = config["start"]
+    results["stop"] = config["stop"]
+    results["step"] = config["step"]
+    results["times"] = config["times"]
+    results["algorithm"] = config["algorithm"]
+    results["var"] = config["var"]   
+    results["results"] = do_simulation(
+        range(config["start"], config["stop"], config["step"]), 
+        config["times"], 
+        eval(config["algorithm"]),
+        config["var"]  
+        )
 
     # Stringificacion del json
     json_dump_results = json.dumps(results)

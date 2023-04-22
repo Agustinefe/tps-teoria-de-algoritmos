@@ -28,8 +28,8 @@ def plot_execution_time(results, title, filepath):
 
 
     plt.plot(x, y)
-    plt.xlabel("Samples")
-    plt.ylabel("Tiempo de ejecución (s)")
+    plt.xlabel(f"Muestras ({results['times']})")
+    plt.ylabel("Tiempo de ejecución (mediana) (s)")
     plt.title(title)
 
     save_plot(get_filename(filepath), "plot")
@@ -62,6 +62,13 @@ def save_plot(dirname, plotname):
     
     plt.savefig(f'./plots/{dirname}/{plotname}')
 
+def stringify_algorithm(algorithm):
+    if algorithm == 'k_merge_dc':
+        return "D&C"
+    elif algorithm == 'k_merge_heap':
+        return "Heaps"
+    else:
+        return "??"
     
 
 def main():
@@ -72,8 +79,8 @@ def main():
         results = json.load(json_file)
 
     # Ploteo
-    plot_execution_time(results, "Complejidad del algoritmo k-merge con D&C", filepath)
-    plot_diff_time(results, "Complejidad del algoritmo k-merge con D&C (diffs)", filepath)
+    plot_execution_time(results, f"Complejidad del algoritmo k-merge con {stringify_algorithm(results['algorithm'])}, variando {results['var']}", filepath)
+    plot_diff_time(results, f"Complejidad del algoritmo k-merge con {stringify_algorithm(results['algorithm'])} (diffs), variando {results['var']}", filepath)
     #plot_execution_time(results, "Complejidad del algoritmo k-merge con heap")
 
 main()

@@ -33,7 +33,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Por ultimo, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones tambien sera de O(n).
     
-    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log(K))
+    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log2(K))
 
 
 ---
@@ -55,7 +55,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     Hemos observado que tanto el algoritmo propuesto con merge como el algoritmo de heaps tienen una complejidad temporal de O(n * log(K)), siendo n = K * h.
     
-    ### K-merge con D&C
+    ## K-merge con D&C
     
     Dado que el problema de k-merge presenta dos variables en su contexto (K: cantidad de arreglos ordenados, h: tamaño de esos arreglos), mostrar su desempeño mediante graficos nos obligaria a que estos graficos sean tridimensionales. Sin embargo, la **regla del producto** nos permite asegurarnos que **O(K * h * log(K)) = O(h) * O(K * log(K))**. De poder identificar que partes de cada algoritmo son las que añaden cada una de las complejidades (O(h) y O(K * log(K)), solo necesitariamos un grafico por cada complejidad temporal, para poder probar la complejidad temporal total de cada algoritmo. ¡Y podemos identificarlas! 
     
@@ -63,10 +63,26 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     **O(h)**, por otra parte, es la complejidad temporal de mergear dos arreglos ordenados, dado que inevitablemente se deberan recorrer ambos arreglos de inicio a fin para realizar el intercalado. El costo temporal de este merge crece linealmente respecto de h.
     
-    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **si** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varia*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), seria lo mismo que tener numeros individuales, lo que desembocaria en un Mergesort (O(K * log(K))). Si en cambio siempre tuviesemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaria de separarlos del arreglo de arreglos (lo cual es O(1)), y luego deberia mergearlos (lo cual, como ya vimos, es O(h)). *¿Por que h es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo deberia devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1).
+    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **si** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varia*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), seria lo mismo que tener numeros individuales, lo que desembocaria en un Mergesort (O(K * log(K))). Si en cambio siempre tuviesemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaria de separarlos del arreglo de arreglos (lo cual es O(1)), y luego deberia mergearlos (lo cual, como ya vimos, es O(h)). *¿Por que h es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo deberia devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1). Ademas,
     
+        
+    ### Analisis de la parte "mergesort" del algoritmo
+
+    Como se menciono previamente, si h = 1, entonces el algoritmo deberia comportarse de manera semejante a Mergesort. Al realizar mediciones y graficar los costos temporales de correr el algoritmos con determinada muestra (lineal), esperaremos encontraron con un grafico semejante a un n * log2(n).
+
+    El siguiente grafico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
+
+    ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "hola")
     
-    
+    Si bien este grafico podria pertenecer a un intervalo de alguna funcion del estilo f(n) = n * log2(n), tambien podria ser un intervalo de una funcion lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repeticion de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecucion (simular para obtener estas mediciones ha llevado cerca de una hora).
+
+    Sin embargo, podemos aprovechar las propiedades matematicas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporcion lineal, entonces la diferencia entre los tiempos deberia ser (casi) constante, dado que la derivada de una funcion linear es una funcion constante. Pero si la muestra siguiese efectivamente una proporcion de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporcion logaritmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
+
+    ![D&C var-K diff (1)](/plots/2023-04-22_15-55-58/diff.png "hola")
+
+    Podemos observar que, con algunos altibajos, las diferencias entre tiempos siguen una proporcion logaritmica, lo cual nos permite confirmar que esta parte del algoritmo es O(K * log(K))
+
+    ### Analisis de la parte de merge del algoritmo
     
 4. En caso que la complejidad obtenida en el punto 1 no se condiga con la realidad, indicar por qué (qué condición falla). En dicho caso, se requiere llegar a la complejidad correcta (no solamente enunciarla, sino demostrar cuál es).
 5. Indicar cualquier conclusión adicional que les parezca relevante en base a lo analizado.
