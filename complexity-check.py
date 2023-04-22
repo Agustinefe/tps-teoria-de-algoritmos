@@ -19,7 +19,6 @@ def plot_execution_time(results, title):
     """
     Realiza un grafico del resultado de alguna simulacion
     """
-
     x = []
     y = []
 
@@ -27,12 +26,15 @@ def plot_execution_time(results, title):
         x.append(int(k))
         y.append(np.median(v))
 
+
+    #plt.plot(x, y)
+    #plt.xlabel("Samples")
+    #plt.ylabel("Tiempo de ejecución (s)")
+    #plt.title(title)
+    #plt.show()
+    y = diff(y)
     print(y)
-    plt.plot(x, y)
-    plt.xlabel("Samples")
-    plt.ylabel("Tiempo de ejecución (s)")
-    plt.title(title)
-    
+    plt.plot(y)
     plt.show()
 
 def main():

@@ -77,7 +77,7 @@ def main():
 
     # Definicion de parametros de simulacion
     start = 1
-    stop = 2*10**7+1
+    stop = 2*10**7+2
     step = 2*10**6
     times = 10
     algorithm = k_merge_dc
