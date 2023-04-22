@@ -72,17 +72,35 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     El siguiente grafico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
-    ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "hola")
+    ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "2023-04-22_15-55-58/plot.png")
     
     Si bien este grafico podria pertenecer a un intervalo de alguna funcion del estilo f(n) = n * log2(n), tambien podria ser un intervalo de una funcion lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repeticion de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecucion (simular para obtener estas mediciones ha llevado cerca de una hora).
 
     Sin embargo, podemos aprovechar las propiedades matematicas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporcion lineal, entonces la diferencia entre los tiempos deberia ser (casi) constante, dado que la derivada de una funcion linear es una funcion constante. Pero si la muestra siguiese efectivamente una proporcion de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporcion logaritmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
 
-    ![D&C var-K diff (1)](/plots/2023-04-22_15-55-58/diff.png "hola")
+    ![D&C var-K diff (1)](/plots/2023-04-22_15-55-58/diff.png "2023-04-22_15-55-58/diff.png")
 
     Podemos observar que, con algunos altibajos, las diferencias entre tiempos siguen una proporcion logaritmica, lo cual nos permite confirmar que esta parte del algoritmo es O(K * log(K))
 
     ### Analisis de la parte de merge del algoritmo
+
+    Cuando K = 2, podemos medir como funciona la parte del ordenamiento por merge del algoritmo. Como se menciono previamente, se estima que esta parte tiene una complejidad temporal de O(h).
+
+    El siguiente grafico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 10.000.001, en intervalos de 1.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
+
+    ![D&C var-h plot (1)](/plots/2023-04-22_20-01-22/plot.png "2023-04-22_20-01-22/plot.png")
+
+    Podemos observar que las mediciones siguen una proporcion lineal, pero para descartar la posibilidad de un posible n * log(n), graficaremos tambien las diferencias entre tiempos.
     
+    ![D&C var-h diff (1)](/plots/2023-04-22_20-01-22/diff.png "2023-04-22_20-01-22/diff.png")
+
+    A diferencia de los diffs obtenidos al medir la parte de O(K * log(K)), donde los diffs mostraban seguir una proporcion logaritmica, en estos diffs se puede observar un comportamiento que a simple vista parece erratico, pero que al notar que el intervalo donde oscila la muestra es de solo 0,0175 segundos, y no pareciera haber signos de una monotonia creciente o decreciente (si no mas bien un comportamiento oscilante), podemos afirmar que esta parte del algoritmo es O(h)
+    
+    ## K-merge con Heaps
+
+    MartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMarta
+
+---
+
 4. En caso que la complejidad obtenida en el punto 1 no se condiga con la realidad, indicar por qué (qué condición falla). En dicho caso, se requiere llegar a la complejidad correcta (no solamente enunciarla, sino demostrar cuál es).
 5. Indicar cualquier conclusión adicional que les parezca relevante en base a lo analizado.
