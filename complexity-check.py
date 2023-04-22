@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import sys, json
+import sys, json, os
 
 def diff(l):
     """
@@ -15,7 +15,7 @@ def diff(l):
         diff_l.append(l[i] - l[i-1])
     return diff_l
 
-def plot_execution_time(results, title):
+def plot_execution_time(results, title, filepath):
     """
     Realiza un grafico del resultado de alguna simulacion
     """
@@ -27,15 +27,42 @@ def plot_execution_time(results, title):
         y.append(np.median(v))
 
 
-    #plt.plot(x, y)
-    #plt.xlabel("Samples")
-    #plt.ylabel("Tiempo de ejecución (s)")
-    #plt.title(title)
-    #plt.show()
-    y = diff(y)
-    print(y)
-    plt.plot(y)
+    plt.plot(x, y)
+    plt.xlabel("Samples")
+    plt.ylabel("Tiempo de ejecución (s)")
+    plt.title(title)
+
+    save_plot(get_filename(filepath), "plot")
     plt.show()
+
+def plot_diff_time(results, title, filepath):
+    """
+    Realiza un grafico de las diferencias entre resultados de la simulacion
+    """
+    y = []
+
+    for v in results['results'].values():
+        y.append(np.median(v))
+
+    y = diff(y)
+    plt.plot(y)
+    plt.xlabel("Ejecuciones")
+    plt.ylabel("Diffs entre ejecuciones (s)")
+    plt.title(title)
+
+    save_plot(get_filename(filepath), "diff")
+    plt.show()
+
+def get_filename(path):
+    return path.split('\\')[-1].replace(".json", "")
+
+def save_plot(dirname, plotname):
+    if not os.path.exists(f'plots/{dirname}'):
+        os.makedirs(f'plots/{dirname}')
+    
+    plt.savefig(f'./plots/{dirname}/{plotname}')
+
+    
 
 def main():
 
@@ -45,7 +72,8 @@ def main():
         results = json.load(json_file)
 
     # Ploteo
-    plot_execution_time(results, "Complejidad del algoritmo k-merge con D&C")
+    plot_execution_time(results, "Complejidad del algoritmo k-merge con D&C", filepath)
+    plot_diff_time(results, "Complejidad del algoritmo k-merge con D&C (diffs)", filepath)
     #plot_execution_time(results, "Complejidad del algoritmo k-merge con heap")
 
 main()
