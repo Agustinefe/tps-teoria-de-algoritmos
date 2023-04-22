@@ -1,35 +1,6 @@
-import random as rnd
-import time
 import matplotlib.pyplot as plt
-from algorithms.k_merge_dc import k_merge_dc
-from algorithms.k_merge_heap import k_merge_heap
 import numpy as np
-
-def generate_sample_array(K, h):
-    """
-    Crea una matriz de ejemplo con K arreglos de h elementos aleatorios
-    """
-    arr = []
-    for _ in range(K): arr.append(sorted(rnd.sample(range(0, 10001), h)))
-    return arr
-
-def get_mean_time(K, h, f, samples=100):
-    """
-    Ejecuta el algoritmo "samples" veces para calcular los tiempos de
-    ejecucion y devolver un promedio
-    """
-    times = []
-    arr = generate_sample_array(K, h)
-
-    for i in range(samples):
-        start = time.time()
-        f(arr)
-        end = time.time()
-        print("\tFinished iteration " + str(i+1) + " in time " + str(end - start))
-        times.append(end - start)
-        
-
-    return sum(times) / samples
+import sys, json
 
 def diff(l):
     """
@@ -44,23 +15,18 @@ def diff(l):
         diff_l.append(l[i] - l[i-1])
     return diff_l
 
-def plot_execution_time_mean(f, title):
+def plot_execution_time(results, title):
     """
-    Crea las listas de coordenadas (x, y) para plottear luego
-    Si K = i, entonces lo que se incrementa es la cantidad de arreglos
-    Si h = 1, entonces lo que se incrementa es el tamaño de los arreglos
+    Realiza un grafico del resultado de alguna simulacion
     """
+
     x = []
     y = []
 
-    for i in range(1, 10000000, 1000000):
-        x.append(i)
-        # Hardcodeado para evaluar i arrays de 1 elemento
-        t = get_mean_time(i, 1, f, samples=1)
-        print("Finished " + str(i) + " in time " + str(t))
-        y.append(t)
-    
-    
+    for k, v in results['results'].items():
+        x.append(int(k))
+        y.append(np.median(v))
+
     print(y)
     plt.plot(x, y)
     plt.xlabel("Samples")
@@ -69,14 +35,27 @@ def plot_execution_time_mean(f, title):
     
     plt.show()
 
+def main():
+
+    # Lectura del json (indicado por terminal) con resultados de alguna simulacion
+    filepath = sys.argv[1]
+    with open(filepath, 'r') as json_file:
+        results = json.load(json_file)
+
+    # Ploteo
+    plot_execution_time(results, "Complejidad del algoritmo k-merge con D&C")
+    #plot_execution_time(results, "Complejidad del algoritmo k-merge con heap")
+
+main()
+
 # Esta es una muestra vieja que obtuve al correr el algoritmo con el range(1, 10000000, 1000000)
 # Correlo de nuevo para replicarlo.
 # Al calcular su diff, si este presenta un leve crecimiento, entonces la complejidad no puede ser O(n)
-#   y = [0.0, 2.4843173027038574, 5.258683919906616, 8.155308961868286, 11.233759641647339, 14.402469396591187, 17.67595934867859, 20.92929434776306, 24.05248522758484, 27.752885341644287]
-#   x = diff(y)
-
-#   plt.plot(x)
-#   plt.show()
-
-#plot_execution_time_mean(k_merge_dc, "Complejidad del algoritmo k-merge con D&C")
-#plot_execution_time_mean(k_merge_heap, "Complejidad del algoritmo k-merge con heap")
+"""
+#y = [5.117814302444458, 11.093862295150757, 17.533334732055664, 24.108925580978394, 31.016116857528687, 37.93633460998535, 45.00921845436096, 51.83584809303284, 59.26834273338318, 66.73365044593811]
+y = [0.0, 5.117377161979675, 11.228312492370605, 17.63421893119812, 23.955934643745422, 31.06106674671173, 37.911049127578735, 44.651437878608704, 51.895089626312256, 59.28847134113312, 66.75569880008698]
+x = diff(y)
+print(x)
+plt.plot(x)
+plt.show()
+"""
