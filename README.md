@@ -7,7 +7,7 @@
 #### Simulacion
 
 ```
-python simulation.py
+python simulator.py
 ```
 La configuracion de la simulacion se encuentra en el archivo simconfig.json. Los archivos con los resultados se guardan en la carpeta results.
 
