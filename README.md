@@ -84,13 +84,13 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
         
     ### Análisis de la parte *mergesort* del algoritmo
 
-    Como se mencionó previamente, si h = 1, entonces el algoritmo debería comportarse de manera semejante a Mergesort. Al realizar mediciones y graficar los costos temporales de correr el algoritmos con determinada muestra (lineal), esperaremos encontrarnos con un gráfico semejante a un n * log2(n).
+    Como se mencionó previamente, si h = 1, entonces el algoritmo debería comportarse de manera semejante a Mergesort. Al realizar mediciones y graficar los costos temporales de correr el algoritmo con determinada muestra (lineal), esperaremos encontrarnos con un gráfico semejante a un n * log2(n).
 
     El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
     ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "2023-04-22_15-55-58/plot.png")
     
-    Si bien este gráfico podría pertenecer a un intervalo de alguna función del estilo f(n) = n * log2(n), también podría ser un intervalo de una función lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repetición de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecución (simular para obtener estas mediciones ha llevado cerca de una hora).
+    Si bien podría pertenecer a un intervalo de alguna función del estilo f(n) = n * log2(n), también podría ser un intervalo de una función lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repetición de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecución (simular para obtener estas mediciones ha llevado cerca de una hora).
 
     Sin embargo, podemos aprovechar las propiedades matemáticas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporción lineal, entonces la diferencia entre los tiempos debería ser (casi) constante, dado que la derivada de una funcion linear es una función constante. Pero si la muestra siguiese efectivamente una proporción de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporción logarítmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
 
@@ -114,7 +114,17 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     ## K-merge con Heaps
 
-    MartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMarta
+    En esta sección volveremos a hacer uso de las propiedades que nos permitieron analizar el K-merge con D&C a partir de evaluar por separado los componentes de la complejidad del algoritmo. Recordemos, como se explicó detalladamente en el punto 2), la complejidad del K-merge con heaps es de O(h * k * log(K)). Para ello, primero deduzcamos qué sucede al fijar el valor de cada variable para este caso.
+    
+    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes. A pesar de esto, y con fines de simplemente identificar el componente con complejidad O(K * log(K)), lo denominaremos "parte *pseudo heapsort*" del algoritmo.
+    
+    ### Análisis de la parte de *heapsort* del algoritmo
+    
+    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
+    
+      ![D&C var-K plot (1)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+      
+      Una vez más, el gráfico no nos permite afirmar que los resultados volcados en el gráfico se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
 
 ---
 
