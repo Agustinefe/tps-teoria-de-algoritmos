@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, json, os
+import platform as pl
 
 def diff(l):
     """
@@ -54,7 +55,8 @@ def plot_diff_time(results, title, filepath):
     plt.show()
 
 def get_filename(path):
-    return path.split('\\')[-1].replace(".json", "")
+    split_char = '\\' if pl.system() == 'Windows' else '/'
+    return path.split(split_char)[-1].replace(".json", "")
 
 def save_plot(dirname, plotname):
     if not os.path.exists(f'plots/{dirname}'):
