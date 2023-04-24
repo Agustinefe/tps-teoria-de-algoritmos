@@ -122,7 +122,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
-    ![D&C var-K plot (2)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+    ![Heap var-K plot (2)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
       
     Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
       
@@ -134,11 +134,11 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
     
-    ![D&C var-h plot (2)](/plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
+    ![Heap var-h plot (2)](/plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
     
     Ya notamos una tendencia lineal, pero para asegurarnos, vayamos al gráfico de diffs una vez más.
     
-    ![D&C var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
+    ![Heap var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
     
     Como puede observarse, hasta la ejecución 7 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
     
