@@ -141,7 +141,7 @@ metr
     
     ![D&C var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
     
-    Como puede observarse, hasta la ejecución 5 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
+    Como puede observarse, hasta la ejecución 7 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
     
     [Este gráfico debe reemplazarse tras una nueva ejecución y por ende la conclusion] #TODO
 
