@@ -7,7 +7,7 @@
 #### Simulacion
 
 ```
-python simulation.py
+python simulator.py
 ```
 La configuracion de la simulacion se encuentra en el archivo simconfig.json. Los archivos con los resultados se guardan en la carpeta results.
 
@@ -15,7 +15,7 @@ Los nombres de los resultados corresponden a la hora en la que finalizo su simul
 
 #### Ploteo
 ```
-python complexity-check.py [results/thisone.json]
+python complexity-check.py [results\thisone.json]
 ```
 Los graficos se guardan en la carpeta plots, en una carpeta con el mismo nombre del thisone.json. Hay un archivo plot, y uno diff. El README lee imagenes de la carpeta plot.
 
