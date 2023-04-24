@@ -79,7 +79,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     **O(h)**, por otra parte, es la complejidad temporal de mergear dos arreglos ordenados, dado que inevitablemente se deberan recorrer ambos arreglos de inicio a fin para realizar el intercalado. El costo temporal de este merge crece linealmente respecto de h.
     
-    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **sí** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varía*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), sería lo mismo que tener números individuales, lo que desembocaría en un Mergesort (O(K * log(K))). Si en cambio siempre tuviésemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaría de separarlos del arreglo de arreglos (lo cual es O(1)), y luego debería mergearlos (lo cual, como ya vimos, es O(h)). *¿Por qué h es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo debería devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1).
+    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **sí** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varía*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), sería lo mismo que tener números individuales, lo que desembocaría en un Mergesort (O(K * log(K))). Si en cambio siempre tuviésemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaría de separarlos del arreglo de arreglos (lo cual es O(1)), y luego debería mergearlos (lo cual, como ya vimos, es O(h)). *¿Por qué K es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo debería devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1).
     
         
     ### Análisis de la parte *mergesort* del algoritmo
@@ -88,13 +88,13 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
-    ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "2023-04-22_15-55-58/plot.png")
+    ![D&C var-K plot (1)](plots/2023-04-22_15-55-58/plot.png "2023-04-22_15-55-58/plot.png")
     
     Si bien podría pertenecer a un intervalo de alguna función del estilo f(n) = n * log2(n), también podría ser un intervalo de una función lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repetición de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecución (simular para obtener estas mediciones ha llevado cerca de una hora).
 
     Sin embargo, podemos aprovechar las propiedades matemáticas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporción lineal, entonces la diferencia entre los tiempos debería ser (casi) constante, dado que la derivada de una funcion linear es una función constante. Pero si la muestra siguiese efectivamente una proporción de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporción logarítmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
 
-    ![D&C var-K diff (1)](/plots/2023-04-22_15-55-58/diff.png "2023-04-22_15-55-58/diff.png")
+    ![D&C var-K diff (1)](plots/2023-04-22_15-55-58/diff.png "2023-04-22_15-55-58/diff.png")
 
     Podemos observar que, con algunos altibajos, las diferencias entre tiempos siguen una proporción logarítmica, lo cual nos permite confirmar que esta parte del algoritmo es O(K * log(K))
 
@@ -104,11 +104,11 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 10.000.001, en intervalos de 1.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
-    ![D&C var-h plot (1)](/plots/2023-04-22_20-01-22/plot.png "2023-04-22_20-01-22/plot.png")
+    ![D&C var-h plot (1)](plots/2023-04-22_20-01-22/plot.png "2023-04-22_20-01-22/plot.png")
 
     Podemos observar que las mediciones siguen una proporción lineal, pero para descartar la posibilidad de un posible n * log(n), graficaremos también las diferencias entre tiempos.
     
-    ![D&C var-h diff (1)](/plots/2023-04-22_20-01-22/diff.png "2023-04-22_20-01-22/diff.png")
+    ![D&C var-h diff (1)](plots/2023-04-22_20-01-22/diff.png "2023-04-22_20-01-22/diff.png")
 
     A diferencia de los diffs obtenidos al medir la parte de O(K * log(K)), que mostraban una proporción logarítmica, en estos diffs se puede observar un comportamiento que a simple vista parece errático, pero que al notar que el intervalo donde oscila la muestra es de solo 0,0175 segundos, y no pareciera haber signos de una monotonía creciente o decreciente (sino un comportamiento oscilante), podemos afirmar que esta parte del algoritmo es O(h).
     
@@ -122,7 +122,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
-    ![Heap var-K plot (2)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+    ![Heap var-K plot (2)](plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
       
     Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
       
@@ -134,11 +134,11 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
     
-    ![Heap var-h plot (2)](/plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
+    ![Heap var-h plot (2)](plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
     
     Ya notamos una tendencia lineal, pero para asegurarnos, vayamos al gráfico de diffs una vez más.
     
-    ![Heap var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
+    ![Heap var-h diff (2)](plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
     
     Como puede observarse, hasta la ejecución 7 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
     
@@ -148,3 +148,17 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
 4. En caso que la complejidad obtenida en el punto 1 no se condiga con la realidad, indicar por qué (qué condición falla). En dicho caso, se requiere llegar a la complejidad correcta (no solamente enunciarla, sino demostrar cuál es).
 5. Indicar cualquier conclusión adicional que les parezca relevante en base a lo analizado.
+
+    ### La "derivada" de una muestra
+
+    > La derivada de una función es la **razón de cambio** instantánea con la que varía el valor de dicha función matemática, según se modifique el valor de su variable independiente.
+
+    Al realizar simulaciones sobre diversas muestras, con el objetivo de probar que los tiempos de ejecucion siguen proporcionalmente los estimados por el Big O, nos topamos con diversos resultados que provocaron ciertas confusiones a la hora de analizar los datos obtenidos. Una de estas confusiones fue provocada por los graficos obtenidos al plotear los resultados de las simulaciones.
+
+    Planteemos un ejemplo: es claro que la función **f(x) = x** es diferente que **g(x) = x * log2(x)**. Mientras que f(x) es lineal, y su grafico es una linea, g(x) es se encuentra multiplicada por un logaritmo, lo cual implica que su grafico no es propiamente lineal.
+
+    ![Funcion lineal y x*log(x)](imgs/graf_f_g_1.jpg "graf_f_g_1.jpg")
+
+    Si bien a primera vista es notable que ambas funciones son diferentes (y es que lo son), cuando x es mayor a 1, y a medida que x crece, esta diferencia se desdibuja a la vista. Esto quiere decir que si observaramos cada una de estas funciones en un intervalo acotado, no seria tarea sencilla determinar si dicho intervalo pertenece a una funcion lineal o no.
+
+    Volviendo a nuestro problema: dado que nuestros resultados de las simulaciones son productos de la estadistica, estos pueden mostrar ligeras oscilaciones (respecto de la proporcion que parecen seguir), debido a cuestiones referidas al procesamiento de la simulacion (cualquier proceso que la computadora comience a correr de manera aleatoria puede alterar los resultados de la simulacion). Esto puede causar mas confusiones a la hora de graficar la muestra, debido a que sera aun mas dificil determinar si la "curva" mostrada en el grafico sigue alguna proporcion n * log(n).
