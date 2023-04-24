@@ -81,8 +81,8 @@ def main():
         results = json.load(json_file)
 
     # Ploteo
-    plot_execution_time(results, f"Complejidad del algoritmo k-merge con {stringify_algorithm(results['algorithm'])}, variando {results['var']}", filepath)
-    plot_diff_time(results, f"Complejidad del algoritmo k-merge con {stringify_algorithm(results['algorithm'])} (diffs), variando {results['var']}", filepath)
+    plot_execution_time(results, f"Complejidad del algoritmo K-merge con {stringify_algorithm(results['algorithm'])}, variando {results['var']}", filepath)
+    plot_diff_time(results, f"Complejidad del algoritmo K-merge con {stringify_algorithm(results['algorithm'])} (diffs), variando {results['var']}", filepath)
     #plot_execution_time(results, "Complejidad del algoritmo k-merge con heap")
 
 main()

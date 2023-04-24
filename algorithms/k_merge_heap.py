@@ -20,6 +20,10 @@ def k_merge_heap(arrs):
     k = len(arrs) # k es cantidad de arreglos
     h = len(arrs[0]) # h largo de arreglos (mismo para todos)
 
+    # Si arrs tiene un solo arreglo o sus arreglos están vacíos, lo devuelvo
+    if k <= 0 or h <= 0:
+        return arrs
+
     ordered_arr = []
 
     # Inicialización del heap con el primer elemento de cada arreglo

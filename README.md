@@ -4,20 +4,19 @@
 
 ### Como ejecutar los scripts
 
-#### Simulacion
+#### Simulación
 
-```
-python simulator.py
-```
-La configuracion de la simulacion se encuentra en el archivo simconfig.json. Los archivos con los resultados se guardan en la carpeta results.
+```$ python3 simulator.py```
 
-Los nombres de los resultados corresponden a la hora en la que finalizo su simulacion.
+La configuración de la simulación se encuentra en el archivo *simconfig.json*. Los archivos con los resultados se guardan en la carpeta *results*.
 
-#### Ploteo
-```
-python complexity-check.py [results\thisone.json]
-```
-Los graficos se guardan en la carpeta plots, en una carpeta con el mismo nombre del thisone.json. Hay un archivo plot, y uno diff. El README lee imagenes de la carpeta plot.
+Los nombres de los resultados corresponden a la hora en la que finalizó su simulación.
+
+#### Plotting
+
+```python3 complexity-check.py [results\example.json]```
+
+Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README lee imágenes de la carpeta *plot*.
 
 ### Introducción
 
@@ -74,48 +73,77 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     ## K-merge con D&C
     
-    Dado que el problema de k-merge presenta dos variables en su contexto (K: cantidad de arreglos ordenados, h: tamaño de esos arreglos), mostrar su desempeño mediante graficos nos obligaria a que estos graficos sean tridimensionales. Sin embargo, la **regla del producto** nos permite asegurarnos que **O(K * h * log(K)) = O(h) * O(K * log(K))**. De poder identificar que partes de cada algoritmo son las que añaden cada una de las complejidades (O(h) y O(K * log(K)), solo necesitariamos un grafico por cada complejidad temporal, para poder probar la complejidad temporal total de cada algoritmo. ¡Y podemos identificarlas! 
+    Dado que el problema de k-merge presenta dos variables en su contexto (K: cantidad de arreglos ordenados, h: tamaño de esos arreglos), mostrar su desempeño mediante gráficos nos obligaria a que estos gráficos sean tridimensionales. Sin embargo, la **regla del producto** nos permite asegurarnos que **O(K * h * log(K)) = O(h) * O(K * log(K))**. De poder identificar que partes de cada algoritmo son las que añaden cada una de las complejidades (O(h) y O(K * log(K)), solo necesitaríamos un gráfico por cada complejidad temporal, para poder probar la complejidad temporal total de cada algoritmo. ¡Y podemos identificarlas! 
     
-    **O(K * log(K))** es la complejidad temporal de ordenar K arreglos ordenados de un solo elemento, lo que tambien podria significar ordenar un arreglo de K elementos con merge. Esto explica por qué esta parte tiene la misma complejidad que el algoritmo Mergesort.
+    **O(K * log(K))** es la complejidad temporal de ordenar K arreglos ordenados de un solo elemento, lo que tambión podria significar ordenar un arreglo de K elementos con merge. Esto explica por qué esta parte tiene la misma complejidad que el algoritmo Mergesort.
     
     **O(h)**, por otra parte, es la complejidad temporal de mergear dos arreglos ordenados, dado que inevitablemente se deberan recorrer ambos arreglos de inicio a fin para realizar el intercalado. El costo temporal de este merge crece linealmente respecto de h.
     
-    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **si** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varia*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), seria lo mismo que tener numeros individuales, lo que desembocaria en un Mergesort (O(K * log(K))). Si en cambio siempre tuviesemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaria de separarlos del arreglo de arreglos (lo cual es O(1)), y luego deberia mergearlos (lo cual, como ya vimos, es O(h)). *¿Por que h es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo deberia devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1). Ademas,
+    *"Pero alumnos, este es un solo algoritmo. No podemos correr la parte de O(h) por un lado y la parte de O(K * log(K))" por otro lado"*. Es cierto que no podemos particionar el algoritmo y evaluarlos por separados. Lo que **sí** podemos hacer, es setear una variable con una constante, y evaluar el desempeño del algoritmo cuando la otra variable *varía*. Así, si el tamaño de todos los arreglos fuese de uno (h = 1), sería lo mismo que tener números individuales, lo que desembocaría en un Mergesort (O(K * log(K))). Si en cambio siempre tuviésemos 2 arreglos de h elementos (K = 2), entonces el algoritmo solo se encargaría de separarlos del arreglo de arreglos (lo cual es O(1)), y luego debería mergearlos (lo cual, como ya vimos, es O(h)). *¿Por qué h es 2, y no 1?*, si hubiese solo un arreglo ordenado, entonces el algoritmo solo debería devolver el arreglo, sin hacer merge, pudiendo hacerlo en O(1).
     
         
-    ### Analisis de la parte "mergesort" del algoritmo
+    ### Análisis de la parte *mergesort* del algoritmo
 
-    Como se menciono previamente, si h = 1, entonces el algoritmo deberia comportarse de manera semejante a Mergesort. Al realizar mediciones y graficar los costos temporales de correr el algoritmos con determinada muestra (lineal), esperaremos encontraron con un grafico semejante a un n * log2(n).
+    Como se mencionó previamente, si h = 1, entonces el algoritmo debería comportarse de manera semejante a Mergesort. Al realizar mediciones y graficar los costos temporales de correr el algoritmo con determinada muestra (lineal), esperaremos encontrarnos con un gráfico semejante a un n * log2(n).
 
-    El siguiente grafico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
+    El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 20.000.000, en intervalos de 2.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
     ![D&C var-K plot (1)](/plots/2023-04-22_15-55-58/plot.png "2023-04-22_15-55-58/plot.png")
     
-    Si bien este grafico podria pertenecer a un intervalo de alguna funcion del estilo f(n) = n * log2(n), tambien podria ser un intervalo de una funcion lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repeticion de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecucion (simular para obtener estas mediciones ha llevado cerca de una hora).
+    Si bien podría pertenecer a un intervalo de alguna función del estilo f(n) = n * log2(n), también podría ser un intervalo de una función lineal g(n) = n. Esto quiere decir que para generar una muestra mucho mas exacta, debemos realizar simulaciones mucho mas refinadas, implicando esto una secuencia de cantidades mucho mas grandes, mayor repetición de pruebas para cada cantidad, y, en consecuencia, mucho mas tiempo de ejecución (simular para obtener estas mediciones ha llevado cerca de una hora).
 
-    Sin embargo, podemos aprovechar las propiedades matematicas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporcion lineal, entonces la diferencia entre los tiempos deberia ser (casi) constante, dado que la derivada de una funcion linear es una funcion constante. Pero si la muestra siguiese efectivamente una proporcion de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporcion logaritmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
+    Sin embargo, podemos aprovechar las propiedades matemáticas de las funciones, y calcular una "derivada" de la muestra. Si la muestra siguiese una proporción lineal, entonces la diferencia entre los tiempos debería ser (casi) constante, dado que la derivada de una funcion linear es una función constante. Pero si la muestra siguiese efectivamente una proporción de n * log2(n), entonces la diferencia entre tiempos deberia seguir una proporción logarítmica, dado que la derivada de n * log2(n) es log2(n) + 1/ln(2) (y podemos ignorar la constante 1/ln(2)).
 
     ![D&C var-K diff (1)](/plots/2023-04-22_15-55-58/diff.png "2023-04-22_15-55-58/diff.png")
 
-    Podemos observar que, con algunos altibajos, las diferencias entre tiempos siguen una proporcion logaritmica, lo cual nos permite confirmar que esta parte del algoritmo es O(K * log(K))
+    Podemos observar que, con algunos altibajos, las diferencias entre tiempos siguen una proporción logarítmica, lo cual nos permite confirmar que esta parte del algoritmo es O(K * log(K))
 
-    ### Analisis de la parte de merge del algoritmo
+    ### Análisis de la parte de *merge* del algoritmo
 
-    Cuando K = 2, podemos medir como funciona la parte del ordenamiento por merge del algoritmo. Como se menciono previamente, se estima que esta parte tiene una complejidad temporal de O(h).
+    Cuando K = 2, podemos medir cómo funciona la parte del ordenamiento por merge del algoritmo. Como se menciono previamente, se estima que esta parte tiene una complejidad temporal de O(h).
 
-    El siguiente grafico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 10.000.001, en intervalos de 1.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
+    El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 10.000.001, en intervalos de 1.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
     ![D&C var-h plot (1)](/plots/2023-04-22_20-01-22/plot.png "2023-04-22_20-01-22/plot.png")
 
-    Podemos observar que las mediciones siguen una proporcion lineal, pero para descartar la posibilidad de un posible n * log(n), graficaremos tambien las diferencias entre tiempos.
+    Podemos observar que las mediciones siguen una proporción lineal, pero para descartar la posibilidad de un posible n * log(n), graficaremos también las diferencias entre tiempos.
     
     ![D&C var-h diff (1)](/plots/2023-04-22_20-01-22/diff.png "2023-04-22_20-01-22/diff.png")
 
-    A diferencia de los diffs obtenidos al medir la parte de O(K * log(K)), donde los diffs mostraban seguir una proporcion logaritmica, en estos diffs se puede observar un comportamiento que a simple vista parece erratico, pero que al notar que el intervalo donde oscila la muestra es de solo 0,0175 segundos, y no pareciera haber signos de una monotonia creciente o decreciente (si no mas bien un comportamiento oscilante), podemos afirmar que esta parte del algoritmo es O(h)
+    A diferencia de los diffs obtenidos al medir la parte de O(K * log(K)), que mostraban una proporción logarítmica, en estos diffs se puede observar un comportamiento que a simple vista parece errático, pero que al notar que el intervalo donde oscila la muestra es de solo 0,0175 segundos, y no pareciera haber signos de una monotonía creciente o decreciente (sino un comportamiento oscilante), podemos afirmar que esta parte del algoritmo es O(h).
     
     ## K-merge con Heaps
 
-    MartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMartaMarta
+    En esta sección volveremos a hacer uso de las propiedades que nos permitieron analizar el K-merge con D&C a partir de evaluar por separado los componentes de la complejidad del algoritmo. Recordemos, como se explicó detalladamente en el punto 2), la complejidad del K-merge con heaps es de O(h * k * log(K)). Para ello, primero deduzcamos qué sucede al fijar el valor de cada variable para este caso.
+    
+    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes. A pesar de esto, y con fines de simplemente identificar el componente con complejidad O(K * log(K)), lo denominaremos "parte *pseudo heapsort*" del algoritmo.
+    
+    ### Análisis de la parte *heapsort* del algoritmo
+    
+    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
+    
+    ![D&C var-K plot (2)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+      
+    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
+      
+    [GRAFICO DIFF K-MERGE CON HEAPS VARIANDO K] #TODO
+      
+    Conclusión. #TODO
+      
+    ### Análisis de la parte O(h) del algoritmo
+    
+    Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
+metr
+    
+    ![D&C var-h plot (2)](/plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
+    
+    Ya notamos una tendencia lineal, pero para asegurarnos, vayamos al gráfico de diffs una vez más.
+    
+    ![D&C var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
+    
+    Como puede observarse, hasta la ejecución 5 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
+    
+    [Este gráfico debe reemplazarse tras una nueva ejecución y por ende la conclusion] #TODO
 
 ---
 
