@@ -100,7 +100,7 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     ### Análisis de la parte de *merge* del algoritmo
 
-    Cuando K = 2, podemos medir como funciona la parte del ordenamiento por merge del algoritmo. Como se menciono previamente, se estima que esta parte tiene una complejidad temporal de O(h).
+    Cuando K = 2, podemos medir cómo funciona la parte del ordenamiento por merge del algoritmo. Como se menciono previamente, se estima que esta parte tiene una complejidad temporal de O(h).
 
     El siguiente gráfico muestra los resultados de evaluar el algoritmo en una secuencia de 1 a 10.000.001, en intervalos de 1.000.000, donde cada muestra ha sido evaluada 10 veces, y calculado la mediana de los resultados de cada muestra.
 
@@ -118,13 +118,30 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes. A pesar de esto, y con fines de simplemente identificar el componente con complejidad O(K * log(K)), lo denominaremos "parte *pseudo heapsort*" del algoritmo.
     
-    ### Análisis de la parte de *heapsort* del algoritmo
+    ### Análisis de la parte *heapsort* del algoritmo
     
     Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
-      ![D&C var-K plot (1)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+    ![D&C var-K plot (2)](/plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
       
-      Una vez más, el gráfico no nos permite afirmar que los resultados volcados en el gráfico se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
+    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
+      
+    [GRAFICO DIFF K-MERGE CON HEAPS VARIANDO K] #TODO
+      
+    Conclusión. #TODO
+      
+    ### Análisis de la parte O(h) del algoritmo
+    
+    Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
+metr
+    
+    ![D&C var-h plot (2)](/plots/2023-04-23_20-10-27/plot.png "2023-04-23_20-10-27/plot.png")
+    
+    Ya notamos una tendencia lineal, pero para asegurarnos, vayamos al gráfico de diffs una vez más.
+    
+    ![D&C var-h diff (2)](/plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
+    
+    Como puede observarse, hasta la ejecución 5 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
 
 ---
 
