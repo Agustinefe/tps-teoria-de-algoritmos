@@ -161,4 +161,33 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
     Si bien a primera vista es notable que ambas funciones son diferentes (y es que lo son), cuando x es mayor a 1, y a medida que x crece, esta diferencia se desdibuja a la vista. Esto quiere decir que si observaramos cada una de estas funciones en un intervalo acotado, no seria tarea sencilla determinar si dicho intervalo pertenece a una funcion lineal o no.
 
-    Volviendo a nuestro problema: dado que nuestros resultados de las simulaciones son productos de la estadistica, estos pueden mostrar ligeras oscilaciones (respecto de la proporcion que parecen seguir), debido a cuestiones referidas al procesamiento de la simulacion (cualquier proceso que la computadora comience a correr de manera aleatoria puede alterar los resultados de la simulacion). Esto puede causar mas confusiones a la hora de graficar la muestra, debido a que sera aun mas dificil determinar si la "curva" mostrada en el grafico sigue alguna proporcion n * log(n).
+    Volviendo a nuestro problema: dado que nuestros resultados de las simulaciones son productos de la estadistica, estos pueden mostrar ligeras oscilaciones (respecto de la proporcion que parece seguir), debido a cuestiones referidas al procesamiento de la simulacion (cualquier proceso que la computadora comience a correr de manera aleatoria puede alterar los resultados de la simulacion). Esto puede causar mas confusiones a la hora de graficar la muestra, debido a que sera aun mas dificil determinar si la "curva" mostrada en el grafico sigue alguna proporcion n * log(n).
+
+    A modo de resumen: un grafico con forma de linea no nos permite asegurar si la muestra sigue una proporcion lineal o n * log(n). Pero, pese a esto, podemos realizar algunas afirmaciones dada la matematica detras de este fenomeno.
+
+    Para empezar, la razon de cambio de una funcion lineal ha de ser siempre constante. Si tuviesemos la siguiente muestra, producto de evaluar una secuencia de numeros equidistantes en f(x):
+
+    ```
+    [1, 2, 3, 4, 5, 6]
+    ```
+    Podemos calcular las diferencias entre los elementos consecutivos de la muestra (es decir, lista[i] - lista[i-1]):
+
+    ```
+    [1, 1, 1, 1, 1]
+    ```
+    Y de esta manera, verificar que estas diferencias siguen un patron constante. Si realizaramos lo mismo con una muestra sobre g(x):
+
+    ```
+    [0, 2, 4.75488, 8, 11.60964, 15.50977]
+    ```
+    ```
+    [2, 2.75488, 3.24512, 3.60964, 3.90013]
+    ```
+
+    A primera vista no pareciera que estas diferencias siguieran algun patron, asi que grafiquemos estos puntos:
+
+    ![Derivada de g(x)](imgs/graf_der_g.jpg "graf_der_g.jpg")
+
+    Podemos observar que, entonces, las diferencias entre muestras coinciden **muy aproximadamente** con la curva de la derivada de g(x), pero esto es suficiente para demostrar que estas diferencias siguen una proporcion logaritmica binaria.
+
+    ¿Por que realizamos este analisis? Porque es mucho mas facil, a primera vista, diferenciar una funcion logaritmica de una constante, que diferenciar una funcion lineal de una n * log(n). Aprovecharemos esto entonces para reforzar los analisis que hagamos sobre los resultados de las simulaciones.
