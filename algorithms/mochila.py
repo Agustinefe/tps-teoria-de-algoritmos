@@ -21,6 +21,9 @@ def mochila_greedy(elementos: list, W: int):
 # m = log2(W) => O(E * 2^m). La complejidad es exponencial en la longitud de la entrada,
 # pero el tiempo de ejecucion es polinomial respecto al valor.
 def mochila_dp(elementos: list, W: int):
+    """
+    Creacion de la matriz de memorizacion
+    """
     M = [[0 for _ in range(W+1)] for _ in range(len(elementos)+1)] # O(W * E)
 
     for k in range(len(elementos)): # O(E)
@@ -35,6 +38,10 @@ def mochila_dp(elementos: list, W: int):
                     elementos[k] + M[i-1][w - elementos[k]] # O(1)
                     ) # O(1)
     
+    
+    """
+    Generacion del resultado en base a M
+    """
     mochila = [] # O(1)
     piv_x = len(M[0]) - 1 # O(1)
     piv_y = len(M) - 1 # O(1)
