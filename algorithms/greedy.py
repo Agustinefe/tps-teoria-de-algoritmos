@@ -28,8 +28,14 @@ def obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados):
 
 def ordenar_paquetes_por_producto(paquetes_por_producto):
     """
-    paquetes es una lista de tuplas, ej. [('Vodka', 3), ('Vodka', 9), ('Cigarrillos', 17)]
+    paquetes_por_producto es un diccionario,
+    ej. {'Cigarrillos': [11, 1, 6, 4, 8], 'Vodka': [10, 3, 1, 15]}
     """
     for producto in paquetes_por_producto:
         paquetes_por_producto[producto].sort() # in place
     return paquetes_por_producto
+
+def solucion(paquetes, sobornos_solicitados):
+    paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes) # O(E log(E))
+    sobornos_disponibles = obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados)
+    return sobornos_disponibles

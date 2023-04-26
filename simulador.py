@@ -1,4 +1,4 @@
-from algorithms.greedy import ordenar_paquetes_por_producto, obtener_soborno
+from algorithms.greedy import solucion
 from generador import cantidad_obtenida_es_correcta, generar_paquetes, generar_multiples_paquetes
 
 
@@ -7,8 +7,7 @@ def ejecucion_unitaria_greedy():
     cantidad_productos = 50
     paquetes,sobornos_solicitados = generar_paquetes(productos, cantidad_productos)
     print(f"Paquetes generados: {paquetes}")
-    paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes)
-    sobornos_disponibles = obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados)
+    sobornos_disponibles = solucion(paquetes, sobornos_solicitados)
     print(f"Soborno disponible: {sobornos_disponibles}")
 
 
@@ -23,10 +22,8 @@ def ejecucion_multiple_greedy():
         cantidad_maxima_es_correcta = cantidad_obtenida_es_correcta(paquetes, cantidad_productos)
         generacion_correcta = "✅" if cantidad_maxima_es_correcta else "❌"
         print(f"Generación de paquetes correcta: {generacion_correcta}")
-        paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes)
-        sobornos_disponibles = obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados)
-        print(f"Soborno disponible: {sobornos_disponibles}")
-        print()
+        sobornos_disponibles = solucion(paquetes, sobornos_solicitados)
+        print(f"Soborno disponible: {sobornos_disponibles}\n")
 
 
 def main():
