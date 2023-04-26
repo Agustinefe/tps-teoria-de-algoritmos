@@ -1,8 +1,8 @@
 {
     "start": 1,
-    "stop": 20000000,
+    "stop": 20000002,
     "step": 2000000,
     "times": 10,
     "algorithm": "k_merge_heap",
-    "var": "K"
+    "var": "h"
 }
