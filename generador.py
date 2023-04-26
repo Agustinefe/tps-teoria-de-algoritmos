@@ -1,5 +1,6 @@
 import random
 
+
 def cantidad_obtenida_es_correcta(paquetes, cantidad_esperada):
     return sum(sum(cantidades) for cantidades in paquetes.values()) == cantidad_esperada
 
@@ -28,15 +29,8 @@ def generar_paquetes(productos, cantidad_maxima):
         restantes -= cantidad
         paquetes.setdefault(producto, []).append(cantidad)
 
-    print(f"Paquetes generados: {paquetes}")
-    cantidad_maxima_es_correcta = cantidad_obtenida_es_correcta(paquetes, cantidad_maxima)
-    generacion_correcta = "✅" if cantidad_maxima_es_correcta else "❌"
-    print(f"Generación de paquetes correcta: {generacion_correcta}")
     cantidad_por_producto = obtener_cantidad_por_producto(paquetes)
-    print(f"Cantidad por producto: {cantidad_por_producto}")
     sobornos_solicitados = obtener_solicitud_de_soborno(cantidad_por_producto)
-    print(f"Soborno solicitado: {sobornos_solicitados}")
-    print()
 
     return paquetes,sobornos_solicitados
 
