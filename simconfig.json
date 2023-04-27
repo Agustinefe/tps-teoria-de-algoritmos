@@ -1,0 +1,8 @@
+{
+    "start": 1,
+    "stop": 100002,
+    "step": 10000,
+    "times": 10,
+    "var": "n",
+    "check_greedy": true
+}

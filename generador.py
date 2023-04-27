@@ -1,6 +1,5 @@
 import random
 
-
 def cantidad_obtenida_es_correcta(paquetes, cantidad_esperada):
     return sum(sum(cantidades) for cantidades in paquetes.values()) == cantidad_esperada
 
@@ -40,6 +39,10 @@ def generar_multiples_paquetes(productos, cantidad_maxima, n):
         paquetes,sobornos_solicitados = generar_paquetes(productos, cantidad_maxima)
         listado_de_paquetes.append((paquetes,sobornos_solicitados))
     return listado_de_paquetes
+
+def generate_elements_sample(n, W):
+    return [random.randint(0, W//2) for _ in range(n)]
+
 
 def main():
     productos = ['Vodka', 'Cigarrillos']
