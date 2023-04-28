@@ -56,7 +56,7 @@ def mochila_dp(elementos: list, W: int):
 
     
     """
-    Generacion del resultado en base a M
+    Generación del resultado en base a M
     """
     mochila = [] # O(1)
     e = E # O(1)
@@ -73,7 +73,7 @@ def mochila_dp(elementos: list, W: int):
 
 #### Descripción del algoritmo
 
-- Para cada peticion de soborno (tipo de producto y cantidad):
+- Para cada petición de soborno (tipo de producto y cantidad):
     - Siendo **W** la nueva capacidad de la mochila (total de productos menos cantidad solicitada de soborno) y **E** la cantidad de paquetes que posee el contrabandista.
     - Crear la matriz OPT de memorizacion (E * W) y llenar la primera fila (fila 0) y primera columna (columna 0) con ceros. Cada posicion **(e, w)** representa la solucion optima para una mochila de capacidad **w**, teniendo en cuenta los primeros **e** paquetes de la lista.
     - Para cada fila **e** de OPT, de 1 a E:
@@ -95,7 +95,7 @@ def mochila_dp(elementos: list, W: int):
 
 3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima. 
 
-#### Algoritmo por Programacion Dinamica
+#### Algoritmo por Programación Dinámica
 
 Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
 
@@ -113,16 +113,16 @@ Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algorit
 
 ---
 
-## El problema del contrabando, y su relación con el problema de la mochila
+## El problema del contrabando y su relación con el problema de la mochila
 
-El problema del contrabando plantea una situacion donde un contrabandista debe pasar una cantidad de paquetes de mercaderia a traves de una Aduana, donde se nos demandara un soborno de una cantidad arbitraria de algunos (o todos) los productos que pasemos.
+El problema del contrabando plantea una situación donde un contrabandista debe pasar una cantidad de paquetes de mercaderia a traves de una Aduana, donde se nos demandara un soborno de una cantidad arbitraria de algunos (o todos) los productos que pasemos.
 
 Habiendo presentado un poco de contexto, replanteemos el problema desde otro angulo: 
 1) Un contrabandista lleva una mochila para cada **producto i** que posee, de **capacidad Xi**, donde cada una de las mochilas se encuentra llena en su capacidad.
 2) Al pasar por la Aduana, el funcionario nos dira que, para cada producto i que llevamos, solo podremos llevarnos a Krakovia, como maximo, una cantidad **Xi - Si**, donde Si es el soborno que debemos pagarle al funcionario (si para cierto producto j no hay demanda de soborno, entonces Sj = 0). Esto es lo mismo que decir que la capacidad de nuestras mochilas i se reduce a Xi - Si.
 3) Para cada producto i, teniendo una cantidad de paquetes que en total suman Xi productos, y una mochila i de capacidad Xi - Si, nuestro objetivo sera maximizar el valor que podemos almacenar en la mochila. En este caso, dado que cada paquete contiene una cantidad arbitraria **del mismo producto**, podemos asumir que su valor es exactamente igual a su peso o cantidad de espacio que ocupa en la mochila.
 
-Esto nos permite concluir que estamos ante una version del problema de la mochila. De esto, podemos deducir algunas conclusiones:
+Esto nos permite concluir que estamos ante una versión del problema de la mochila. De esto, podemos deducir algunas conclusiones:
 - Debemos calcular el problema de la mochila para cada producto que este incluido en la demanda de sobornos. Esto nos permite anticipar el problema de la mochila tendra una complejidad de **O(S * O(algoritmo_mochila))** (a no ser que alguna operacion imprevista en el algoritmo para el problema del contrabando supere esta complejidad).
 - Dado que la capacidad de la mochila sera Xi - Si, primero debemos calcular Xi, que sera la suma de todos los pesos de los paquetes traidos de Genovia. Esta operacion es **O(n)**.
 - A diferencia del problema de K-merge planteado en el ejercicio anterior, aqui, la cantidad de paquetes (independientemente de la cantidad de contenido que tengan), no sera la misma para cada uno de los productos. Debemos tener esto en cuenta a la hora de realizar simulaciones.
