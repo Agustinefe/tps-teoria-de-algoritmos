@@ -19,6 +19,79 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 ## Consigna
 1. Describir e implementar un algoritmo greedy que, dado un input con los productos que se tienen, y lo pedido como soborno, nos permita salir airosos de la situación, con la mayor cantidad de productos posibles. Justificar por qué el algoritmo es, efectivamente, greedy. Considerar que siempre se nos pedirá una cantidad de productos en existencias (en nuestro ejemplo anterior, no nos habrían pedido que dejemos 7 botellas de vodka radioactivo, ni tampoco mandarinas del Sahara).
 2. Con las mismas consideraciones que en el punto anterior, describir e implementar un algoritmo (que sea óptimo) que resuelva el problema utilizando programación dinámica.
+
+    #### Implementacion del algoritmo
+
+    Como hemos mencionado anteriormente, este problema es una version del problema de la mochila:
+
+
+```python
+def pasar_aduana(paquetes: dict, soborno: dict):
+    for producto, cantidad in soborno.items(): # O(S)
+        paquetes[producto] = mochila_dp(paquetes[producto], sum(paquetes[producto]) - cantidad) # Suma: O(P)
+    
+    return paquetes
+
+def mochila_dp(elementos: list, W: int):
+    """
+    Creacion de la matriz de memorizacion
+    """
+    E = len(elementos) # O(1)
+    OPT = [[0 for _ in range(W+1)] for _ in range(E+1)] # O(W * E)
+    
+    for e in range(1, E+1): # O(E)
+        for w in range(1, W+1): # O(W)
+
+            if w < elementos[e-1]: # O(1)
+                OPT[e][w] = OPT[e-1][w] # O(1)
+            else:
+                OPT[e][w] = max(
+                    OPT[e-1][w], # O(1)
+                    elementos[e-1] + OPT[e-1][w - elementos[e-1]] # O(1)
+                    ) # O(1)
+
+    
+    """
+    Generacion del resultado en base a M
+    """
+    mochila = [] # O(1)
+    e = E # O(1)
+    w = W # O(1)
+
+    while w > 0 and e > 0: # O(E + W)
+        if OPT[e][w] > OPT[e-1][w]: # O(1)
+            mochila.append(elementos[e-1]) # O(1)
+            w -= elementos[e-1] # O(1)
+        e -= 1 # O(1)
+
+    return mochila
+```
+
+#### Descripción del algoritmo
+
+- Para cada peticion de soborno (tipo de producto y cantidad):
+    - Siendo **W** la nueva capacidad de la mochila (total de productos menos cantidad solicitada de soborno) y **E** la cantidad de paquetes que posee el contrabandista.
+    - Crear la matriz OPT de memorizacion (E * W) y llenar la primera fila (fila 0) y primera columna (columna 0) con ceros. Cada posicion **(e, w)** representa la solucion optima para una mochila de capacidad **w**, teniendo en cuenta los primeros **e** paquetes de la lista.
+    - Para cada fila **e** de M, de 1 a E:
+        - Para cada columna **w** de M, de 1 a W:
+            - Si el paquete **e** tiene un peso mayor a la capacidad **w**, entonces la solucion optima sera la de la posicion **(e-1, w)** (la solucion optima para una mochila de capacidad w, teniendo en cuenta los paquetes anteriores al **e**).
+            - Si no, la solucion optima sera el maximo entre:
+                - La solucion optima de **(e-1, w)**.
+                - La suma entre el peso del paquete **e** (e[peso]) y la solucion optima **(e-1, w-e[peso])** (optimo de mochila con la capacidad que tendria si el nuevo paquete ocupase un lugar en ella, teniendo en cuenta los paquetes anteriores al **e**).
+    - *Comentario: una vez terminadas las iteraciones sobre la matriz M, la cantidad maxima de productos que nos podemos llevar con los paquetes se encontrara en la posicion (e, w).*
+    - Para obtener la mochila optima con los paquetes que podemos llevarnos, seteamos un puntero en la posicion **(e, w)** de M.
+    - Mientras **e** y **w** sean mayor a 0:
+        - Si la solucion optima de la mochila con capacidad **w** para los primeros **e** paquetes es mayor que la solucion optima para la misma mochila pero sin tener en cuenta el paquete **e** (si OPT(e, w) > OPT(e-1, w)):
+            - Agregamos el paquete **e** a la mochila.
+            - Evaluamos el optimo de la mochila con capacidad w', sabiendo que el paquete **e** ya esta en la mochila (w = w - e[peso])
+        - Evaluamos el caso donde ya no tenemos en cuenta el paquete **e**, sin importar si entro o no en la mochila (e = e - 1).
+    - Retornamos la mochila optima.
+
+
+    
+
+
+
 3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima.
 4. Implementar un programa que utilice ambos algoritmos, realizar mediciones y presentar resultados comparativos de ambas soluciones, en lo que refiere a su optimalidad de la solución (no de su complejidad). Incluir en la entrega del tp los sets de datos utilizados para estas simulaciones (que deben estar explicados en el informe). Estos deben incluir al menos una prueba de volumen, indicando cómo es que fueron generadas.
 

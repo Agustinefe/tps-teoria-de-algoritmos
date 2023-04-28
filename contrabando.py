@@ -1,4 +1,4 @@
-from mochila import mochila_dp, mochila_greedy
+from algorithms.mochila import mochila_dp, mochila_greedy
 from generador import generar_paquetes
 from copy import deepcopy
 
