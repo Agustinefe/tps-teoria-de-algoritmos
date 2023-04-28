@@ -147,6 +147,17 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 ---
 
 4. En caso que la complejidad obtenida en el punto 1 no se condiga con la realidad, indicar por qué (qué condición falla). En dicho caso, se requiere llegar a la complejidad correcta (no solamente enunciarla, sino demostrar cuál es).
+
+    Hemos cometido un error en el punto 1. En nuestro analisis previo, hemos asentado que la ecuacion de recurrencia era la siguiente: **T(n) = 2 * T(K/2) + O(n)**. Sin embargo, el error se encuentra en que el Teorema Maestro no esta preparado para aplicarse a dos variables.
+
+    La variable presentada en el problema es n = K * H, la cantidad total de elementos. Dado que el llamado recursivo sobre n nos permite partir el problema tranquilamente en dos, la ecuacion de recurrencia nos quedaria como **T(n) = 2 * T(K/2) + O(n)**, permitiendonos afirmar que la complejidad del algoritmo es de O(n * log2(n)).
+
+    Sin embargo hemos observado en los graficos que esto no ocurre asi. Variar solo el tamaño de los arreglos (h) nos muestra que estadisticamente el crecimiento en los tiempos es lineal en vez de n * log(n). ¿Esto quiere decir que el Teorema Maestro esta mal? No precisamente. Una de las condiciones para aplicar T.M. es que **el caso base del algoritmo sea constante**, y aqui es donde falla nuestro algoritmo. El caso base del algoritmo, que es retornar un arreglo solo, esta ligado a la variable h, dado que h es la longitud de todos los arreglos del problema.
+
+    Entonces, ¿Cual es su complejidad algoritmica? Si bien el costo de partir y juntar sigue siendo O(n), la cantidad de llamados recursivos no depende de n (total de elementos de todos los arreglos), sino de K, la cantidad de arreglos que tenemos). Nuestro algoritmo realizara dos llamados recursivos sobre la mitad de los arreglos, hasta toparse con el caso base de un solo arreglo, y luego comenzar a mergearlos. Dado que esto ocurre en log2(K) niveles de recursividad donde se realizan estas operaciones con los K arreglos de h elementos, podemos volver a concluir que la complejidad del algoritmo es O(h * K * log(K)) o, lo que es lo mismo, O(n * log(K)), lo cual coincide plenamente con lo observado en los graficos.
+
+---
+
 5. Indicar cualquier conclusión adicional que les parezca relevante en base a lo analizado.
 
     ### La "derivada" de una muestra
