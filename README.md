@@ -16,8 +16,12 @@ Al pasar por la aduana, el corrupto funcionario puede indicarnos que “por acá
 
 Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho caso nos conviene dejar el paquete de 8 (no podemos abrirlo para sacar 6 de allí. . . sino la movida sería muy evidente). Si el oficial hubiera dicho que hay que dejar al menos 10 cajetillas, habría sido necesario dejar ambos paquetes para un total de 13 unidades de dicho producto. Si este hubiera dicho que le dejemos una cajetilla de cigarrillos y una botellita de vodka, tendríamos que dejar el paquete de 5 botellitas de vodka y el paquete de 5 cajetillas de cigarrillos.
 
+---
+
 ## Consigna
 1. Describir e implementar un algoritmo greedy que, dado un input con los productos que se tienen, y lo pedido como soborno, nos permita salir airosos de la situación, con la mayor cantidad de productos posibles. Justificar por qué el algoritmo es, efectivamente, greedy. Considerar que siempre se nos pedirá una cantidad de productos en existencias (en nuestro ejemplo anterior, no nos habrían pedido que dejemos 7 botellas de vodka radioactivo, ni tampoco mandarinas del Sahara).
+
+---
 2. Con las mismas consideraciones que en el punto anterior, describir e implementar un algoritmo (que sea óptimo) que resuelva el problema utilizando programación dinámica.
 
     #### Implementacion del algoritmo
@@ -27,8 +31,8 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
 ```python
 def pasar_aduana(paquetes: dict, soborno: dict):
-    for producto, cantidad in soborno.items(): # O(S)
-        paquetes[producto] = mochila_dp(paquetes[producto], sum(paquetes[producto]) - cantidad) # Suma: O(P)
+    for producto, cantidad in soborno.items(): # O(P)
+        paquetes[producto] = mochila_dp(paquetes[producto], sum(paquetes[producto]) - cantidad) # Suma: O(E)
     
     return paquetes
 
@@ -72,13 +76,13 @@ def mochila_dp(elementos: list, W: int):
 - Para cada peticion de soborno (tipo de producto y cantidad):
     - Siendo **W** la nueva capacidad de la mochila (total de productos menos cantidad solicitada de soborno) y **E** la cantidad de paquetes que posee el contrabandista.
     - Crear la matriz OPT de memorizacion (E * W) y llenar la primera fila (fila 0) y primera columna (columna 0) con ceros. Cada posicion **(e, w)** representa la solucion optima para una mochila de capacidad **w**, teniendo en cuenta los primeros **e** paquetes de la lista.
-    - Para cada fila **e** de M, de 1 a E:
-        - Para cada columna **w** de M, de 1 a W:
+    - Para cada fila **e** de OPT, de 1 a E:
+        - Para cada columna **w** de OPT, de 1 a W:
             - Si el paquete **e** tiene un peso mayor a la capacidad **w**, entonces la solucion optima sera la de la posicion **(e-1, w)** (la solucion optima para una mochila de capacidad w, teniendo en cuenta los paquetes anteriores al **e**).
             - Si no, la solucion optima sera el maximo entre:
                 - La solucion optima de **(e-1, w)**.
                 - La suma entre el peso del paquete **e** (e[peso]) y la solucion optima **(e-1, w-e[peso])** (optimo de mochila con la capacidad que tendria si el nuevo paquete ocupase un lugar en ella, teniendo en cuenta los paquetes anteriores al **e**).
-    - *Comentario: una vez terminadas las iteraciones sobre la matriz M, la cantidad maxima de productos que nos podemos llevar con los paquetes se encontrara en la posicion (e, w).*
+    - *Comentario: una vez terminadas las iteraciones sobre la matriz OPT, la cantidad maxima de productos que nos podemos llevar con los paquetes se encontrara en la posicion (e, w).*
     - Para obtener la mochila optima con los paquetes que podemos llevarnos, seteamos un puntero en la posicion **(e, w)** de M.
     - Mientras **e** y **w** sean mayor a 0:
         - Si la solucion optima de la mochila con capacidad **w** para los primeros **e** paquetes es mayor que la solucion optima para la misma mochila pero sin tener en cuenta el paquete **e** (si OPT(e, w) > OPT(e-1, w)):
@@ -87,12 +91,24 @@ def mochila_dp(elementos: list, W: int):
         - Evaluamos el caso donde ya no tenemos en cuenta el paquete **e**, sin importar si entro o no en la mochila (e = e - 1).
     - Retornamos la mochila optima.
 
+---
 
-    
+3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima. 
 
+#### Algoritmo por Programacion Dinamica
 
+Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
 
-3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima.
+Por otra parte, para obtener la capacidad de la nueva mochila debemos sumar todos sus elementos, lo cual nos cuesta O(E).
+
+Tanto para crear la matriz OPT como para llenarla, la cantidad de operaciones dependen de la longitud del vector E y de la capacidad de la mochila W. Estas operaciones tienen una complejidad de O(E * W).
+
+Para generar la mochila con los paquetes que nos podemos llevar, dado que debemos verificar paquete por paquete si es posible guardarlo en la mochila, tendremos un costo de O(E).
+
+Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W), lo cual no es otra cosa que la complejidad algoritmica del problema de la mochila, multiplicada por la cantidad de sobornos que debemos evaluar.
+
+---
+
 4. Implementar un programa que utilice ambos algoritmos, realizar mediciones y presentar resultados comparativos de ambas soluciones, en lo que refiere a su optimalidad de la solución (no de su complejidad). Incluir en la entrega del tp los sets de datos utilizados para estas simulaciones (que deben estar explicados en el informe). Estos deben incluir al menos una prueba de volumen, indicando cómo es que fueron generadas.
 
 ## El problema del contrabando, y su relación con el problema de la mochila
