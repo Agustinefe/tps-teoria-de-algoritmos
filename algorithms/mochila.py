@@ -46,7 +46,7 @@ def mochila_dp(elementos: list, W: int):
     e = E # O(1)
     w = W # O(1)
 
-    while w > 0 and e > 0: # O(E + W)
+    while w > 0 and e > 0: # O(E)
         if OPT[e][w] > OPT[e-1][w]: # O(1)
             mochila.append(elementos[e-1]) # O(1)
             w -= elementos[e-1] # O(1)
