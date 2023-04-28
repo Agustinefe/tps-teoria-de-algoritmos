@@ -2,22 +2,6 @@
 
 ## Primera Parte: Problema de K-merge por División y Conquista
 
-### Como ejecutar los scripts
-
-#### Simulación
-
-```$ python3 simulator.py```
-
-La configuración de la simulación se encuentra en el archivo *simconfig.json*. Los archivos con los resultados se guardan en la carpeta *results*.
-
-Los nombres de los resultados corresponden a la hora en la que finalizó su simulación.
-
-#### Plotting
-
-```python3 complexity-check.py [results\example.json]```
-
-Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README lee imágenes de la carpeta *plot*.
-
 ### Introducción
 
 El problema de K-merge es el siguiente: se tienen K arreglos ordenados, y se quiere quiere obtener un único arreglo, también
@@ -54,6 +38,21 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
 
 ---
 
+### Cómo ejecutar los scripts
+
+#### Simulación
+
+```$ python3 simulator.py```
+
+La configuración de la simulación se encuentra en el archivo *simconfig.json*. Los archivos con los resultados se guardan en la carpeta *results*.
+
+Los nombres de los resultados corresponden a la hora en la que finalizó su simulación.
+
+#### Plotting
+
+```python3 complexity-check.py [results\example.json]```
+
+Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README lee imágenes de la carpeta *plot*.
 
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
 
