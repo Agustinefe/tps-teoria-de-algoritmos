@@ -111,6 +111,8 @@ Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algorit
 
 4. Implementar un programa que utilice ambos algoritmos, realizar mediciones y presentar resultados comparativos de ambas soluciones, en lo que refiere a su optimalidad de la solución (no de su complejidad). Incluir en la entrega del tp los sets de datos utilizados para estas simulaciones (que deben estar explicados en el informe). Estos deben incluir al menos una prueba de volumen, indicando cómo es que fueron generadas.
 
+---
+
 ## El problema del contrabando, y su relación con el problema de la mochila
 
 El problema del contrabando plantea una situacion donde un contrabandista debe pasar una cantidad de paquetes de mercaderia a traves de una Aduana, donde se nos demandara un soborno de una cantidad arbitraria de algunos (o todos) los productos que pasemos.
