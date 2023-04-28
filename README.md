@@ -105,7 +105,7 @@ Tanto para crear la matriz OPT como para llenarla, la cantidad de operaciones de
 
 Para generar la mochila con los paquetes que nos podemos llevar, dado que debemos verificar paquete por paquete si es posible guardarlo en la mochila, tendremos un costo de O(E).
 
-Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W), lo cual no es otra cosa que la complejidad algoritmica del problema de la mochila, multiplicada por la cantidad de sobornos que debemos evaluar.
+Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W). Sin embargo, dado que W es un numero, y no representa una longitud, sino un valor, debemos expresar W en relacion a la longitud de su representacion. Asumiendo que la representacion se realiza en bits, establecemos W = 2^m, siendo m la longitud de W en bits. Finalmente, la complejidad algoritmica nos queda O(P * E * 2^m), lo cual es ni mas ni menos que P multiplicado por la complejidad algoritmica del problema de la mochila en Programacion Dinamica. Y, al igual que el algoritmo del problema de la mochila, nuestro algoritmo tambien es pseudo polinomial. Esto provocara que estadisticamente observemos un comportamiento polinomico aunque, como ya hemos demostrado, su complejidad es exponencial.
 
 ---
 
