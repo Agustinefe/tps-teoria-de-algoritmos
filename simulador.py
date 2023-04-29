@@ -1,6 +1,6 @@
 import datetime
 import json, time
-from algorithms.greedy import solucion
+from algorithms.greedy1 import solucion
 from algorithms.mochila import *
 from contrabando import pasar_aduana
 from generador import cantidad_obtenida_es_correcta, generar_paquetes, generar_multiples_paquetes, generate_packets_and_briberies, fast_generator
