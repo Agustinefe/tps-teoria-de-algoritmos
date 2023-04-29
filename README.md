@@ -73,7 +73,7 @@ def mochila_dp(elementos: list, W: int):
 
 #### Descripción del algoritmo
 
-- Para cada peticion de soborno (tipo de producto y cantidad):
+- Para cada peticion de soborno (tipo de producto y cantidad:
     - Siendo **W** la nueva capacidad de la mochila (total de productos menos cantidad solicitada de soborno) y **E** la cantidad de paquetes que posee el contrabandista.
     - Crear la matriz OPT de memorizacion (E * W) y llenar la primera fila (fila 0) y primera columna (columna 0) con ceros. Cada posicion **(e, w)** representa la solucion optima para una mochila de capacidad **w**, teniendo en cuenta los primeros **e** paquetes de la lista.
     - Para cada fila **e** de OPT, de 1 a E:
@@ -99,13 +99,13 @@ def mochila_dp(elementos: list, W: int):
 
 Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
 
-Por otra parte, para obtener la capacidad de la nueva mochila debemos sumar todos sus elementos, lo cual nos cuesta O(E).
+Por otra parte, para obtener la capacidad W de la nueva mochila debemos sumar todos sus elementos, lo cual nos cuesta O(E), y restarle el soborno S. W, como mucho, valdra sum(E), si S es 0.
 
 Tanto para crear la matriz OPT como para llenarla, la cantidad de operaciones dependen de la longitud del vector E y de la capacidad de la mochila W. Estas operaciones tienen una complejidad de O(E * W).
 
 Para generar la mochila con los paquetes que nos podemos llevar, dado que debemos verificar paquete por paquete si es posible guardarlo en la mochila, tendremos un costo de O(E).
 
-Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W). Sin embargo, dado que W es un numero, y no representa una longitud, sino un valor, debemos expresar W en relacion a la longitud de su representacion. Asumiendo que la representacion se realiza en bits, establecemos W = 2^m, siendo m la longitud de W en bits. Finalmente, la complejidad algoritmica nos queda O(P * E * 2^m), lo cual es ni mas ni menos que P multiplicado por la complejidad algoritmica del problema de la mochila en Programacion Dinamica. Y, al igual que el algoritmo del problema de la mochila, nuestro algoritmo tambien es pseudo polinomial. Esto provocara que estadisticamente observemos un comportamiento polinomico aunque, como ya hemos demostrado, su complejidad es exponencial.
+Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W); recordando que W como maximo es sum(E). Sin embargo, dado que W es un numero, y no representa una longitud, sino un valor, debemos expresar W en relacion a lav longitud de su representacion. Asumiendo que la representacion se realiza en bits, establecemos W = 2^m, siendo m la longitud de W en bits. Finalmente, la complejidad algoritmica nos queda O(P * E * 2^m), lo cual es ni mas ni menos que P multiplicado por la complejidad algoritmica del problema de la mochila en Programacion Dinamica. Y, al igual que el algoritmo del problema de la mochila, nuestro algoritmo tambien es pseudo polinomial. Esto provocara que estadisticamente observemos un comportamiento polinomico aunque, como ya hemos demostrado, su complejidad es exponencial.
 
 ---
 

@@ -1,7 +1,3 @@
-from algorithms.mochila import mochila_dp, mochila_greedy
-from generador import generar_paquetes
-from copy import deepcopy
-
 def pasar_aduana(paquetes: dict, soborno: dict, algoritmo):
     for producto, cantidad in soborno.items(): # O(S)
         paquetes[producto] = algoritmo(paquetes[producto], sum(paquetes[producto]) - cantidad) # Suma: O(P)
@@ -26,31 +22,3 @@ def compare(res1: dict, res2: dict):
             return False
         
     return True
-
-
-def main():
-
-    productos = list(map(str, [x for x in range(5)]))
-    fallas = 0
-
-    trys = 100000
-
-    for i in range(trys):
-        paquetes, soborno = generar_paquetes(productos, 100)
-        paquetes1 = deepcopy(paquetes)
-        paquetes2 = deepcopy(paquetes)
-        soborno1 = deepcopy(soborno)
-        soborno2 = deepcopy(soborno)
-
-        greedy = pasar_aduana(paquetes1, soborno1, mochila_greedy)
-        dp = pasar_aduana(paquetes2, soborno2, mochila_dp)
-
-        if not compare(greedy, dp):
-            fallas += 1
-
-    print(f"Fallas: {str(fallas)} ({str(fallas / trys)})")
-
-    #print("Greedy: " + format(pasar_aduana(paquetes1, soborno1, mochila_greedy)))
-    #print("Programacion dinamica: " + format(pasar_aduana(paquetes2, soborno2, mochila_dp)))
-
-main()

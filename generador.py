@@ -40,20 +40,38 @@ def generar_multiples_paquetes(productos, cantidad_maxima, n):
         listado_de_paquetes.append((paquetes,sobornos_solicitados))
     return listado_de_paquetes
 
-def generate_elements_sample(n, W):
-    return [random.randint(0, W//2) for _ in range(n)]
+def generate_elements_sample(E, W):
+    sample = [1] * E     
+    for i in range(E, W) : sample[random.randint(0, E-1)] += 1
+    return sample
 
+def generate_bribery(W):
+    return random.randint(0, W)
+
+def generate_packets_and_briberies(P, E, W, B=None, same_E=True, same_W=True):
+    """
+    P: amount of distinct products
+    E: max amount of packets, for each product
+    W: max amount of individual products (or what sum(E) should be), for each product
+    S: amount of bribery, for each product (if None, then bribery is random)
+    """
+    products = [str(p) for p in range(P)]
+    packets = {}
+    briberies = {}
+
+    for product in products:
+        e = E if same_E else random.randint(1, E)
+        w = W if same_W else random.randint(e, W)
+
+        packets[product] = generate_elements_sample(e, w)
+        bribery = B if B != None else generate_bribery(w)
+        if bribery > 0:
+            briberies[product] = bribery
+
+    return packets, briberies
 
 def main():
-    productos = ['Vodka', 'Cigarrillos']
-    cantidad_productos = 50
-    n = 100
-
-    # Generador unitario
-    # paquetes, sobornos_solicitados = generar_paquetes(productos, cantidad_productos)
-
-    # Generador múltiple
-    print(generar_multiples_paquetes(productos, cantidad_productos, n))
+    print(generate_packets_and_briberies(3, 5, 5))
 
 if __name__ == "__main__":
     main()
