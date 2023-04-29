@@ -23,6 +23,30 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
 1. Describir e implementar un algoritmo greedy que, dado un input con los productos que se tienen, y lo pedido como soborno, nos permita salir airosos de la situación, con la mayor cantidad de productos posibles. Justificar por qué el algoritmo es, efectivamente, greedy. Considerar que siempre se nos pedirá una cantidad de productos en existencias (en nuestro ejemplo anterior, no nos habrían pedido que dejemos 7 botellas de vodka radioactivo, ni tampoco mandarinas del Sahara).
 
+    Para este problema se implementaron dos soluciones posibles utilizando algoritmos greedy, a continuación se detallará cada implementación pero, primero, explicitaremos el formato del input que se eligió para modelar el problema.
+
+    La mercadería compuesta por distintos tipos de productos con, a su vez, múltiples paquetes de distintas cantidades se modelará con un diccionario de la siguiente forma:
+
+    ```python
+    {'Cigarrillos': [1, 1, 2, 4, 8], 'Vodka': [1, 3, 5, 15]}
+    ```
+
+    Por otro lado, los sobornos solicitados, que el algoritmo deberá utilizar para encontrar una solución que cumpla con entregar cierta cantidad de productos minimizando la cantidad de productos a entregar será de la siguiente forma:
+
+    ```python
+    {'Vodka': 6, 'Cigarrillos': 6}
+    ```
+
+    #### Algoritmo Greedy I
+
+    El primer algoritmo consiste en dos pasos:
+
+    1. Ordenar cada lista de paquetes (para cada producto), lo cual en este caso es realizado utilizando el método *built-in* sort() de Python, que nos asegura realizar el ordenamiento con complejidad O(P * (log(P)), donde P es la cantidad total de todos los elementos a ordenar (siendo que tanto la cantidad de tipos de productos como la cantidad de paquetes por producto puede variar). Esto se realiza en la función **ordenar_paquetes_por_producto**.
+
+    2. Para cada uno de los productos se iterará por su lista asociada (y ahora ordenada) de cantidades por paquete para buscar el paquete que cumpla con el soborno solicitado. Esta búsqueda se realiza de comienzo a fin, acumulando las cantidades hasta alcanzar la suma requerida o hasta encontrar un paquete cuya cantidad ya sea suficiente (con solo ese paquete) para cumplir con el soborno. Como la búsqueda se realiza de comienzo a fin del arreglo, la complejidad de esta búsqueda es lineal, y considerando que se realizará esto para las listas de paquetes de cada uno de los productos, podemos decir que la complejidad de este paso es de O(P). Esto puede verse en la función **obtener_soborno**.
+
+    Tomando como T a la cantidad de tipos de productos distintos, como se depende de cantidad de tipos y de la cantidad de productos en los paquetes, podemos concluir en que la complejidad de la solución es: **O(P * (log(P)) + T * O(P) = O(P log(P)) + O(T * P)**.
+
 ---
 
 2. Con las mismas consideraciones que en el punto anterior, describir e implementar un algoritmo (que sea óptimo) que resuelva el problema utilizando programación dinámica.
