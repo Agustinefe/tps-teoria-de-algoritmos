@@ -31,9 +31,9 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Por otra parte, partir el problema puede implementarse a traves de la actualizacion de indices que indiquen el inicio y final del subproblema, sin necesidad de realizar un slice sobre el problema original; esto puede realizarse en tiempo constante.
     
-    Por ultimo, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones tambien sera de O(n).
+    Por último, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones también será de O(n).
     
-    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log2(K))
+    Con esto en mente, nuestra ecuación de recurrencia quedaría de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log2(K)).
 
 
 ---
@@ -119,13 +119,21 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
     
     ### Análisis de la parte *(pseudo) heapsort* del algoritmo
     
-    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
+    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 10.000.000, intervalos de 1.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
-    ![Heap var-K plot (2)](plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
-      
-    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
-      
-    [GRAFICO DIFF K-MERGE CON HEAPS VARIANDO K] #TODO
+    Variación de K - Ejecución 1
+    ![Heap var-K plot (2)](plots/2023-04-26_13-17-58/plot.png "2023-04-26_13-17-58/plot.png")
+    
+    Variación de K - Ejecución 2
+    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
+    
+    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, incluso notamos algunas curvas más pronunciadas a pesar de que haya una tendencia a la linealidad. Nuevamente, acudamos al gráfico de pendientes para comprender qué está sucediendo realmente.
+   
+    Diff variación de K - Ejecución
+    ![Heap var-K plot (2)](plots/2023-04-26_13-17-58/plot.png "2023-04-26_13-17-58/plot.png")
+
+    Diff variación de K - Ejecución 2
+    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
       
     Conclusión. #TODO
       
