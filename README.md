@@ -149,7 +149,7 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
 
     Hemos cometido un error en el punto 1. En nuestro analisis previo, hemos asentado que la ecuacion de recurrencia era la siguiente: **T(n) = 2 * T(K/2) + O(n)**. Sin embargo, el error se encuentra en que el Teorema Maestro no esta preparado para aplicarse a dos variables.
 
-    La variable presentada en el problema es n = K * H, la cantidad total de elementos. Dado que el llamado recursivo sobre n nos permite partir el problema tranquilamente en dos, la ecuacion de recurrencia nos quedaria como **T(n) = 2 * T(K/2) + O(n)**, permitiendonos afirmar que la complejidad del algoritmo es de O(n * log2(n)).
+    La variable presentada en el problema es n = K * H, la cantidad total de elementos. Dado que el llamado recursivo sobre n nos permite partir el problema tranquilamente en dos, la ecuacion de recurrencia nos quedaria como **T(n) = 2 * T(n/2) + O(n)**, permitiendonos afirmar que la complejidad del algoritmo es de O(n * log2(n)).
 
     Sin embargo hemos observado en los graficos que esto no ocurre asi. Variar solo el tamaño de los arreglos (h) nos muestra que estadisticamente el crecimiento en los tiempos es lineal en vez de n * log(n). ¿Esto quiere decir que el Teorema Maestro esta mal? No precisamente. Una de las condiciones para aplicar T.M. es que **el caso base del algoritmo sea constante**, y aqui es donde falla nuestro algoritmo. El caso base del algoritmo, que es retornar un arreglo solo, esta ligado a la variable h, dado que h es la longitud de todos los arreglos del problema.
 
