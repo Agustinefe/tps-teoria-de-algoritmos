@@ -11,6 +11,8 @@ def mochila_greedy(elementos: list, W: int):
         if capacidad >= elemento: # O(1)
             mochila.append(elemento) # O(1)
             capacidad -= elemento # O(1)
+        elif capacidad == 0:
+            return mochila
 
     return mochila
 

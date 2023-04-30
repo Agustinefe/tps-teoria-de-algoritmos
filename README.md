@@ -47,6 +47,24 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
     Tomando como T a la cantidad de tipos de productos distintos, como se depende de cantidad de tipos y de la cantidad de productos en los paquetes, podemos concluir en que la complejidad de la solución es: **O(P * (log(P)) + T * O(P) = O(P log(P)) + O(T * P)**.
 
+    #### Algoritmo Greedy 2
+
+    El siguiente algoritmo consta de los siguientes pasos:
+
+    Para cada uno de los productos que piden soborno:
+    1. Calcular la suma de todos los productos en todos los paquetes, y restarles la cantidad a dar de soborno (llamemos W a este valor).
+    2. Ordenar la lista de paquetes en orden decreciente, segun su cantidad de productos.
+    3. Inicializar una mochila vacia (lista vacia con capacidad W).
+    4. Para cada paquete en la lista de paquetes:
+        1. Si el tamaño del paquete es menor o igual a la capacidad de la mochila:
+            1. Meter el paquete en la mochila y actualizar su capacidad.
+        2. Si la capacidad de la mochila es 0 (ya esta llena), entonces retornar la mochila.
+    
+    5. Finalmente, retornar la mochila.
+
+    Este algoritmo es, efectivamente, Greedy. Aplicamos una regla sencilla como es la regla de "si entra, que entre", que nos permita obtener el mejor resultado al evaluar determinado paquete, para que luego, en caso de que el paquete entre en la mochila, se repita la misma evaluacion pero con una capacidad actualizada. Es una regla muy intuitiva, y es probablemente lo que una persona haría de toparse con este problema en una situacion cotidiana.
+
+
 ---
 
 2. Con las mismas consideraciones que en el punto anterior, describir e implementar un algoritmo (que sea óptimo) que resuelva el problema utilizando programación dinámica.
@@ -122,6 +140,20 @@ def mochila_dp(elementos: list, W: int):
 
 3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima. 
 
+#### Algoritmo Greedy 2
+
+Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
+
+Para cada uno de estos sobornos, debemos sumar todos los productos de la lista de paquetes, para luego restarle el soborno en si. Esto nos da una complejidad de O(E).
+
+Luego, ordenar la lista de manera decreciente nos brinda una complejidad de O(E * log(E)).
+
+Luego, iterar sobre los productos y aplicar la regla nos da una complejidad de O(E), dado que en el peor de los casos habra que iterar sobre todos los productos.
+
+Ingorando la idea de que tenemos que repetir esto por todos los sobornos, tenemos hasta aqui una complejidad de O(E) + O(E * log(E)) + O(E), lo cual es lo mismo que decir O(E * log(E)). Ahora, sabiendo que tenemos que repetirlo por todos los sobornos, nuestra complejidad final del algoritmo sera de **O(P * E * log(E))**.
+
+
+
 #### Algoritmo por Programación Dinámica
 
 Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
@@ -132,7 +164,7 @@ Tanto para crear la matriz OPT como para llenarla, la cantidad de operaciones de
 
 Para generar la mochila con los paquetes que nos podemos llevar, dado que debemos verificar paquete por paquete si es posible guardarlo en la mochila, tendremos un costo de O(E).
 
-Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W); recordando que W como maximo es sum(E). Sin embargo, dado que W es un numero, y no representa una longitud, sino un valor, debemos expresar W en relacion a lav longitud de su representacion. Asumiendo que la representacion se realiza en bits, establecemos W = 2^m, siendo m la longitud de W en bits. Finalmente, la complejidad algoritmica nos queda O(P * E * 2^m), lo cual es ni mas ni menos que P multiplicado por la complejidad algoritmica del problema de la mochila en Programacion Dinamica. Y, al igual que el algoritmo del problema de la mochila, nuestro algoritmo tambien es pseudo polinomial. Esto provocara que estadisticamente observemos un comportamiento polinomico aunque, como ya hemos demostrado, su complejidad es exponencial.
+Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algoritmo es de O(P * E * W); recordando que W como maximo es sum(E). Sin embargo, dado que W es un numero, y no representa una longitud, sino un valor, debemos expresar W en relacion a la longitud de su representacion. Asumiendo que la representacion se realiza en bits, establecemos W = 2^m, siendo m la longitud de W en bits. Finalmente, la complejidad algoritmica nos queda **O(P * E * 2^m)**, lo cual es ni mas ni menos que P multiplicado por la complejidad algoritmica del problema de la mochila en Programacion Dinamica. Y, al igual que el algoritmo del problema de la mochila, nuestro algoritmo tambien es pseudo polinomial. Esto provocara que estadisticamente observemos un comportamiento polinomico aunque, como ya hemos demostrado, su complejidad es exponencial.
 
 ---
 
