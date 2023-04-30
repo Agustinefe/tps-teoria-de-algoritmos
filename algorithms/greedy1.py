@@ -12,7 +12,7 @@ def obtener_paquetes_disponibles_para_sobornar(cantidades_disponibles, cantidad_
         paquetes_acum.append(cantidad)
         if acum >= cantidad_solicitada:
             return paquetes_acum
-    return "❌"
+    return "❌" 
 
 def obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados):
     """
@@ -36,6 +36,6 @@ def ordenar_paquetes_por_producto(paquetes_por_producto):
     return paquetes_por_producto
 
 def solucion(paquetes, sobornos_solicitados):
-    paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes) # O(E log(E))
+    paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes) # O(P * E * log(E))
     sobornos_disponibles = obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados)
     return sobornos_disponibles

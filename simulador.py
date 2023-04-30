@@ -59,7 +59,6 @@ def simulate_E_variation(config):
     for e in range(config['start'], config['stop'], config['step']):
         w = 3*e
         packets, briberies = generate_packets_and_briberies(P_global, e, w, B=w-4)
-        #packets, briberies = fast_generator(P_global, e, w)
 
         if "greedy_ours" in res.keys():
             res["greedy_ours"][str(e)] = execute(deepcopy(packets), briberies, greedy_ours)

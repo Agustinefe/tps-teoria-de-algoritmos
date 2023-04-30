@@ -1,9 +1,9 @@
 {
     "start": 1,
-    "stop": 10000002,
-    "step": 1000000,
+    "stop": 10002,
+    "step": 1000,
     "var": "E",
-    "do_greedy_ours": false,
+    "do_greedy_ours": true,
     "do_greedy_knapsack": true,
     "do_dp_knapsack": false
 }

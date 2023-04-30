@@ -15,6 +15,7 @@ def obtener_cantidad_por_producto(paquetes):
         cantidad_por_producto[producto] = sum(cantidades)
     return cantidad_por_producto
 
+# Productos: 
 def generar_paquetes(productos, cantidad_maxima):
     num_productos_distintos = len(productos)
     paquetes = {}
@@ -33,6 +34,7 @@ def generar_paquetes(productos, cantidad_maxima):
 
     return paquetes,sobornos_solicitados
 
+#n: cantidad de diccionario
 def generar_multiples_paquetes(productos, cantidad_maxima, n):
     listado_de_paquetes = []
     for i in range(cantidad_maxima):
@@ -53,7 +55,7 @@ def generate_packets_and_briberies(P, E, W, B=None, same_E=True, same_W=True):
     P: amount of distinct products
     E: max amount of packets, for each product
     W: max amount of individual products (or what sum(E) should be), for each product
-    S: amount of bribery, for each product (if None, then bribery is random)
+    B: amount of bribery, for each product (if None, then bribery is random)
     """
     products = [str(p) for p in range(P)]
     packets = {}

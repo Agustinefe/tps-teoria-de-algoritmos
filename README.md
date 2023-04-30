@@ -45,7 +45,12 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
     2. Para cada uno de los productos se iterará por su lista asociada (y ahora ordenada) de cantidades por paquete para buscar el paquete que cumpla con el soborno solicitado. Esta búsqueda se realiza de comienzo a fin, acumulando las cantidades hasta alcanzar la suma requerida o hasta encontrar un paquete cuya cantidad ya sea suficiente (con solo ese paquete) para cumplir con el soborno. Como la búsqueda se realiza de comienzo a fin del arreglo, la complejidad de esta búsqueda es lineal, y considerando que se realizará esto para las listas de paquetes de cada uno de los productos, podemos decir que la complejidad de este paso es de O(P). Esto puede verse en la función **obtener_soborno**.
 
-    Tomando como T a la cantidad de tipos de productos distintos, como se depende de cantidad de tipos y de la cantidad de productos en los paquetes, podemos concluir en que la complejidad de la solución es: **O(P * (log(P)) + T * O(P) = O(P log(P)) + O(T * P)**.
+    Tomando como T a la cantidad de tipos de productos distintos, como se depende de cantidad de tipos y de la cantidad de productos en los paquetes, podemos concluir en que la complejidad de la solución es: **O(P * (log(P)) + T * O(P) = O(T * P log(P)) + O(T * P)**.
+
+    O(T * P * log(P)) + o(T * P)
+    O(T * P * log(P) + T * P)
+    O(T * P * log(P))
+
 
     #### Algoritmo Greedy 2
 
@@ -151,7 +156,6 @@ Luego, ordenar la lista de manera decreciente nos brinda una complejidad de O(E 
 Luego, iterar sobre los productos y aplicar la regla nos da una complejidad de O(E), dado que en el peor de los casos habra que iterar sobre todos los productos.
 
 Ingorando la idea de que tenemos que repetir esto por todos los sobornos, tenemos hasta aqui una complejidad de O(E) + O(E * log(E)) + O(E), lo cual es lo mismo que decir O(E * log(E)). Ahora, sabiendo que tenemos que repetirlo por todos los sobornos, nuestra complejidad final del algoritmo sera de **O(P * E * log(E))**.
-
 
 
 #### Algoritmo por Programación Dinámica
