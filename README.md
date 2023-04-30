@@ -157,6 +157,15 @@ Luego, iterar sobre los productos y aplicar la regla nos da una complejidad de O
 
 Ingorando la idea de que tenemos que repetir esto por todos los sobornos, tenemos hasta aqui una complejidad de O(E) + O(E * log(E)) + O(E), lo cual es lo mismo que decir O(E * log(E)). Ahora, sabiendo que tenemos que repetirlo por todos los sobornos, nuestra complejidad final del algoritmo sera de **O(P * E * log(E))**.
 
+Este algoritmo presenta algunos problemas, dado que no siempre devolvera el resultado optimo. Por ejemplo:
+
+[20, 20, 18, 17, 11, 11, 11, 8, 3, 3]; nos piden un soborno de 62 productos.
+
+Dado que contamos con 122 productos en total, luego del soborno solo podremos quedarnos con 60 productos como mucho. El algoritmo guardara los paquetes 20, 20 y 18, quedando un espacio para dos productos mas. Pero no hay ningun paquete que contenga menos de 3 productos, por lo que ese sera el resultado de algoritmo. Basta observar el arreglo de paquetes para darnos cuenta que agarrando los paquetes 11, 11, 18 y 20 podemos quedarnos con 60 productos y ceder los 62 impuestos por la aduana.
+
+En general, cuando en algun punto del algoritmo nos encontremos con que (teniendo el arreglo ordenado de mayor a menor), habiendo guardado los paquetes [x1, x2, ..., xk], ninguno de los paquetes [xk+1, xk+2, ... xn] pueden entrar en la mochila, aun existe la posibilidad de que entre los paquetes [xk+1, xk+2, ... xn] haya una combinacion de paquetes sea mas optima que la obtenida en [x1, x2, ..., xk].
+
+
 
 #### Algoritmo por Programación Dinámica
 

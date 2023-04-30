@@ -55,4 +55,3 @@ def mochila_dp(elementos: list, W: int):
         e -= 1 # O(1)
 
     return mochila
-        
