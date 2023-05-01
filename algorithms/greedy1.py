@@ -6,9 +6,9 @@ def obtener_soborno(cantidades_disponibles, cantidad_solicitada):
     paquetes_acum = []
     acum = 0
 
-    cantidades_disponibles.sort() # O(n log(n))
+    cantidades_disponibles.sort() # O(E log(E))
 
-    for cantidad in cantidades_disponibles: # O(n)
+    for cantidad in cantidades_disponibles: # O(E)
         if cantidad >= cantidad_solicitada:
             return [cantidad]
         acum += cantidad
@@ -18,13 +18,13 @@ def obtener_soborno(cantidades_disponibles, cantidad_solicitada):
 
     return []
 
-def greedy1(paquetes, pedido): # O(n * m * log(m))
+def greedy1(paquetes, pedido): # O(P * E * log(E))
     """
     paquetes = {'Cigarrillos': [1, 1, 2, 4, 8], 'Vodka': [1, 3, 5, 15]}
     pedido = {'Vodka': 6, 'Cigarrillos': 6}
     """
     sobornos_disponibles = {}
-    for producto in paquetes: # O(m)
-        soborno_disponible = obtener_soborno(paquetes[producto], pedido[producto]) # O(n * log(n))
+    for producto in paquetes: # O(P)
+        soborno_disponible = obtener_soborno(paquetes[producto], pedido[producto]) # O(E * log(E))
         sobornos_disponibles[producto] = soborno_disponible
     return sobornos_disponibles
