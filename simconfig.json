@@ -1,9 +1,8 @@
 {
     "start": 1,
-    "stop": 10001,
-    "step": 100,
-    "var": "E",
-    "do_greedy_ours": false,
+    "stop": 5001,
+    "step": 1,
+    "var": "random",
     "do_greedy_knapsack": true,
     "do_dp_knapsack": true
 }

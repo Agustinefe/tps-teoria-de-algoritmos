@@ -1,11 +1,9 @@
 import datetime
 import json, time
-from algorithms.greedy1 import greedy1
 from algorithms.mochila import *
 from contrabando import pasar_aduana
-from generador import cantidad_obtenida_es_correcta, generar_paquetes, generar_multiples_paquetes, generate_packets_and_briberies
+from generador import generate_packets_and_briberies2
 from copy import deepcopy
-import random as rnd
 import sys
 
 
@@ -18,9 +16,6 @@ def dp_knapsack(packets, briberies):
 def greedy_knapsack(packets, briberies):
     return pasar_aduana(packets, briberies, mochila_greedy)
 
-def greedy_ours(packets, briberies):
-    return greedy1(packets, briberies)
-
 def execute(packets, briberies, algorithm):
     start = time.time()
     solution = algorithm(packets, briberies)
@@ -32,17 +27,12 @@ def execute(packets, briberies, algorithm):
 def simulate_E_variation(config):
 
     res = {}
-    if config["do_greedy_ours"]: res["greedy_ours"] = {}
     if config["do_greedy_knapsack"]: res["greedy_knapsack"] = {}
     if config["do_dp_knapsack"]: res["dp_knapsack"] = {}
 
     for e in range(config['start'], config['stop'], config['step']):
         w = 10*e
-        packets, briberies = generate_packets_and_briberies(P_global, e, w, B=w-100)
-
-        if "greedy_ours" in res.keys():
-            res["greedy_ours"][str(e)] = execute(deepcopy(packets), briberies, greedy_ours)
-            print(f'\tFinished iteration {e} for greedy_ours in time {res["greedy_ours"][str(e)][0]}')
+        packets, briberies = generate_packets_and_briberies2(P_global, e, w, B=w-100)
 
         if "greedy_knapsack" in res.keys():
             res["greedy_knapsack"][str(e)] = execute(deepcopy(packets), briberies, greedy_knapsack)
@@ -59,17 +49,12 @@ def simulate_E_variation(config):
 def simulate_W_variation(config):
     
     res = {}
-    if config["do_greedy_ours"]: res["greedy_ours"] = {}
     if config["do_greedy_knapsack"]: res["greedy_knapsack"] = {}
     if config["do_dp_knapsack"]: res["dp_knapsack"] = {}
 
     for w in range(config['start'], config['stop'], config['step']):
 
-        packets, briberies = generate_packets_and_briberies(P_global, 10, 2*w, B=1)
-
-        if "greedy_ours" in res.keys():
-            res["greedy_ours"][str(w)] = execute(deepcopy(packets), briberies, greedy_ours)
-            print(f'\tFinished iteration {w} for greedy_ours in time {res["greedy_ours"][str(w)][0]}')
+        packets, briberies = generate_packets_and_briberies2(P_global, 10, 2*w, B=1)
 
         if "greedy_knapsack" in res.keys():
             res["greedy_knapsack"][str(w)] = execute(deepcopy(packets), briberies, greedy_knapsack)
@@ -111,18 +96,12 @@ def simulate_from_config():
 
 def simulate_sample(samples):
     res = {}
-    if samples["config"]["do_greedy_ours"]: res["greedy_ours"] = {}
     if samples["config"]["do_greedy_knapsack"]: res["greedy_knapsack"] = {}
     if samples["config"]["do_dp_knapsack"]: res["dp_knapsack"] = {}
 
     sequence = range(samples["config"]["start"], samples["config"]["stop"], samples["config"]["step"])
 
     for sample, w in zip(samples["sample"], sequence):
-
-        if "greedy_ours" in res.keys():
-            res["greedy_ours"][str(w)] = execute(deepcopy(sample["packets"]), sample["briberies"], greedy_ours)
-            print(f'\tFinished iteration {w} for greedy_ours in time {res["greedy_ours"][str(w)][0]}')
-
         if "greedy_knapsack" in res.keys():
             res["greedy_knapsack"][str(w)] = execute(deepcopy(sample["packets"]), sample["briberies"], greedy_knapsack)
             print(f'\tFinished iteration {w} for greedy_knapsack in time {res["greedy_knapsack"][str(w)][0]}')

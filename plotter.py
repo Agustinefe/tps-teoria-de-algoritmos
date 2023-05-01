@@ -22,18 +22,21 @@ def plot_greedys_best_result(ours, knapsack):
     plt.title("Comparacion de resultados de Greedys")
     plt.show()
 
-def get_greedy_accuracy(greedy, dp):
+def get_greedy_accuracy(greedy, dp, filepath):
     is_optimal = 0
     total = len(greedy.keys())
 
     for k, v in greedy.items():
         if sum(dp[k][1]["0"]) == sum(greedy[k][1]["0"]):
             is_optimal += 1
-            print(str(is_optimal))
+    stats = {"Greedy": is_optimal, "PD": total}
+    plt.bar(stats.keys(), stats.values(), color ='maroon', width = 0.4)
 
-    print(str(total))
-    print(str(is_optimal / len(greedy)))
-
+    plt.xlabel("Algoritmos")
+    plt.ylabel("Cantidad de soluciones óptimas")
+    plt.title("Optimalidad de Greedy")
+    save_plot(get_filename(filepath), "barplot")
+    plt.show()
 
 
 def plot_execution_time(results, filepath):
@@ -74,13 +77,11 @@ def main():
     with open(filepath, 'r') as json_file:
         results = json.load(json_file)
 
-    # Ploteo
-    plot_execution_time(results, filepath)
-   
-    if "greedy_ours" in results["results"].keys() and "greedy_knapsack" in results["results"].keys():
-        plot_greedys_best_result(results["results"]["greedy_ours"], results["results"]["greedy_knapsack"])
+    if results["config"]["var"] == "random":
+        get_greedy_accuracy(results["results"]["greedy_knapsack"], results["results"]["dp_knapsack"], filepath)
+        return
 
-    if "dp_knapsack" in results["results"].keys():
-        get_greedy_accuracy(results["results"]["greedy_knapsack"], results["results"]["dp_knapsack"])
+    # Plotteo
+    plot_execution_time(results, filepath)
 
 main()
