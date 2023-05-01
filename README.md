@@ -115,25 +115,21 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
 
     En esta sección volveremos a hacer uso de las propiedades que nos permitieron analizar el K-merge con D&C a partir de evaluar por separado los componentes de la complejidad del algoritmo. Recordemos, como se explicó detalladamente en el punto 2), la complejidad del K-merge con heaps es de O(h * k * log(K)). Para ello, primero deduzcamos qué sucede al fijar el valor de cada variable para este caso.
     
-    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes. A pesar de esto, y con fines de simplemente identificar el componente con complejidad O(K * log(K)), lo denominaremos "parte *pseudo heapsort*" del algoritmo.
+    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes.
     
-    ### Análisis de la parte *(pseudo) heapsort* del algoritmo
+    ### Análisis del algoritmo con heaps variando k
     
     Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 10.000.000, intervalos de 1.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
-    
-    Variación de K - Ejecución 1
     
     ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
     
     Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, incluso notamos algunas curvas más pronunciadas a pesar de que haya una tendencia a la linealidad. Por lo que decidimos analizar múltiples ejecuciones y todas presentaban estas leves curvas. Nuevamente, acudamos al gráfico de pendientes para comprender qué está sucediendo realmente.
-   
-    Diff variación de K - Ejecución
     
-    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
+    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/diff.png "2023-04-26_13-26-20/diff.png")
       
     Como sucedió previamente, aunque con mayor variación entre las ejecuciones, encontramos un comportamiento errático pero, sin embargo, en un rango pequeño, donde las variaciones siempre sucedieron con un máximo de 6 segundos, por lo que, debido a que realizamos múltiples ejecuciones y la mayoría presentaban este comportamiento errático pero de algún modo con mayor tendencia positiva (aunque no lo es estrictamente), deducimos una complejidad logarítmica. Creemos que este compartamiento no es propio del algoritmo en sí, sino que se relaciona a características de la computadora en que se realizaron las ejecuciones, ya que procesos en segundo plano del SO pueden fácilmente afectarlas (incluso comprobamos que simplemente mover el mouse al momento de realizar las simulaciones las afectaba de forma significativa).
       
-    ### Análisis del algoritmo variando h
+    ### Análisis del algoritmo con heaps variando h
     
     Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
     
