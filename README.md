@@ -23,7 +23,23 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
 1. Describir e implementar un algoritmo greedy que, dado un input con los productos que se tienen, y lo pedido como soborno, nos permita salir airosos de la situación, con la mayor cantidad de productos posibles. Justificar por qué el algoritmo es, efectivamente, greedy. Considerar que siempre se nos pedirá una cantidad de productos en existencias (en nuestro ejemplo anterior, no nos habrían pedido que dejemos 7 botellas de vodka radioactivo, ni tampoco mandarinas del Sahara).
 
-    Para este problema se implementaron dos soluciones posibles utilizando algoritmos greedy, a continuación se detallará cada implementación pero, primero, explicitaremos el formato del input que se eligió para modelar el problema.
+#### Planteo: el problema del contrabando y su relación con el problema de la mochila
+
+El problema del contrabando plantea una situación donde un contrabandista debe pasar una cantidad de paquetes de mercaderia a traves de una Aduana, donde se nos demandara un soborno de una cantidad arbitraria de algunos (o todos) los productos que pasemos.
+
+Habiendo presentado un poco de contexto, replanteemos el problema desde otro angulo: 
+1) Un contrabandista lleva una mochila para cada **producto i** que posee, de **capacidad Xi**, donde cada una de las mochilas se encuentra llena en su capacidad.
+2) Al pasar por la Aduana, el funcionario nos dira que, para cada producto i que llevamos, solo podremos llevarnos a Krakovia, como maximo, una cantidad **Xi - Si**, donde Si es el soborno que debemos pagarle al funcionario (si para cierto producto j no hay demanda de soborno, entonces Sj = 0). Esto es lo mismo que decir que la capacidad de nuestras mochilas i se reduce a Xi - Si.
+3) Para cada producto i, teniendo una cantidad de paquetes que en total suman Xi productos, y una mochila i de capacidad Xi - Si, nuestro objetivo sera maximizar el valor que podemos almacenar en la mochila. En este caso, dado que cada paquete contiene una cantidad arbitraria **del mismo producto**, podemos asumir que su valor es exactamente igual a su peso o cantidad de espacio que ocupa en la mochila.
+
+Esto nos permite concluir que estamos ante una versión del problema de la mochila. De esto, podemos deducir algunas conclusiones:
+- Debemos calcular el problema de la mochila para cada producto que este incluido en la demanda de sobornos. Esto nos permite anticipar el problema de la mochila tendra una complejidad de **O(P * O(algoritmo_mochila))** (a no ser que alguna operacion imprevista en el algoritmo para el problema del contrabando supere esta complejidad).
+- Dado que la capacidad de la mochila sera Xi - Si, primero debemos calcular Xi, que sera la suma de todos los pesos de los paquetes traidos de Genovia. Esta operacion es **O(n)**.
+- A diferencia del problema de K-merge planteado en el ejercicio anterior, aqui, la cantidad de paquetes (independientemente de la cantidad de contenido que tengan), no sera la misma para cada uno de los productos. Debemos tener esto en cuenta a la hora de realizar simulaciones.
+
+    #### Implementación
+
+    ##### Formato del input
 
     La mercadería compuesta por distintos tipos de productos con, a su vez, múltiples paquetes de distintas cantidades se modelará con un diccionario de la siguiente forma:
 
@@ -37,33 +53,7 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
     {'Vodka': 6, 'Cigarrillos': 6}
     ```
 
-    #### Algoritmo Greedy I
-
-    Este primer algoritmo, dado el input especificado previamente, devuelve un diccionario cuyas claves serán los productos solicitados para el soborno y sus valores listados con cantidades a entregar para cumplir con el soborno. Consiste en los siguientes pasos.
-
-
-
-    Para cada uno de los productos que piden soborno:
-
-      1. Ordenar su lista de paquetes en forma ascendente.
-      2. Para cada una de las cantidades disponibles:
-          1. Si la cantidad es mayor o igual a la solicitada:
-              1. Devolver una lista con esa cantidad.
-          2. Si no, guardar esa cantidad en una lista de cantidades acumuladas.
-          3. Si la acumulación alcanza el monto del soborno solicitado:
-              1. Devolver la lista de cantidades acumuladas.
-
-
-    Como se menciona, en cada iteración por las cantidades disponibles se selecciona la primera que sirve en el momento (en otras palabras, se toma la decisión *óptima local*). Como el arreglo de cantidades está ordenado, se van acumulando cantidades, si se alcanzara el monto pedido se seleccionaría a esas cantidades como solución pero si se encontrara una cantidad que ya de por sí sola cumpliera, se retornaría esa y no la acumulación. Esto implica que con determinadas cantidades disponibles no se obtenga la solución óptima, ya que en un caso como el siguiente el algoritmo retornaría: [1, 1, 2] y no la solución óptima que sería: [1, 2].
-
-    ```
-    cantidades_disponibles = {'Vodka': [1, 1, 2], ...}
-    cantidad_solicitada = 3
-    ```
-
-    #### Algoritmo Greedy 2
-
-    El siguiente algoritmo consta de los siguientes pasos:
+    #### Algoritmo
 
     Para cada uno de los productos que piden soborno:
     1. Calcular la suma de todos los productos en todos los paquetes, y restarles la cantidad a dar de soborno (llamemos W a este valor).
@@ -154,7 +144,7 @@ def mochila_dp(elementos: list, W: int):
 
 3. Indicar y justificar la complejidad de ambos algoritmos propuestos. Indicar casos (características y ejemplos) de deficiencias en el algoritmo greedy propuesto, para los cuales este no obtenga una solución óptima. 
 
-#### Algoritmo Greedy 2
+#### Algoritmo Greedy
 
 Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
 
@@ -166,21 +156,25 @@ Luego, iterar sobre los productos y aplicar la regla nos da una complejidad de O
 
 Ingorando la idea de que tenemos que repetir esto por todos los sobornos, tenemos hasta aqui una complejidad de O(E) + O(E * log(E)) + O(E), lo cual es lo mismo que decir O(E * log(E)). Ahora, sabiendo que tenemos que repetirlo por todos los sobornos, nuestra complejidad final del algoritmo sera de **O(P * E * log(E))**.
 
-Este algoritmo presenta algunos problemas, dado que no siempre devolvera el resultado optimo. Por ejemplo:
+Este algoritmo presenta algunos problemas, dado que no siempre devolvera el resultado optimo.
 
-[20, 20, 18, 17, 11, 11, 11, 8, 3, 3]; nos piden un soborno de 62 productos.
+Por ejemplo:
+
+```
+paquetes: [20, 20, 18, 17, 11, 11, 11, 8, 3, 3]
+soborno: 62 productos
+```
 
 Dado que contamos con 122 productos en total, luego del soborno solo podremos quedarnos con 60 productos como mucho. El algoritmo guardara los paquetes 20, 20 y 18, quedando un espacio para dos productos mas. Pero no hay ningun paquete que contenga menos de 3 productos, por lo que ese sera el resultado de algoritmo. Basta observar el arreglo de paquetes para darnos cuenta que agarrando los paquetes 11, 11, 18 y 20 podemos quedarnos con 60 productos y ceder los 62 impuestos por la aduana.
 
 En general, cuando en algun punto del algoritmo nos encontremos con que (teniendo el arreglo ordenado de mayor a menor), habiendo guardado los paquetes [x1, x2, ..., xk], ninguno de los paquetes [xk+1, xk+2, ... xn] pueden entrar en la mochila, aun existe la posibilidad de que entre los paquetes [xk+1, xk+2, ... xn] haya una combinacion de paquetes sea mas optima que la obtenida en [x1, x2, ..., xk].
 
 
-
 #### Algoritmo por Programación Dinámica
 
 Dado que debemos iterar sobre todos los sobornos posibles, y como maximo podemos tener una peticion de soborno por todos los productos, tenemos un proceso que se repetirar como mucho P veces (siendo P la cantidad total de tipos de productos que tenemos), dandonos una complejidad O(P).
 
-Por otra parte, para obtener la capacidad W de la nueva mochila debemos sumar todos sus elementos, lo cual nos cuesta O(E), y restarle el soborno S. W, como mucho, valdra sum(E), si S es 0.
+Por otra parte, para obtener la capacidad W de la nueva mochila debemos sumar todos sus elementos, lo cual nos cuesta O(E), y restarle el soborno S. W, como mucho, valdrá sum(E), si S es 0.
 
 Tanto para crear la matriz OPT como para llenarla, la cantidad de operaciones dependen de la longitud del vector E y de la capacidad de la mochila W. Estas operaciones tienen una complejidad de O(E * W).
 
@@ -193,17 +187,3 @@ Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algorit
 4. Implementar un programa que utilice ambos algoritmos, realizar mediciones y presentar resultados comparativos de ambas soluciones, en lo que refiere a su optimalidad de la solución (no de su complejidad). Incluir en la entrega del tp los sets de datos utilizados para estas simulaciones (que deben estar explicados en el informe). Estos deben incluir al menos una prueba de volumen, indicando cómo es que fueron generadas.
 
 ---
-
-#### El problema del contrabando y su relación con el problema de la mochila
-
-El problema del contrabando plantea una situación donde un contrabandista debe pasar una cantidad de paquetes de mercaderia a traves de una Aduana, donde se nos demandara un soborno de una cantidad arbitraria de algunos (o todos) los productos que pasemos.
-
-Habiendo presentado un poco de contexto, replanteemos el problema desde otro angulo: 
-1) Un contrabandista lleva una mochila para cada **producto i** que posee, de **capacidad Xi**, donde cada una de las mochilas se encuentra llena en su capacidad.
-2) Al pasar por la Aduana, el funcionario nos dira que, para cada producto i que llevamos, solo podremos llevarnos a Krakovia, como maximo, una cantidad **Xi - Si**, donde Si es el soborno que debemos pagarle al funcionario (si para cierto producto j no hay demanda de soborno, entonces Sj = 0). Esto es lo mismo que decir que la capacidad de nuestras mochilas i se reduce a Xi - Si.
-3) Para cada producto i, teniendo una cantidad de paquetes que en total suman Xi productos, y una mochila i de capacidad Xi - Si, nuestro objetivo sera maximizar el valor que podemos almacenar en la mochila. En este caso, dado que cada paquete contiene una cantidad arbitraria **del mismo producto**, podemos asumir que su valor es exactamente igual a su peso o cantidad de espacio que ocupa en la mochila.
-
-Esto nos permite concluir que estamos ante una versión del problema de la mochila. De esto, podemos deducir algunas conclusiones:
-- Debemos calcular el problema de la mochila para cada producto que este incluido en la demanda de sobornos. Esto nos permite anticipar el problema de la mochila tendra una complejidad de **O(P * O(algoritmo_mochila))** (a no ser que alguna operacion imprevista en el algoritmo para el problema del contrabando supere esta complejidad).
-- Dado que la capacidad de la mochila sera Xi - Si, primero debemos calcular Xi, que sera la suma de todos los pesos de los paquetes traidos de Genovia. Esta operacion es **O(n)**.
-- A diferencia del problema de K-merge planteado en el ejercicio anterior, aqui, la cantidad de paquetes (independientemente de la cantidad de contenido que tengan), no sera la misma para cada uno de los productos. Debemos tener esto en cuenta a la hora de realizar simulaciones.
