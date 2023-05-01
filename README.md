@@ -52,7 +52,7 @@ Los nombres de los resultados corresponden a la hora en la que finalizó su simu
 
 ```python3 complexity-check.py [results\example.json]```
 
-Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README lee imágenes de la carpeta *plot*.
+Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README* lee imágenes de la carpeta *plot*.
 
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
 
@@ -122,20 +122,16 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
     Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 10.000.000, intervalos de 1.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
     Variación de K - Ejecución 1
-    ![Heap var-K plot (2)](plots/2023-04-26_13-17-58/plot.png "2023-04-26_13-17-58/plot.png")
     
-    Variación de K - Ejecución 2
     ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
     
-    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, incluso notamos algunas curvas más pronunciadas a pesar de que haya una tendencia a la linealidad. Nuevamente, acudamos al gráfico de pendientes para comprender qué está sucediendo realmente.
+    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, incluso notamos algunas curvas más pronunciadas a pesar de que haya una tendencia a la linealidad. Por lo que decidimos analizar múltiples ejecuciones y todas presentaban estas leves curvas. Nuevamente, acudamos al gráfico de pendientes para comprender qué está sucediendo realmente.
    
     Diff variación de K - Ejecución
-    ![Heap var-K plot (2)](plots/2023-04-26_13-17-58/plot.png "2023-04-26_13-17-58/plot.png")
-
-    Diff variación de K - Ejecución 2
+    
     ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
       
-    Conclusión. #TODO
+    Como sucedió previamente, aunque con mayor variación entre las ejecuciones, encontramos un comportamiento errático pero, sin embargo, en un rango pequeño, donde las variaciones siempre sucedieron con un máximo de 6 segundos, por lo que, debido a que realizamos múltiples ejecuciones y la mayoría presentaban este comportamiento errático pero de algún modo con mayor tendencia positiva (aunque no lo es estrictamente), deducimos una complejidad logarítmica. Creemos que este compartamiento no es propio del algoritmo en sí, sino que se relaciona a características de la computadora en que se realizaron las ejecuciones, ya que procesos en segundo plano del SO pueden fácilmente afectarlas (incluso comprobamos que simplemente mover el mouse al momento de realizar las simulaciones las afectaba de forma significativa).
       
     ### Análisis del algoritmo variando h
     
