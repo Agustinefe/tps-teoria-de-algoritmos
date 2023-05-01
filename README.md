@@ -39,18 +39,27 @@ Ante la imposibilidad de abrir y/o separar los paquetes, es claro que en dicho c
 
     #### Algoritmo Greedy I
 
-    El primer algoritmo consiste en dos pasos:
+    Este primer algoritmo, dado el input especificado previamente, devuelve un diccionario cuyas claves serán los productos solicitados para el soborno y sus valores listados con cantidades a entregar para cumplir con el soborno. Consiste en los siguientes pasos.
 
-    1. Ordenar cada lista de paquetes (para cada producto), lo cual en este caso es realizado utilizando el método *built-in* sort() de Python, que nos asegura realizar el ordenamiento con complejidad O(P * (log(P)), donde P es la cantidad total de todos los elementos a ordenar (siendo que tanto la cantidad de tipos de productos como la cantidad de paquetes por producto puede variar). Esto se realiza en la función **ordenar_paquetes_por_producto**.
 
-    2. Para cada uno de los productos se iterará por su lista asociada (y ahora ordenada) de cantidades por paquete para buscar el paquete que cumpla con el soborno solicitado. Esta búsqueda se realiza de comienzo a fin, acumulando las cantidades hasta alcanzar la suma requerida o hasta encontrar un paquete cuya cantidad ya sea suficiente (con solo ese paquete) para cumplir con el soborno. Como la búsqueda se realiza de comienzo a fin del arreglo, la complejidad de esta búsqueda es lineal, y considerando que se realizará esto para las listas de paquetes de cada uno de los productos, podemos decir que la complejidad de este paso es de O(P). Esto puede verse en la función **obtener_soborno**.
 
-    Tomando como T a la cantidad de tipos de productos distintos, como se depende de cantidad de tipos y de la cantidad de productos en los paquetes, podemos concluir en que la complejidad de la solución es: **O(P * (log(P)) + T * O(P) = O(T * P log(P)) + O(T * P)**.
+    Para cada uno de los productos que piden soborno:
 
-    O(T * P * log(P)) + o(T * P)
-    O(T * P * log(P) + T * P)
-    O(T * P * log(P))
+      1. Ordenar su lista de paquetes en forma ascendente.
+      2. Para cada una de las cantidades disponibles:
+          1. Si la cantidad es mayor o igual a la solicitada:
+              1. Devolver una lista con esa cantidad.
+          2. Si no, guardar esa cantidad en una lista de cantidades acumuladas.
+          3. Si la acumulación alcanza el monto del soborno solicitado:
+              1. Devolver la lista de cantidades acumuladas.
 
+
+    Como se menciona, en cada iteración por las cantidades disponibles se selecciona la primera que sirve en el momento (en otras palabras, se toma la decisión *óptima local*). Como el arreglo de cantidades está ordenado, se van acumulando cantidades, si se alcanzara el monto pedido se seleccionaría a esas cantidades como solución pero si se encontrara una cantidad que ya de por sí sola cumpliera, se retornaría esa y no la acumulación. Esto implica que con determinadas cantidades disponibles no se obtenga la solución óptima, ya que en un caso como el siguiente el algoritmo retornaría: [1, 1, 2] y no la solución óptima que sería: [1, 2].
+
+    ```
+    cantidades_disponibles = {'Vodka': [1, 1, 2], ...}
+    cantidad_solicitada = 3
+    ```
 
     #### Algoritmo Greedy 2
 
