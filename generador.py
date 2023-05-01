@@ -1,4 +1,6 @@
+import json
 import random
+import time
 
 def cantidad_obtenida_es_correcta(paquetes, cantidad_esperada):
     return sum(sum(cantidades) for cantidades in paquetes.values()) == cantidad_esperada
@@ -42,10 +44,13 @@ def generar_multiples_paquetes(productos, cantidad_maxima, n):
         listado_de_paquetes.append((paquetes,sobornos_solicitados))
     return listado_de_paquetes
 
-def generate_elements_sample(E, W):
-    sample = [1] * E     
-    for i in range(E, W) : sample[random.randint(0, E-1)] += 1
-    return sample
+def generate_elements_sample(E, W=None):
+    if W:
+        sample = [1] * E     
+        for i in range(E, W) : sample[random.randint(0, E-1)] += 1
+        return sample
+    else:
+        return [random.randint(1, 1000) for _ in range(E)]
 
 def generate_bribery(W):
     return random.randint(0, W)
@@ -55,7 +60,7 @@ def generate_packets_and_briberies(P, E, W, B=None, same_E=True, same_W=True):
     P: amount of distinct products
     E: max amount of packets, for each product
     W: max amount of individual products (or what sum(E) should be), for each product
-    B: amount of bribery, for each product (if None, then bribery is random)
+    B: amount of bribery, for each product (if None, then bribery is random). Must be lower than W.
     """
     products = [str(p) for p in range(P)]
     packets = {}
@@ -72,8 +77,79 @@ def generate_packets_and_briberies(P, E, W, B=None, same_E=True, same_W=True):
 
     return packets, briberies
 
+def generate_elements_sample2(E=None, W=None):
+
+    if W and E:
+        sample = [1] * E     
+        for i in range(E, W) : sample[random.randint(0, E-1)] += 1
+        return sample
+
+    if W:
+        sample = [1] * 10   
+        for _ in range(10, W) : sample[random.randint(0, 9)] += 1
+        return sample
+    
+    return [random.randint(1, 1000) for _ in range(E)]
+
+def generate_packets_and_briberies2(P, E, W):
+    """
+    P: amount of distinct products
+    E: max amount of packets, for each product
+    W: max amount of individual products (or what sum(E) should be), for each product
+    B: amount of bribery, for each product (if None, then bribery is random). Must be lower than W.
+    """
+    products = [str(p) for p in range(P)]
+    packets = {}
+    briberies = {}
+
+    for product in products:
+
+        packets[product] = [random.randint(1, 1000) for _ in range(E)]
+        tot_e = sum(packets[product])
+        bribery = tot_e - W
+        if bribery > 0:
+            briberies[product] = bribery
+
+    return packets, briberies
+
+def generate_E_sample(sequence):
+    samples = []
+
+    for e in sequence:
+        packets, briberies = generate_packets_and_briberies2(1, e, 100)
+        samples.append({"packets": packets, "briberies": briberies})
+
+    return samples
+
+def generate_W_sample(sequence):
+    samples = []
+    for w in sequence:
+        packets, briberies = generate_packets_and_briberies2(1, 100, w)
+        samples.append({"packets": packets, "briberies": briberies})
+
+    return samples
+
+
 def main():
-    print(generate_packets_and_briberies(3, 5, 5))
+    # Configuracion de la simulacion
+    with open("simconfig.json", "r") as config_file:
+        config = json.load(config_file)
+
+    sample = {}
+    sample["config"] = config
+
+    generator = eval(f"generate_{config['var']}_sample")
+    sample["sample"] = generator(range(config["start"], config["stop"], config["step"]))
+
+    # Stringificacion del json
+    json_dump_sample = json.dumps(sample, indent=4)
+
+    # Escritura del json
+    filename = time.strftime("%Y-%m-%d_%H-%M-%S")
+    with open(f'samples/{filename}.json', 'w+') as file:
+        file.write(json_dump_sample)
+    
+
 
 if __name__ == "__main__":
     main()
