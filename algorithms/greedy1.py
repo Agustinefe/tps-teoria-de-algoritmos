@@ -1,41 +1,30 @@
-def obtener_paquetes_disponibles_para_sobornar(cantidades_disponibles, cantidad_solicitada):
+def obtener_soborno(cantidades_disponibles, cantidad_solicitada):
     """
     cantidades_disponibles es una lista ordenada, ej. [1, 2, 5, 7, 10]
     cantidad_solicitada es un entero positivo, ej. 6
     """
     paquetes_acum = []
     acum = 0
-    for cantidad in cantidades_disponibles:
+
+    cantidades_disponibles.sort() # O(n log(n))
+
+    for cantidad in cantidades_disponibles: # O(n)
         if cantidad >= cantidad_solicitada:
-            return cantidad
+            return [cantidad]
         acum += cantidad
         paquetes_acum.append(cantidad)
         if acum >= cantidad_solicitada:
             return paquetes_acum
-    return "❌" 
 
-def obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados):
+    return []
+
+def greedy1(paquetes, pedido): # O(n * m * log(m))
     """
-    paquetes_por_producto es un diccionario,
-    ej. {'Cigarrillos': [1, 1, 2, 4, 8], 'Vodka': [1, 3, 5, 15]}
-    sobornos_solicitados es un diccionario, ej. {'Vodka': 6, 'Cigarrillos': 6}
+    paquetes = {'Cigarrillos': [1, 1, 2, 4, 8], 'Vodka': [1, 3, 5, 15]}
+    pedido = {'Vodka': 6, 'Cigarrillos': 6}
     """
     sobornos_disponibles = {}
-    for producto in paquetes_por_producto_ordenados:
-        soborno_disponible = obtener_paquetes_disponibles_para_sobornar(paquetes_por_producto_ordenados[producto], sobornos_solicitados[producto])
+    for producto in paquetes: # O(m)
+        soborno_disponible = obtener_soborno(paquetes[producto], pedido[producto]) # O(n * log(n))
         sobornos_disponibles[producto] = soborno_disponible
-    return sobornos_disponibles
-
-def ordenar_paquetes_por_producto(paquetes_por_producto):
-    """
-    paquetes_por_producto es un diccionario,
-    ej. {'Cigarrillos': [11, 1, 6, 4, 8], 'Vodka': [10, 3, 1, 15]}
-    """
-    for producto in paquetes_por_producto:
-        paquetes_por_producto[producto].sort() # in place
-    return paquetes_por_producto
-
-def solucion(paquetes, sobornos_solicitados):
-    paquetes_por_producto_ordenados = ordenar_paquetes_por_producto(paquetes) # O(P * E * log(E))
-    sobornos_disponibles = obtener_soborno(paquetes_por_producto_ordenados, sobornos_solicitados)
     return sobornos_disponibles
