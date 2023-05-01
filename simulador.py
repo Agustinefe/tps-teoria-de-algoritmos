@@ -3,8 +3,9 @@ import json, time
 from algorithms.greedy1 import solucion
 from algorithms.mochila import *
 from contrabando import pasar_aduana
-from generador import cantidad_obtenida_es_correcta, generar_paquetes, generar_multiples_paquetes, generate_packets_and_briberies, fast_generator
+from generador import cantidad_obtenida_es_correcta, generar_paquetes, generar_multiples_paquetes, generate_packets_and_briberies
 from copy import deepcopy
+import random as rnd
 
 P_global = 1
 
@@ -57,8 +58,8 @@ def simulate_E_variation(config):
     if config["do_dp_knapsack"]: res["dp_knapsack"] = {}
 
     for e in range(config['start'], config['stop'], config['step']):
-        w = 3*e
-        packets, briberies = generate_packets_and_briberies(P_global, e, w, B=w-4)
+        w = 10*e
+        packets, briberies = generate_packets_and_briberies(P_global, e, w, B=w-100)
 
         if "greedy_ours" in res.keys():
             res["greedy_ours"][str(e)] = execute(deepcopy(packets), briberies, greedy_ours)

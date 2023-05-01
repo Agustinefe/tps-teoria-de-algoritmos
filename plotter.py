@@ -3,6 +3,39 @@ import numpy as np
 import sys, json, os
 import platform as pl
 
+def plot_greedys_best_result(ours, knapsack):
+    
+    best_result_ours = 0
+    best_result_knapsack = 0
+
+    for k, v in ours.items():
+        if v[1]["0"] > sum(knapsack[k][1]["0"]):
+            best_result_ours += 1
+        else:
+            best_result_knapsack += 1
+
+    stats = {"Greedy1": best_result_ours, "Greedy2": best_result_knapsack}
+    plt.bar(stats.keys(), stats.values(), color ='maroon', width = 0.4)
+
+    plt.xlabel("Algoritmos")
+    plt.ylabel("Veces en que dio un mejor resultado que el otro")
+    plt.title("Comparacion de resultados de Greedys")
+    plt.show()
+
+def get_greedy_accuracy(greedy, dp):
+    is_optimal = 0
+    total = len(greedy.keys())
+
+    for k, v in greedy.items():
+        if sum(dp[k][1]["0"]) == sum(greedy[k][1]["0"]):
+            is_optimal += 1
+            print(str(is_optimal))
+
+    print(str(total))
+    print(str(is_optimal / len(greedy)))
+
+
+
 def plot_execution_time(results, filepath):
     """
     Realiza un grafico del resultado de alguna simulacion
@@ -44,4 +77,10 @@ def main():
     # Ploteo
     plot_execution_time(results, filepath)
    
+    if "greedy_ours" in results["results"].keys() and "greedy_knapsack" in results["results"].keys():
+        plot_greedys_best_result(results["results"]["greedy_ours"], results["results"]["greedy_knapsack"])
+
+    if "dp_knapsack" in results["results"].keys():
+        get_greedy_accuracy(results["results"]["greedy_knapsack"], results["results"]["dp_knapsack"])
+
 main()

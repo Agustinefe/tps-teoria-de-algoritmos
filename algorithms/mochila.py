@@ -1,3 +1,5 @@
+import random as rnd
+
 # El valor de cada elemento es igual a su peso
 # Complejidad: O(E log(E))
 def mochila_greedy(elementos: list, W: int):
@@ -55,3 +57,21 @@ def mochila_dp(elementos: list, W: int):
         e -= 1 # O(1)
 
     return mochila
+
+
+"""
+is_optimal = 0
+
+for i in range(200):
+    e = [rnd.randint(0, 10000) for _ in range(rnd.randint(1, 10000))]
+    w = rnd.randint(0, 10000)
+
+    gr = mochila_greedy(e, w)
+    dp = mochila_dp(e, w)
+
+    if sum(gr) == sum(dp):
+        is_optimal += 1
+
+    print(str(is_optimal / (i+1)))
+"""
+
