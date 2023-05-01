@@ -31,9 +31,9 @@ intercalados ordenadamente, tal cual se realiza en mergesort.
     
     Por otra parte, partir el problema puede implementarse a traves de la actualizacion de indices que indiquen el inicio y final del subproblema, sin necesidad de realizar un slice sobre el problema original; esto puede realizarse en tiempo constante.
     
-    Por ultimo, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones tambien sera de O(n).
+    Por último, el problema indica que la junta de los subproblemas debe realizar mediante un algoritmo de intercalamiento, como el utilizado en mergesort. Esta junta (en mergesort) es O(n), y en este caso seria de manera similar. Sabiendo que n = K * h, el costo de juntar las subsoluciones también será de O(n).
     
-    Con esto en mente, nuestra ecuacion de recurrencia quedaria de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log2(K))
+    Con esto en mente, nuestra ecuación de recurrencia quedaría de la siguiente manera: T(n) = 2 * T(K/2) + O(n), y, por el Teorema Maestro, podemos afirmar que la complejidad del algoritmo propuesto es de O(n * log2(K)).
 
 
 ---
@@ -52,7 +52,7 @@ Los nombres de los resultados corresponden a la hora en la que finalizó su simu
 
 ```python3 complexity-check.py [results\example.json]```
 
-Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README lee imágenes de la carpeta *plot*.
+Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README* lee imágenes de la carpeta *plot*.
 
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
 
@@ -115,21 +115,21 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
 
     En esta sección volveremos a hacer uso de las propiedades que nos permitieron analizar el K-merge con D&C a partir de evaluar por separado los componentes de la complejidad del algoritmo. Recordemos, como se explicó detalladamente en el punto 2), la complejidad del K-merge con heaps es de O(h * k * log(K)). Para ello, primero deduzcamos qué sucede al fijar el valor de cada variable para este caso.
     
-    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes. A pesar de esto, y con fines de simplemente identificar el componente con complejidad O(K * log(K)), lo denominaremos "parte *pseudo heapsort*" del algoritmo.
+    Si la cantidad de elementos por arreglo (h) fuera uno (1), la complejidad del algoritmo sería O(K * log(K)), es decir, ya podríamos graficar en dos dimensiones. También podríamos animarnos a hacer un paralelismo (no tan literal como en el caso del K-merge con D&C, pero posible) con Heapsort, siendo éste un algoritmo que también utiliza un heap, del cual va desencolando para ir ordenando el arreglo inicial, lo que lo hace tener una complejidad de O(n * log(n)) donde n es la longitud del arreglo inicial. Sin embargo, esta comparación puede ser innecesaria, debido a que el input de Heapsort es un único arreglo, que es ordenado a partir de desencolar el heap e ir realizando swaps, mientras que K-merge con Heaps se encarga de a partir de múltiples arreglos mergearlos y devolver uno único, y si se tratara del caso en que h es igual a 1, entonces obtendríamos una complejidad de O(K * log(K)), lo cual es muy tentador para vincular ambos algoritmos incluso aunque tengan objetivos diferentes.
     
-    ### Análisis de la parte *(pseudo) heapsort* del algoritmo
+    ### Análisis del algoritmo con heaps variando k
     
-    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 20.000.000, intervalos de 2.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
+    Una vez más, considerando el caso de h = 1, realizaremos ejecuciones con las mismas características o parámetros que se utilizaron previamente para el análisis de la parte *merge* del K-merge con D&C (secuencia de 1 a 10.000.000, intervalos de 1.000.000, 10 evaluaciones, uso de mediana, etc.) y esperaremos obtener resultados similares a un K * log2(K).
     
-    ![Heap var-K plot (2)](plots/2023-04-23_23-33-06/plot.png "2023-04-23_23-33-06/plot.png")
+    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/plot.png "2023-04-26_13-26-20/plot.png")
+    
+    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, incluso notamos algunas curvas más pronunciadas a pesar de que haya una tendencia a la linealidad. Por lo que decidimos analizar múltiples ejecuciones y todas presentaban estas leves curvas. Nuevamente, acudamos al gráfico de pendientes para comprender qué está sucediendo realmente.
+    
+    ![Heap var-K plot (2)](plots/2023-04-26_13-26-20/diff.png "2023-04-26_13-26-20/diff.png")
       
-    Al igual que antes, el gráfico no nos permite afirmar que los resultados obtenidos se correspondan de alguna manera con una proporción lineal o logarítmica, es por eso que recurriremos nuevamente al gráfico de pendientes.
+    Como sucedió previamente, aunque con mayor variación entre las ejecuciones, encontramos un comportamiento errático pero, sin embargo, en un rango pequeño, donde las variaciones siempre sucedieron con un máximo de 6 segundos, por lo que, debido a que realizamos múltiples ejecuciones y la mayoría presentaban este comportamiento errático pero de algún modo con mayor tendencia positiva (aunque no lo es estrictamente), deducimos una complejidad logarítmica. Creemos que este compartamiento no es propio del algoritmo en sí, sino que se relaciona a características de la computadora en que se realizaron las ejecuciones, ya que procesos en segundo plano del SO pueden fácilmente afectarlas (incluso comprobamos que simplemente mover el mouse al momento de realizar las simulaciones las afectaba de forma significativa), esto sucedió en todas las ejecuciones ejecuciones que realizamos, como en los gráficos que se encuentran en ```plots/2023-04-26_14-32-45```.
       
-    [GRAFICO DIFF K-MERGE CON HEAPS VARIANDO K] #TODO
-      
-    Conclusión. #TODO
-      
-    ### Análisis del algoritmo variando h
+    ### Análisis del algoritmo con heaps variando h
     
     Como lo hicimos anteriormente, se buscará medir, con K = 2, de forma similar estimamos que la complejidad temporal deberá ser O(h) debido a que por el heap sí o sí pasan todos los elementos de cada uno de los arreglos, y si fijáramos la cantidad de K la única variable que aportaría a la complejidad es la longitud de cada arreglo (h). Otra vez, graficamos con los resultados de evaluar bajo los mismos parámetros que se eligieron para el K-merge con D&C fijando la variable K (secuencia de 1 a 10.000.001, intervalos de 1.000.000, 10 evaluaciones por muestra, uso de mediana con las muestras).
     
@@ -139,9 +139,7 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
     
     ![Heap var-h diff (2)](plots/2023-04-23_20-10-27/diff.png "2023-04-23_20-10-27/diff.png")
     
-    Como puede observarse, hasta la ejecución 7 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
-    
-    [Este gráfico debe reemplazarse tras una nueva ejecución y por ende la conclusion] #TODO
+    Como puede observarse, hasta la ejecución 7 notamos una (bastante) sutil variación en el eje Y, con diferencias de menos de 0.3 segundos. Otra vez identificamos esto como oscilaciones que en realidad tienen una tendencia a un valor constante, por lo que podríamos decir (si omitiéramos lo que sucede desde la ejecución 5, que podría ser considerado como ruido relacionado a los motivos que mencionamos en el análisis de la variación de k o otros factores como alguna limitación de hardware, por ejemplo) que se trata de una proporción lineal respecto de la longitud de los arreglos, por lo que la complejidad es efectivamente O(h).
 
 ---
 
@@ -201,3 +199,15 @@ Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nomb
     Podemos observar que, entonces, las diferencias entre muestras coinciden **muy aproximadamente** con la curva de la derivada de g(x), pero esto es suficiente para demostrar que estas diferencias siguen una proporcion logaritmica binaria.
 
     ¿Por que realizamos este analisis? Porque es mucho mas facil, a primera vista, diferenciar una funcion logaritmica de una constante, que diferenciar una funcion lineal de una n * log(n). Aprovecharemos esto entonces para reforzar los analisis que hagamos sobre los resultados de las simulaciones.
+
+    ### Comportamiento errático
+
+    Como mencionamos en la sección del análisis del algoritmo que funciona con heaps, tras múltiples simulaciones nos encontramos con algunos obstáculos que complejizaron la deducción y comprobación final de complejidad del algoritmo. Creemos, tras habernos topado con múltiples picos en gráficos de tiempos de ejecución que sucedían exactamente en el momento en que movíamos al mouse así como en los momento en que se oscurecía levemente la pantalla, que el problema no fue la implementación del algoritmo, sino la computadora o su sistema operativo.
+    
+    En particular, las ejecuciones que presentaron comportamientos erráticos se realizaron en una computadora con MacOS que, como encontramos en la documentación del sitio oficial de desarrolladores ([Apple Developer](https://developer.apple.com/ "Apple Developer")), realiza un manejo de la administración de energía y el rendimiento del procesador que permite reducir el consumo de energía a partir de disminuir la velocidad del procesador para reducir el consumo de energía, lo cual afecta directamente a los tiempos de ejecución del algoritmo, tornando erráticos sus tiempos de ejecución.
+    
+    Por otro lado, también pueden incidir tareas en segundo plano ya que consumen recursos del sistema, tales como actualizaciones de software, tareas de mantenimiento, procesos de sincronización, procesos de seguridad, procesos de red, entre otros. En este caso, pudimos descartar que los procesos de red afectaran, debido a que realizamos ejecuciones sin conexión wifi y aun así obtuvimos resultados similares, además siempre realizamos las ejecuciones con unicamente la ventana de la terminal abierta (y ningun otro programa abierto en simultaneo) pero, a pesar de eso, siempre encontramos multiples procesos consumiendo recursos en el *Activity Monitor* correspondientes al SO, por lo que, aunque realizamos algunos seteos de configuracion para poder realizar las simulaciones sin que la computadora entre en modo de ahorro de energía o no se suspendiera, no pudimos apalear la situacion.
+
+    Por último, otro factor importante encontrado en el sitio se relaciona con el punto anterior, es la frecuencia con la que el sistema operativo realiza cambios de contexto en el procesador para permitir que otras aplicaciones y procesos se ejecuten en el sistema. Si hay muchos cambios de contexto, el rendimiento del algoritmo puede verse afectado.
+
+    En conclusión, comprendimos que nuestros resultados podrían haber sido mejores si nos hubiéramos asegurado que el sistema esté configurado correctamente para que se minimizaran las interrupciones y retrasos durante la ejecución del algoritmo y así obtener resultados más precisos.

@@ -16,6 +16,7 @@ def k_merge_heap(arrs):
     largo h y devuelve un único arreglo ordenado cuyos elementos
     son cada uno de los elementos que poseían los k arreglos por
     los que se componía arrs originalmente.
+    Ejemplo: arrs = [[1, 5, 6], [1, 3, 10], [2, 3, 8], [4, 7, 30]]
     """
     k = len(arrs) # k es cantidad de arreglos
     h = len(arrs[0]) # h largo de arreglos (mismo para todos)
@@ -40,6 +41,3 @@ def k_merge_heap(arrs):
             hq.heappush(mins, HeapElem(min_elem.arr_num, min_elem.idx + 1, arrs[min_elem.arr_num][min_elem.idx + 1]))
 
     return ordered_arr
-
-# arrs = [[1, 5, 6], [1, 3, 10], [2, 3, 8], [4, 7, 30]]
-# print(k_merge_heap(arrs))
