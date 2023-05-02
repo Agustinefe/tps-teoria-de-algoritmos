@@ -198,7 +198,31 @@ Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algorit
 
 #### Análisis de tiempos de ejecución
 
-En primer lugar, comenzamos realizando simulaciones para obtener los tiempos de ejecución de cada algoritmo si variábamos las variables E y W, siendo E el máximo número de paquetes por cada producto y W un valor que representa el máximo número de productos que podremos quedarnos.
+En primer lugar, comenzamos realizando simulaciones para obtener los tiempos de ejecución de cada algoritmo si variábamos las variables E y W, siendo E el máximo número de paquetes por cada producto y W un valor que representa el máximo número de productos que podremos quedarnos (el total de unidades de producto que tenemos menos el soborno que debemos entregar).
+
+A continuación, se muestra la función que se utilizó para generar las muestras, que puede encontrarse en ```generador.py```:
+
+```python
+def generate_packets_and_briberies(P, E, W):
+    """
+    P: amount of distinct products
+    E: max amount of packets, for each product
+    W: max amount of individual products to keep (for each product)
+    """
+    products = [str(p) for p in range(P)]
+    packets = {}
+    briberies = {}
+
+    for product in products:
+
+        packets[product] = [random.randint(1, 1000) for _ in range(E)]
+        tot_e = sum(packets[product])
+        bribery = tot_e - W
+        if bribery > 0:
+            briberies[product] = bribery
+
+    return packets, briberies
+```
 
 Para esto, limitamos el número de productos por paquete a un máximo de 1000 unidades y generamos paquetes utilizando las siguientes configuraciones en el archivo ```simconfig.json```:
 
@@ -272,3 +296,9 @@ Dada la configuración de ```simconfig.json``` elegida especificada a continuaci
 ![bar plot (1)](plots/2023-05-01_20-38-54/barplot.png "2023-05-01_20-38-54/barplot.png")
 
 Como se observa, obtuvimos una muy buena aproximación con el algoritmo Greedy, con más de un 90% de resultados óptimos.
+
+El barplot fue útil para analizar cuántas veces se obtuvo un resultado óptimo con el algoritmo Greedy pero no nos dio información en cuanto a la calidad de sus soluciones. Para ello, decidimos utilizar un histograma que nos permitiera visualizar qué tan lejos estuvieron los resultados de Greedy respecto del algoritmo de PD, graficando las frecuencias de las diferencias obtenidas entre un resultado y otro.
+
+![histograma (1)](plots/2023-05-01_20-38-54/hist.png "2023-05-01_20-38-54/hist.png")
+
+El histograma efectivamente demuestra que los casos en que la diferencia fue mayor tuvieron una menor frecuencia (la mayor diferencia registrada se encuentra muy al comienzo del eje X) mientras que el resto de las diferencias, menores a 5, se distribuyen de forma dispersa a lo largo del eje X, lo cual nos confirma que no solo el algoritmo Greedy alcanzó en un gran porcentaje de casos el resultado óptimo, sino que cuando no lo hizo, en la mayoría de los casos se acercó mucho a éste. 
