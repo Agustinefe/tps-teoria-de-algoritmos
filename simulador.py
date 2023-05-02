@@ -2,7 +2,7 @@ import datetime
 import json, time
 from algorithms.mochila import *
 from contrabando import pasar_aduana
-from generador import generate_packets_and_briberies2
+from generador import generate_packets_and_briberies
 from copy import deepcopy
 import sys
 
@@ -32,7 +32,7 @@ def simulate_E_variation(config):
 
     for e in range(config['start'], config['stop'], config['step']):
         w = 10*e
-        packets, briberies = generate_packets_and_briberies2(P_global, e, w, B=w-100)
+        packets, briberies = generate_packets_and_briberies(P_global, e, w, B=w-100)
 
         if "greedy_knapsack" in res.keys():
             res["greedy_knapsack"][str(e)] = execute(deepcopy(packets), briberies, greedy_knapsack)
@@ -54,7 +54,7 @@ def simulate_W_variation(config):
 
     for w in range(config['start'], config['stop'], config['step']):
 
-        packets, briberies = generate_packets_and_briberies2(P_global, 10, 2*w, B=1)
+        packets, briberies = generate_packets_and_briberies(P_global, 10, 2*w, B=1)
 
         if "greedy_knapsack" in res.keys():
             res["greedy_knapsack"][str(w)] = execute(deepcopy(packets), briberies, greedy_knapsack)
