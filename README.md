@@ -322,6 +322,8 @@ Los resultados arrojaron que:
 
 Luego de la comparación, se ha obtenido que Greedy ha llegado al resultado óptimo esta vez. Cosa esperable, considerando que hemos elegido un número multiplo de 1000 como lo es 50.000. Una mejor opción hubiese sido realizar esta prueba, quizás, con algún número primo muy grande, debido a que nuestro generador arma paquetes de como mucho 1000 unidades, entonces, como el algoritmo Greedy ordena de mayor a menor, suele insertar primero los paquetes de 1000 unidades.
 
+Muestra en: ```samples\2023-05-01_23-43-34.json```
+
 Una nueva prueba realizada con la misma dinamica que la anterior pero con unas variables de 25013 arrojo los siguientes resultados:
 - El algoritmo Greedy demoró un tiempo de 0,003 segundos, dando como resultado una lista de 48 paquetes de 1000, uno de 999 y otro de 14
 - El algoritmo por PD demoro un tiempo de 145,957 segundos.
