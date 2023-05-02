@@ -36,7 +36,7 @@ def get_greedy_accuracy(greedy, dp, filepath):
             not_optimals.append(sum(dp[k][1]["0"]) - sum(greedy[k][1]["0"]))
 
     stats = {"Greedy": is_optimal, "PD": total}
-    plt.bar(stats.keys(), stats.values(), color ='maroon', width = 0.4)
+    plt.bar(stats.keys(), stats.values(), width = 0.4)
 
     plt.xlabel("Algoritmos")
     plt.ylabel("Cantidad de soluciones óptimas")
