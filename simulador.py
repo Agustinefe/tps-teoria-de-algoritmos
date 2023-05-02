@@ -1,7 +1,7 @@
 import datetime
 import json, time
 from algorithms.mochila import *
-from contrabando import pasar_aduana
+from algorithms.contrabando import pasar_aduana
 from generador import generate_packets_and_briberies
 from copy import deepcopy
 import sys
