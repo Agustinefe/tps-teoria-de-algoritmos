@@ -237,6 +237,8 @@ Para esto, limitamos el número de productos por paquete a un máximo de 1000 un
 }
 ```
 
+Muestra en: ```samples/2023-05-01_19-01-13.json```
+
 ```json
 {
     "start": 1,
@@ -247,6 +249,8 @@ Para esto, limitamos el número de productos por paquete a un máximo de 1000 un
     "do_dp_knapsack": true
 }
 ```
+
+Muestra en: ```samples/2023-05-01_19-06-50.json```
 
 Con estas configuraciones se construyeron gráficos que superponían ambos algoritmos mostrando la variación de cada variable en el eje X y el tiempo de ejecución en segundos que requirió para cada cantidad del eje X. Veamos a continuación dos ejemplos.
 
@@ -292,6 +296,8 @@ Dada la configuración de ```simconfig.json``` elegida especificada a continuaci
     "do_dp_knapsack": true
 }
 ```
+
+Muestra en: ```samples/2023-05-01_19-39-10.json```
 
 ![bar plot (1)](plots/2023-05-01_20-38-54/barplot.png "2023-05-01_20-38-54/barplot.png")
 
