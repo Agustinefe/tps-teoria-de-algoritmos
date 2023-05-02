@@ -132,7 +132,7 @@ def generate_W_sample(sequence):
 
 def generate_random_sample(sequence):
     samples = []
-    for _ in range(1000):
+    for _ in range(1):
         e = random.choice(sequence)
         w = random.choice(sequence)
         packets, briberies = generate_packets_and_briberies2(1, e, w)

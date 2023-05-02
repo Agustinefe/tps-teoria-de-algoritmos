@@ -25,10 +25,16 @@ def plot_greedys_best_result(ours, knapsack):
 def get_greedy_accuracy(greedy, dp, filepath):
     is_optimal = 0
     total = len(greedy.keys())
-
+    not_optimals = []
+    
+    i = 1
+    
     for k, v in greedy.items():
         if sum(dp[k][1]["0"]) == sum(greedy[k][1]["0"]):
             is_optimal += 1
+        else:
+            not_optimals.append(sum(dp[k][1]["0"]) - sum(greedy[k][1]["0"]))
+
     stats = {"Greedy": is_optimal, "PD": total}
     plt.bar(stats.keys(), stats.values(), color ='maroon', width = 0.4)
 
@@ -37,6 +43,15 @@ def get_greedy_accuracy(greedy, dp, filepath):
     plt.title("Optimalidad de Greedy")
     save_plot(get_filename(filepath), "barplot")
     plt.show()
+
+
+    plt.hist(not_optimals, bins=len(not_optimals))
+
+    plt.ylabel("Diferencias")
+    plt.title(f'Histograma de diferencias entre el optimo y el greedy')
+    save_plot(get_filename(filepath), "hist")
+    plt.show()
+
 
 
 def plot_execution_time(results, filepath):
