@@ -308,3 +308,17 @@ El barplot fue útil para analizar cuántas veces se obtuvo un resultado óptimo
 ![histograma (1)](plots/2023-05-01_20-38-54/hist.png "2023-05-01_20-38-54/hist.png")
 
 El histograma efectivamente demuestra que los casos en que la diferencia fue mayor tuvieron una menor frecuencia (la mayor diferencia registrada se encuentra muy al comienzo del eje X) mientras que el resto de las diferencias, menores a 5, se distribuyen de forma dispersa a lo largo del eje X, lo cual nos confirma que no solo el algoritmo Greedy alcanzó en un gran porcentaje de casos el resultado óptimo, sino que cuando no lo hizo, en la mayoría de los casos se acercó mucho a éste. 
+
+
+#### Prueba de volumen
+
+Por último, decidimos correr una prueba con ambos algoritmos con variables mucho más grandes. Para este caso, hemos determinado que la longitud de las variables será de 50.000, y que la cantidad de unidades de producto que nos podremos quedar luego de entregar el soborno también será de 50.000. Esto provocará que el algoritmo de PD deba calcular más de 2500 millones de operaciones (lo que esperamos nos lleve un buen tiempo de ejecución).
+
+Muestra en: ```samples/2023-05-01_19-39-10.json```
+
+Los resultados arrojaron que:
+- El algoritmo Greedy demoró un tiempo de 0.006 segundos, dando como resultado una lista de 50 paquetes de 1000 unidades cada una.
+- El algoritmo por PD demoro un tiempo de 618.5 segundos.
+
+Luego de la comparación, se ha obtenido que Greedy ha llegado al resultado óptimo esta vez. Cosa esperable, considerando que hemos elegido un número multiplo de 1000 como lo es 50.000. Una mejor opción hubiese sido realizar esta prueba, quizás, con algún número primo muy grande, debido a que nuestro generador arma paquetes de como mucho 1000 unidades, entonces, como el algoritmo Greedy ordena de mayor a menor, suele insertar primero los paquetes de 1000 unidades.
+
