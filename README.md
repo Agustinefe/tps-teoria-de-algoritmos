@@ -76,12 +76,12 @@ Esto nos permite concluir que estamos ante una versión del problema de la mochi
 ---
 
 2. Con las mismas consideraciones que en el punto anterior, describir e implementar un algoritmo (que sea óptimo) que resuelva el problema utilizando programación dinámica.
-
 ---
 
-    #### Implementacion del algoritmo
 
-    Como hemos mencionado anteriormente, este problema es una version del problema de la mochila:
+#### Implementacion del algoritmo
+
+Como hemos mencionado anteriormente, este problema es una version del problema de la mochila:
 
 
 ```python
@@ -228,13 +228,13 @@ Con estas configuraciones se construyeron gráficos que superponían ambos algor
 
 ![var-E plot (1)](plots/2023-05-01_20-30-20/plot.png "2023-05-01_20-30-20/plot.png")
 
-A primera vista, el algoritmo Greedy parecía constante y el algoritmo de PD a pesar de fluctuar tenía una notoria tendencia lineal, de todos modos, con una pendiente muy baja, difiriendo como máximo en 0.25 segundos de más respecto de la última ejecución que realiza la simulación, cuando E llega a 10000.
-
-Pero, como puede verse en lo gráficos a continuación, encontramos una tendencia también creciente por parte del algoritmo Greedy, aunque con una variación máxima de menos de 0.002 segundos al E alcanzar 10000.
+A primera vista, el algoritmo Greedy parecía constante y el algoritmo de PD a pesar de fluctuar tenía una notoria tendencia lineal, de todos modos, con una pendiente muy baja, difiriendo como máximo en 0.25 segundos de más respecto de la última ejecución que realiza la simulación, cuando E llega a 10000. Veamos más en detalle qué sucede con el algoritmo Greedy.
 
 ![var-E plot (1)](plots/2023-05-01_20-30-20/plot-begin.png "2023-05-01_20-30-20/plot-begin.png")
 
 ![var-E plot (1)](plots/2023-05-01_20-30-20/plot-end.png "2023-05-01_20-30-20/plot-end.png")
+
+Como se ve analizando el comienzo y el final de la "curva" en realidad hay una tendencia también creciente por parte del algoritmo Greedy, aunque con una variación máxima de menos de 0.002 segundos al E alcanzar 10000.
 
 ![var-W plot (1)](plots/2023-05-01_20-54-21/plot.png "2023-05-01_20-54-21/plot.png")
 
