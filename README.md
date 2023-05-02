@@ -256,7 +256,7 @@ Una vez analizado qué sucedía con cada variable, decidimos variarlas en simult
 
 Para ello elegimos utilizar un barplot, donde se mostrara la cantidad de veces que se alcanzó el resultado óptimo para cada uno de los algoritmos (a pesar de que el algoritmo de PD siempre va a ser óptimo). Para este caso, nuevamente limitamos el número de productos por paquete a un máximo de 1000 unidades, y esta vez elegimos variar ambas variables entre 1 y 5001 como se ve en la siguiente sección.
 
-Configuración de ```simconfig.json``` elegida:
+Dada la configuración de ```simconfig.json``` elegida especificada a continuación, veamos el gráfico.
 
 ```json
 {
@@ -269,7 +269,6 @@ Configuración de ```simconfig.json``` elegida:
 }
 ```
 
-
-
 ![bar plot (1)](plots/2023-05-01_20-38-54/barplot.png "2023-05-01_20-38-54/barplot.png")
 
+Como se observa, obtuvimos una muy buena aproximación con el algoritmo Greedy, con más de un 90% de resultados óptimos.
