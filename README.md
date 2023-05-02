@@ -187,3 +187,46 @@ Teniendo todo esto en cuenta, podemos deducir que la complejidad de este algorit
 4. Implementar un programa que utilice ambos algoritmos, realizar mediciones y presentar resultados comparativos de ambas soluciones, en lo que refiere a su optimalidad de la solución (no de su complejidad). Incluir en la entrega del tp los sets de datos utilizados para estas simulaciones (que deben estar explicados en el informe). Estos deben incluir al menos una prueba de volumen, indicando cómo es que fueron generadas.
 
 ---
+
+#### Análisis de tiempos de ejecución
+
+En primer lugar, comenzamos realizando simulaciones para obtener los tiempos de ejecución de cada algoritmo si variábamos las variables E y W, siendo E el máximo número de paquetes por cada producto y W un valor que representa el máximo número de productos que podremos quedarnos.
+
+Para esto, limitamos el número de productos por paquete a un máximo de 1000 unidades y generamos paquetes utilizando las siguientes configuraciones en el archivo ```simconfig.json```:
+
+```json
+{
+    "start": 1,
+    "stop": 10001,
+    "step": 100,
+    "var": "E",
+    "do_greedy_knapsack": true,
+    "do_dp_knapsack": true
+}
+```
+
+```json
+{
+    "start": 1,
+    "stop": 10001,
+    "step": 100,
+    "var": "W",
+    "do_greedy_knapsack": true,
+    "do_dp_knapsack": true
+}
+```
+
+Con estas configuraciones se construyeron gráficos que superponían ambos algoritmos mostrando la variación de cada variable en el eje X y el tiempo de ejecución en segundos que requirió para cada cantidad del eje X. Veamos a continuación dos ejemplos.
+
+![var-E plot (1)](plots/2023-05-01_20-30-20/plot.png "2023-05-01_20-30-20/plot.png")
+
+A primera vista, el algoritmo Greedy parecía constante y el algoritmo de PD a pesar de fluctuar tenía una notoria tendencia lineal, de todos modos, con una pendiente muy baja, difiriendo como máximo en 0.25 segundos de más respecto de la última ejecución que realiza la simulación, cuando E llega a 10000.
+
+Pero, como puede verse en lo gráficos a continuación, encontramos una tendencia también creciente por parte del algoritmo Greedy, aunque con una variación máxima de menos de 0.002 segundos al E alcanzar 10000.
+
+![var-E plot (1)](plots/2023-05-01_20-30-20/plot-begin.png "2023-05-01_20-30-20/plot-begin.png")
+
+![var-E plot (1)](plots/2023-05-01_20-30-20/plot-end.png "2023-05-01_20-30-20/plot-end.png")
+
+![var-W plot (1)](plots/2023-05-01_20-54-21/plot.png "2023-05-01_20-54-21/plot.png")
+
