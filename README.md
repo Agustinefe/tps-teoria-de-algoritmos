@@ -54,6 +54,8 @@ Los nombres de los resultados corresponden a la hora en la que finalizó su simu
 
 Los gráficos se guardan en la carpeta *plots*, en una carpeta con el mismo nombre del example.json. Hay un archivo *plot* y uno *diff*. Este *README* lee imágenes de la carpeta *plot*.
 
+---
+
 2. Describir el algoritmo que utiliza heaps, y determinar su complejidad.
 
     A continuación, se enuncia el algoritmo y en simultáneo se va detallando la complejidad de cada operación. El K-merge con heaps trabaja tomando al comienzo el primer elemento de cada uno de los K arreglos ordenados e insertándolos (encolándolos) en un heap de mínimos (en O(K), justamente por ser un heap), que servirá posteriormente para ir siempre sabiendo cuál es el elemento de valor más chico y así ir construyendo el arreglo final.
