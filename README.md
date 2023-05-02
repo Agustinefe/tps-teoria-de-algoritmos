@@ -226,6 +226,8 @@ Para esto, limitamos el número de productos por paquete a un máximo de 1000 un
 
 Con estas configuraciones se construyeron gráficos que superponían ambos algoritmos mostrando la variación de cada variable en el eje X y el tiempo de ejecución en segundos que requirió para cada cantidad del eje X. Veamos a continuación dos ejemplos.
 
+#### Análisis variando E
+
 ![var-E plot (1)](plots/2023-05-01_20-30-20/plot.png "2023-05-01_20-30-20/plot.png")
 
 A primera vista, el algoritmo Greedy parecía constante y el algoritmo de PD a pesar de fluctuar tenía una notoria tendencia lineal, de todos modos, con una pendiente muy baja, difiriendo como máximo en 0.25 segundos de más respecto de la última ejecución que realiza la simulación, cuando E llega a 10000. Veamos más en detalle qué sucede con el algoritmo Greedy.
@@ -234,7 +236,40 @@ A primera vista, el algoritmo Greedy parecía constante y el algoritmo de PD a p
 
 ![var-E plot (1)](plots/2023-05-01_20-30-20/plot-end.png "2023-05-01_20-30-20/plot-end.png")
 
-Como se ve analizando el comienzo y el final de la "curva" en realidad hay una tendencia también creciente por parte del algoritmo Greedy, aunque con una variación máxima de menos de 0.002 segundos al E alcanzar 10000.
+Como se ve analizando el comienzo y el final de la "curva" en realidad hay también fluctuaciones pero a pesar de eso una tendencia creciente por parte del algoritmo Greedy, aunque con una variación máxima de menos de 0.002 segundos al E alcanzar el valor 10000.
+
+#### Análisis variando W
 
 ![var-W plot (1)](plots/2023-05-01_20-54-21/plot.png "2023-05-01_20-54-21/plot.png")
+
+El gráfico obtenido de la ejecución con la variación de W arrojó resultados similares a la variación de E para el algoritmo de PD, con un claro crecimiento lineal esta vez alcanzando un tiempo de ejecución mayor (0.5 segundos), específicamente el doble del valor que habíamos obtenido al alcanzar 10000 unidades de E) esto puede deberse a que, al aumentar el tamaño de W en las iteraciones del loop interno de *mochila_dp* y así incrementar la cantidad máxima posible que uno puede quedarse, habrán muchos más casos donde no se descarten paquetes, lo cual es más costo por la cantidad de operaciones que se realizan al pasar por esa rama de la lógica del algoritmo. Por otro lado, a simple vista resultados similares para el algoritmo Greedy. Analicemos nuevamente más en profundidad el caso Greedy.
+
+![var-W plot (1)](plots/2023-05-01_20-54-21/plot-begin.png "2023-05-01_20-54-21/plot-begin.png")
+
+![var-W plot (1)](plots/2023-05-01_20-54-21/plot-end.png "2023-05-01_20-54-21/plot-end.png")
+
+Como esperábamos, en realidad la variación de H no afectó al algoritmo Greedy, que a diferencia de lo que sucedió con la variación de E, esta vez no registró una tendencia creciente y se mantuvo constante en 0 hasta alcanzar el valor máximo de W.
+
+#### Análisis variando E y W aleatoriamente
+
+Una vez analizado qué sucedía con cada variable, decidimos variarlas en simultáneo y aleatoriamente para poder comparar nuestro algoritmo Greedy con nuestro algoritmo de PD y así evaluar el rendimiento del algoritmo en un rango bien amplio de escenarios posibles, ya sabiendo que el algoritmo Greedy no siempre iba a alcanzar el óptimo, pero cuando lo hiciera sería más velozmente. Este planteo nos permite observar el comportamiento del algoritmo asegurándonos probar una gran variedad de combinaciones de valores para W y E y tener una mejor visión de su funcionamiento en diferentes situaciones.
+
+Para ello elegimos utilizar un barplot, donde se mostrara la cantidad de veces que se alcanzó el resultado óptimo para cada uno de los algoritmos (a pesar de que el algoritmo de PD siempre va a ser óptimo). Para este caso, nuevamente limitamos el número de productos por paquete a un máximo de 1000 unidades, y esta vez elegimos variar ambas variables entre 1 y 5001 como se ve en la siguiente sección.
+
+Configuración de ```simconfig.json``` elegida:
+
+```json
+{
+    "start": 1,
+    "stop": 5001,
+    "step": 1,
+    "var": "random",
+    "do_greedy_knapsack": true,
+    "do_dp_knapsack": true
+}
+```
+
+
+
+![bar plot (1)](plots/2023-05-01_20-38-54/barplot.png "2023-05-01_20-38-54/barplot.png")
 
