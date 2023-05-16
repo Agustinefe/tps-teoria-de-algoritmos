@@ -69,9 +69,7 @@ Tn
 
 #### Invocación
 
-Se debe invocar al programa como:
-  
-```./tdatp2 <E>|<A>|<A2> <datos.txt>```
+Se debe invocar al programa como: ```./tdatp2 <E>|<A>|<A2> <datos.txt>```
 
 Donde E indica que se debe calcular la solución exacta, A indica que se debe calcular la solución usando la aproximación
 propuesta por el curso, A2 indica que se debe calcular la solución usando la aproximación propuesta por el grupo.
