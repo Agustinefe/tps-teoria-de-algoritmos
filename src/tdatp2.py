@@ -1,4 +1,5 @@
 import sys
+import time
 
 from algorithms import backtracking_solution, approximation_solution, greedy_approximation_solution
 
@@ -27,15 +28,20 @@ def main():
         'A2': greedy_approximation_solution
     }
 
+    start, end = None, None
+
     solution = None
     if option in solution_map:
+        start = time.time()
         solution = solution_map[option](T)
+        end = time.time()
     else:
         print("Error: las opciones válidas son: <E>|<A>|<A2>")
         return
     
     print(f"{solution}: Solución")
     print(f"{len(solution)}: #Envases")
+    print((end-start) * 1000)
 
     return
 
