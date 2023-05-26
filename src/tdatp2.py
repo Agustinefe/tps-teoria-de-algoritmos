@@ -39,8 +39,7 @@ def main():
         print("Error: las opciones válidas son: <E>|<A>|<A2>")
         return
     
-    print(f"{solution}: Solución")
-    print(f"{len(solution)}: #Envases")
+    print(f"{solution}: {len(solution)}")
     print((end-start) * 1000)
 
     return

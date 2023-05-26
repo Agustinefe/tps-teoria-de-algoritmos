@@ -1,13 +1,58 @@
 BIN_CAPACITY = 1
 
 
+def backtracking(T, index, n, solucion_parcial, soluciones):
+    """
+    Realiza una búsqueda por backtracking para encontrar la
+    mínima cantidad de subconjuntos disjuntos de T cuyos
+    elementos sumen n o menos.
+    """
+    if not T:
+        return True
+
+    # Si encuentro una solución, la agrego a las soluciones
+    if sum(solucion_parcial) == n:
+        soluciones.append(solucion_parcial)
+        for x in solucion_parcial: ###########
+            T.remove(x)
+        return True
+
+    # Si llegué al final de T con una solucion_parcial válida, la agrego a las soluciones
+    if sum(solucion_parcial) <= n and index == len(T):
+        soluciones.append(solucion_parcial)
+        for x in solucion_parcial: ###########
+            T.remove(x)
+        return True
+    
+    # Si por esta rama me paso, dejo de probar
+    if sum(solucion_parcial) > n:
+        return False
+    
+    # Si no me paso, exploro esa rama
+    for i in range(index, len(T)):
+        solucion_parcial.append(T[i])
+        if backtracking(T, i+1, n, solucion_parcial, soluciones):
+            return backtracking(T, 0, n, [], soluciones)
+        else:
+            solucion_parcial.pop()
+    return False
+
+
 def backtracking_solution(T):
-    return
+    """
+    Obtiene la solución exacta al problema del empaquetamiento
+    de minimización realizando un llamado a un función que lo
+    resuelve por backtraking.
+    """
+    soluciones = []
+    backtracking(T, 0, BIN_CAPACITY, [], soluciones)
+    return soluciones
+
 
 def approximation_solution(T): # O(n)
     """
-    Se va insertando los elementos de T en bins linealmente, si algún elemento no
-    entra en el bin actual, se crea uno nuevo.
+    Se va insertando los elementos de T en bins linealmente, si algún
+    elemento no entra en el bin actual, se crea uno nuevo.
     """
     bins = []
     current_bin = []
@@ -29,8 +74,9 @@ def approximation_solution(T): # O(n)
 
 def greedy_approximation_solution(T): # O(n * log(n))
     """
-    Ordena los elementos de T de mayor a menor y luego los va insertando en bins
-    linealmente, si algún elemento no entra en el bin actual, se crea uno nuevo.
+    Ordena los elementos de T de mayor a menor y luego los va
+    insertando en bins linealmente, si algún elemento no entra
+    en el bin actual, se crea uno nuevo.
     """
     T.sort(reverse=True) # O(n * log(n))
 
