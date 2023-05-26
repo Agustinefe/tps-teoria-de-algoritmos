@@ -1,0 +1,8 @@
+{
+    "samples_number": 10,
+    "bin_size": 10,
+    "growth_factor": 2,
+    "backtracking": true,
+    "approximation": true,
+    "greedy": true
+}
