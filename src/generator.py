@@ -53,15 +53,15 @@ def main():
     sample["config"] = config
     
     samples = generate_same_size_samples(config["samples_number"], config["bin_size"])
-    #samples = generate_multiple_sizes_samples(config["samples_number"], config["bin_size"], config["growth_factor"])
 
     sample["samples"] = samples
     json_dump_sample = json.dumps(sample, indent=4)
 
-    filepath = f'../samples/samples_number={config["samples_number"]}-bin_size={config["bin_size"]}.json'
+    filepath = f'../samples/greedy/samples_number={config["samples_number"]}-bin_size={config["bin_size"]}.json'
     with open(f'{filepath}', 'w+') as file:
         file.write(json_dump_sample)
     print(filepath)
+
 
 if __name__ == "__main__":
     main()

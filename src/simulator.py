@@ -5,7 +5,7 @@ import time
 from copy import deepcopy
 from distutils.util import execute
 
-from algorithms import backtracking_solution
+from algorithms import backtracking_solution, approximation_solution, greedy_approximation_solution
 
 
 def execute(sample, algorithm):
@@ -53,7 +53,7 @@ def main():
     results = {}
     results["config"] = config
     start = time.time()
-    results["results"] = simulate(samples, backtracking_solution)
+    results["results"] = simulate(samples, greedy_approximation_solution)
     end = time.time()
 
     print(f"Tiempo que perdiste de tu vida esperando a que termine esta simulación: {str(datetime.timedelta(seconds=end-start))}")
@@ -61,7 +61,7 @@ def main():
     json_dump_results = json.dumps(results, indent=4)
 
     filename = filepath.split("/")[-1]
-    with open(f'../results/{filename}', 'w+') as file:
+    with open(f'../results/greedy/{filename}', 'w+') as file:
         file.write(json_dump_results)
 
 

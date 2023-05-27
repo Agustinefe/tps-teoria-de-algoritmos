@@ -1,8 +1,5 @@
 {
-    "samples_number": 10,
-    "bin_size": 10,
-    "growth_factor": 2,
-    "backtracking": true,
-    "approximation": true,
-    "greedy": true
+    "samples_number": 100,
+    "bin_size": 1000,
+    "growth_factor": 2
 }
