@@ -61,14 +61,16 @@ def plot_algorithms_comparison(x1, y1, y2, label_1, label_2, title, file_path):
 
 
 def main():
+
     # n vs mean time - backtracking
+    """
     folder_path = "../results/backtracking"
     x, y = calculate_means_for_all_files(folder_path)
     plots_path = "../plots/"
     plot_algorithms(x, y, "n-vs-mean-time-backtracking.png", plots_path)
+    """
 
     # n vs mean time - approximations comparison
-    
     folder_path_approximation = "../results/approximation"
     folder_path_greedy = "../results/greedy"
     x1, y1 = calculate_means_for_all_files(folder_path_approximation)
