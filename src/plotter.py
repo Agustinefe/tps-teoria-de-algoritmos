@@ -131,7 +131,7 @@ def main():
     approximation_result_path = "../results/100-samples/approximation"
     backtracking_result_path = "../results/100-samples/backtracking"
     plots_path = "../plots/"
-    plot_algorithms_solution_comparison(greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, "results-comparison.png")
+    plot_algorithms_solution_comparison(greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, "solutions-comparison.png")
 
 if __name__ == '__main__':
     main()
