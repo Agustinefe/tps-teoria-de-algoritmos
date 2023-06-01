@@ -20,7 +20,7 @@ def execute(sample, algorithm):
     return {"time": end - start, "bins": solution, "bins_number": len(solution)}
 
 
-def simulate(samples, f):
+def simulate(samples, f, algorithm_name):
     """
     Ejecuta el algoritmo f con cada muestra de samples y devuelve un
     diccionario con los resultados
@@ -32,19 +32,20 @@ def simulate(samples, f):
     for i in range(samples_number):
         solution_i = execute(deepcopy(samples["samples"][str(i)]), f)
         result[str(i)] = solution_i
-        print(f'\tFinished iteration {str(i)} for backtracking in time {result[str(i)]["time"]}')
+        print(f'\tIteración {str(i)} de algoritmo {algorithm_name} terminada en {result[str(i)]["time"]} segundos')
 
     return result
 
 
 def main():
     # sys.setrecursionlimit(2000)
-    if len(sys.argv) != 2:
-        print("Error: se debe invocar con: ./simulator <sample.json>")
+    if len(sys.argv) != 3:
+        print("Error: se debe invocar con: ./simulator <datos.json> <E>|<A>|<A2>")
         return
 
     filepath = sys.argv[1]
-    print(filepath)
+    algorithm = sys.argv[2]
+
     with open(filepath, 'r') as json_file:
         samples = json.load(json_file)
     
@@ -53,7 +54,25 @@ def main():
     results = {}
     results["config"] = config
     start = time.time()
-    results["results"] = simulate(samples, greedy_approximation_solution)
+    
+    f = None
+    algorithm_name = None
+
+    match algorithm:
+        case "E":
+            f = backtracking_solution
+            algorithm_name = "backtracking"
+        case "A":
+            f = approximation_solution
+            algorithm_name = "approximation"
+        case "A2":
+            f = greedy_approximation_solution
+            algorithm_name = "greedy"
+        case _:
+            print("Error: se debe invocar con: ./simulator <datos.json> <E>|<A>|<A2>")
+            return
+
+    results["results"] = simulate(samples, f, algorithm_name)
     end = time.time()
 
     print(f"Tiempo que perdiste de tu vida esperando a que termine esta simulación: {str(datetime.timedelta(seconds=end-start))}")
@@ -61,7 +80,7 @@ def main():
     json_dump_results = json.dumps(results, indent=4)
 
     filename = filepath.split("/")[-1]
-    with open(f'../results/greedy/{filename}', 'w+') as file:
+    with open(f'../results/{algorithm_name}/{filename}', 'w+') as file:
         file.write(json_dump_results)
 
 

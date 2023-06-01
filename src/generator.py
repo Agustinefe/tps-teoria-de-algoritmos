@@ -1,5 +1,7 @@
 import json
+import os
 import random
+import sys
 
 
 DECIMALS = 3
@@ -46,6 +48,12 @@ def generate_multiple_sizes_samples(samples_number, bin_size, growth_factor=1):
 """
 
 def main():
+    if len(sys.argv) != 2:
+        print("Error: se debe invocar con: ./generator <samples_name>")
+        return
+
+    samples_name = sys.argv[1]
+
     with open("simconfig.json", "r") as config_file:
         config = json.load(config_file)
 
@@ -57,7 +65,13 @@ def main():
     sample["samples"] = samples
     json_dump_sample = json.dumps(sample, indent=4)
 
-    filepath = f'../samples/greedy/samples_number={config["samples_number"]}-bin_size={config["bin_size"]}.json'
+    filepath = f'../samples/{samples_name}/samples_number={config["samples_number"]}-bin_size={config["bin_size"]}.json'
+
+
+    if not os.path.exists(filepath):
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+
     with open(f'{filepath}', 'w+') as file:
         file.write(json_dump_sample)
     print(filepath)
