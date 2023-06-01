@@ -101,7 +101,7 @@ Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquet
 
 #### Algoritmo
 
-El algoritmo propuesto es una variante de la aproximación del punto 3, con la particularidad de previamente ordenar los elementos de T con el fin de mejorar la eficiencia de la utilización de los bins, por ejemplo, para aquellas situaciones en las que un objeto grande se empaqueta en un bin que podría haber contenido varios objetos más pequeños, haciendo que se desperdicie la capacidad restante del bin.
+El algoritmo propuesto es una variante de la aproximación del punto 3 con la particularidad de previamente ordenar los elementos de T con el fin de (potencialmente) mejorar la eficiencia de la utilización de los bins, por ejemplo, para aquellas situaciones en las que un objeto grande se empaqueta en un bin que podría haber contenido varios objetos más pequeños, haciendo que se desperdicie la capacidad restante del bin.
 
 Procedimiento:
 
@@ -150,3 +150,11 @@ Para comparar este algoritmo con la aproximación anterior se realizaron ejecuci
 Como puede observarse a continuación, donde se grafica el tiempo promedio requerido para la ejecución con un tamaño de conjunto en el intervalo mencionado, nuestra aproximación siempre superó en tiempo a la aproximación de la consigna, aunque siempre tuvieron un comportamiento similar, fácilmente identificable, ya que ambas curvas suelen incrementar sus pendientes en los mismos puntos (a pesar de algunos picos que, creemos, tras múltiples ejecuciones corresponden a ruido generado por retrasos producidos por procesos del sistema en que se realizaron las ejecuciones); los tiempos de ejecución de ambas aproximaciones siempre difirieron en menos de 0.00005 segundos para todos los tamaños de conjunto utilizados en la simulación.
 
 ![plot (1)](plots/100-samples/n-vs-mean-time-approximations.png "100-samples/n-vs-mean-time-approximations.png")
+
+Ya vimos que la propuesta que realizamos, aunque se asemeja bastante a la aproximación, siempre la supera en tiempo. Ahora analicemos su eficiencia.
+
+Para esto, veamos qué sucede con las soluciones que proveen estas aproximaciones comparándolas con la solución óptima que provee backtracking.
+
+![plot (1)](plots/100-samples/solutions-comparison.png "100-samples/solutions-comparison.png")
+
+Como esperábamos, nuestra propuesta (muy similar a la aproximación del enunciado pero añadiendo el ordenamiento del conjunto), aunque en muchos puntos coincide con la aproximación, se acerca más a la solución óptima. A partir de esta comparación de soluciones pudimos reafirmar que el ordenamiento permite que los elementos más grandes se empaqueten primero, facilitando una mejor utilización de los bins y reduciendo la cantidad necesaria.
