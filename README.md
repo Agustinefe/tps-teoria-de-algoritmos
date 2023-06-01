@@ -103,7 +103,7 @@ Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquet
 
 El algoritmo propuesto es una variante de la aproximación del punto 3 con la particularidad de previamente ordenar los elementos de T con el fin de (potencialmente) mejorar la eficiencia de la utilización de los bins, por ejemplo, para aquellas situaciones en las que un objeto grande se empaqueta en un bin que podría haber contenido varios objetos más pequeños, haciendo que se desperdicie la capacidad restante del bin.
 
-Procedimiento:
+#### Procedimiento
 
 ```
 Crear una lista de bins solución vacía
@@ -117,7 +117,7 @@ Por cada ítem en T:
 Retornar la lista de bins
 ```
 
-Código Python:
+#### Código Python
 
 ```python
 def greedy_approximation_solution(T): # O(n * log(n))
