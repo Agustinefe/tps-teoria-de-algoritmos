@@ -1,76 +1,30 @@
+import math
+import time
+
 BIN_CAPACITY = 1
+EPSILON = 0.00000002
+it = 1
 
+def count(L):
+    return sum(list(map(lambda l: len(l), L)))
 
-def number_to_base(n, b, s):
-    if n == 0:
-        return [0] * s
-    digits = []
-    while n:
-        digits.append(int(n % b))
-        n //= b
-    if len(digits) < s:
-        digits.extend([0] * (s - len(digits)))
-    return digits[::-1]
+def is_valid(M):
+    if not M: return False
+    return all(sum(m) <= 1+EPSILON for m in M)
 
-def bin_packing(T, k, c=1):
-    # T = [0.1, 0.7, 0.3, 0.1, 0.9, 0.4, 0.5]
-    # n = 7, puedo iterar hasta 6
-    # o sea: 2^7 - 1 = 127
-    M = [[] for i in range(k)]
-    s = len(T)
-    for i in range(0, (k ** s) - 1):
-        b = number_to_base(i, k, s)
-        for bin_number,t in zip(b, T):
-            M[bin_number].append(t)
-        
-        if all([sum(bin) <= c for bin in M]):
-            return M
-        else:
-            M = [[] for i in range(k)]
+def backtracking_aux(M, T, K, t):
+    if count(M) == len(T): # O(T)
+        return M
+
+    for k in range(K): # O(K)
+        M[k].append(T[t]) # O(1)
+        if is_valid(M): # O(T)
+            res = backtracking_aux(M, T, K, t+1) # T(T-1)
+            if is_valid(res): # O(T)
+                return res
+        M[k].pop() # O(1)
+    
     return None
-
-def brute_force_solution(T):
-    for i in range(1, len(T) + 1):
-        M = bin_packing(T, i)
-        if M:
-            return M
-
-
-def backtracking(T, index, n, solucion_parcial, soluciones):
-    """
-    Realiza una búsqueda por backtracking para encontrar la
-    mínima cantidad de subconjuntos disjuntos de T cuyos
-    elementos sumen n o menos.
-    """
-    if not T:
-        return True
-
-    # Si encuentro una solución, la agrego a las soluciones
-    if sum(solucion_parcial) == n:
-        soluciones.append(solucion_parcial)
-        for x in solucion_parcial:
-            T.remove(x)
-        return True
-
-    # Si llegué al final de T con una solucion_parcial válida, la agrego a las soluciones
-    if sum(solucion_parcial) <= n and index == len(T):
-        soluciones.append(solucion_parcial)
-        for x in solucion_parcial:
-            T.remove(x)
-        return True
-    
-    # Si por esta rama me paso, dejo de probar
-    if sum(solucion_parcial) > n:
-        return False
-    
-    # Si no me paso, exploro esa rama
-    for i in range(index, len(T)):
-        solucion_parcial.append(T[i])
-        if backtracking(T, i+1, n, solucion_parcial, soluciones):
-            return backtracking(T, 0, n, [], soluciones)
-        else:
-            solucion_parcial.pop()
-    return False
 
 
 def backtracking_solution(T):
@@ -79,10 +33,15 @@ def backtracking_solution(T):
     de minimización realizando un llamado a un función que lo
     resuelve por backtraking.
     """
-    soluciones = []
-    backtracking(T, 0, BIN_CAPACITY, [], soluciones)
-    return soluciones
 
+    base = math.ceil(sum(T)-EPSILON)
+    global it
+    for K in range(base, len(T)+1):
+        it = 1
+        M = [[] for _ in range(K)]
+        if (res := backtracking_aux(M, T, K, 0)):
+            return res
+    return None
 
 def approximation_solution(T): # O(n)
     """
