@@ -1,7 +1,7 @@
 import sys
 import time
 
-from algorithms import backtracking_solution, approximation_solution, greedy_approximation_solution
+from algorithms import backtracking_solution, approximation_solution, greedy_approximation_solution, brute_force_solution
 
 
 def main():
@@ -25,7 +25,8 @@ def main():
     solution_map = {
         'E': backtracking_solution,
         'A': approximation_solution,
-        'A2': greedy_approximation_solution
+        'A2': greedy_approximation_solution,
+        'B': brute_force_solution
     }
 
     start, end = None, None
