@@ -67,13 +67,13 @@ La salida por salida estándar deberá ser:
 <Tiempo de ejecución en mseg>
 ```
 
-# Resolución
+## Resolución
 
 ---
 1. Demostrar que el problema de empaquetamiento es NP-Completo.
 ---
 
-## ¿Es un problema NP?
+### ¿Es un problema NP?
 
 Demostraremos que el problema de empaquetamiento es NP mediante una version de problema de decision.
 
@@ -81,7 +81,7 @@ Demostraremos que el problema de empaquetamiento es NP mediante una version de p
 
 Sencillamente, para verificar que la solucion es correcta, basta con contar la cantidad de envases. Esto implica una complejidad O(k), complejidad que es evidentemente polinomial.
 
-## ¿Algún problema NP-completo se puede reducir a este, mediante operaciones polinomiales?
+### ¿Algún problema NP-completo se puede reducir a este, mediante operaciones polinomiales?
 
 *In other words, ¿es NP-Completo?*
 
