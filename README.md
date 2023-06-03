@@ -96,6 +96,159 @@ Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquet
 - Si la cantidad de envases es mayor a 2, esto quiere decir que no existe solucion para el problema de particion.
 
 ---
+2. Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución, y realizar gráficos en función de n.
+---
+
+#### Algoritmo
+
+```python
+EPSILON = 0.00000002
+
+def count(L):
+    return sum(list(map(lambda l: len(l), L)))
+
+def is_valid(M):
+    if not M: return False
+    return all(sum(m) <= 1+EPSILON for m in M)
+
+def backtracking_aux(bins, T, t):
+    if count(bins) == len(T): # O(T)
+        return bins
+
+    for b in range(0, min(t+1, len(bins))): # O(K)
+        bins[b].append(T[t]) # O(1)
+        if is_valid(bins): # O(T)
+            res = backtracking_aux(bins, T, t+1) # T(T-1)
+            if is_valid(res): # O(T)
+                return res
+        bins[b].pop() # O(1)
+    
+    return None
+
+
+def backtracking_solution(T):
+    """
+    Obtiene la solución exacta al problema del empaquetamiento
+    de minimización realizando un llamado a un función que lo
+    resuelve por backtraking.
+    """
+
+    base = math.ceil(sum(T)-EPSILON)
+    global it
+    for K in range(base, len(T)+1):
+        it = 1
+        bins = [[] for _ in range(K)]
+        if (res := backtracking_aux(bins, T, 0)):
+            return res
+    return None
+```
+
+Evaluemos un caso particular de la funcion *backtracking_aux*. Esta funcion evalua si se pueden empaquetar los T objetos en K paquetes, y devuelve el empaquetamiento. Si no existe un empaquetamiento con K paquetes, devuelve None. El algoritmo funciona de la siguiente manera: siendo *bins* el conjunto de paquetes solucion (parcial):
+
+- Evaluamos si los *bins* poseen todos los objetos de T: si es asi, devolvemos M como solucion definitiva.
+
+- Por cada paquete *bin* existente:
+    - Pruebo meter el objeto t en el *bin*:
+    - Si la solucion es valida (el *bin* no se pasa de 1), entonces:
+        - Vuelvo a llamar a la funcion *backtracking_aux*, para probar con el objeto t+1.
+        - Si lo que devuelve la llamada a la funcion es una solucion, entonces devolvemos esa solucion como la definitiva.
+    - Si no, removemos el objeto t del bin.
+
+
+- Si luego de probar meter el objeto t en todos los bins las soluciones no son validas, entonces esta solucion parcial no es valida. Retornamos None.
+
+Podemos observar que, cada llamada a *backtracking_aux* detonara, en el peor de los casos, una nueva llamada a si misma por cada paquete *bin* (llamemos **b** a la cantidad total de bins) que evaluemos. Esto nos permite deducir que su ecuacion de recurrencia es, aproximadamente: **T(t) = b * T(t-1)**. Finalmente, deducimos que la complejidad algoritmica de *backtracking_aux* es, a priori, **O($b^t$)**.
+
+Dado que no sabemos a priori cual es el optimo de paquetes, deberemos probar con desde un paquete en adelante, hasta hallar una cantidad de paquetes que nos permita distribuir los objetos. Esto implica que la funcion *backtracking_aux* es llamada (ejecutandose en un tiempo de O($b^t$)) indeterminadas veces.
+
+De esta manera, nuestro "arbol" de posibilidades a evaluar se ve de la siguiente manera:
+
+![bt-tree (1)](img\bt-tree1.jpg "bt-tree1.jpg")
+
+Con lo mencionado anteriormente, la complejidad algoritmica del algoritmo completo
+
+#### Reduciendo el rango de paquetes
+
+Partamos declarando algunas afirmaciones:
+- Un set de objetos de tamaño **t** siempre podra ser empaquetado en **t** o mas paquetes.
+    - Tecnicamente hablando, un set de tamaño **t** puede ser empaquetado en **t** paquetes de manera optima si y solo si todos sus elementos valen 1. Cuando la cantidad de paquetes es mayor a **t**, siempre habra al menos un paquete vacio.
+- Un set de objetos cuya suma de elementos sume **s**, no podra ser empaquetado en menos de **S**=ceil(**s**) (**s** redondeado al entero mas cercano por arriba) paquetes.
+
+Esto quiere decir que el numero optimo de paquetes se encontrata entre la suma de los valores de los objetos, y la cantidad de objetos. Por ende, nos permite definir que no probaremos todas las cantidad de paquetes posibles, sino solo dentro del rango mencionado. Esto nos permite observar que la complejidad algoritmica total seria de **O( (t+1-S) * b^t )** (+1, debido a que siempre llamaremos al algoritmo al menos una vez para obtener el optimo); observemos que aun se mantiene la naturaleza exponencial del algoritmo.
+
+Aqui cabe preguntarse: ¿qué tan pequeño puede ser **S**? ¿Tendremos que llamar **t** veces a *backtracking_aux* en el peor de los casos?
+
+La respuesta a la segunda pregunta es que no: en el peor de los casos, se llamara a *backtracking_aux* **t/2** veces (con una varianza de un llamado extra bajo ciertas condiciones). Procedamos a demostrar esto:
+
+>Imaginemos a un set de tamaño T donde cada elemento en T vale 0.5+Ɛ, siendo Ɛ un numero tan pequeño que tiende a 0 pero que no llega a serlo. Podriamos definir a este set como el set con la cantidad de elementos mas pequeños que no pueden compartir paquetes entre ellos.
+>
+>sum(setT) = T*(0.5+Ɛ) ≈ **T/2 + Ɛ**, lo cual redondeado hacia arriba es **T/2**.
+>
+>Sin embargo, dado que cada elemento es mayor a 0.5, no pueden existir mas de dos elementos dentro de un mismo paquete. Esto quiere decir que el numero de paquetes optimos para este set es, precisamente, T. Entonces, nuestro algoritmo probara encontrar un empaquetamiento con un numero de paquetes desde T/2 hasta T. Ahora, evaluemos todos los casos donde modifcamos ligeramente el set T:
+>
+>- Si incrementamos la cantidad de elementos del set agregando otro 0.5+Ɛ (o un elemento de mayor valor), entonces, dependiendo si T es par o impar, la suma redondeada hacia arriba de sus elementos se incrementara en 1. Independientemente de esto, si incrementamos la cantidad de elementos en dos 0.5+Ɛ, inevitablemente la suma redondeada se incrementara en 1, por lo que las llamadas a *backtracking_aux* aun seran T/2, probando con paquetes desde T/2 a T.
+    - Si en cambio decrementamos la cantidad de elementos del set, pasara lo contrario.
+>- Si agregamos un objeto de valor menor a 0.5+Ɛ, el set tendra tamaño T'=T+1, y la suma redondeada hacia arriba de sus elementos, en el peor de los caso, seguira siendo la misma: T/2. Pero esto tambien quiere decir que este ultimo objeto agregado podra compartir paquete con cualquier otro de los elementos de valor 0.5+Ɛ, por lo que su cantidad de paquetes optima seguira siendo T (no T'), provocando que *backtracking_aux* aun se siga llamando T/2 veces.
+>- Si en cambio reducimos un objeto a un valor menor a 0.5, entonces la suma redondeada hacia arriba de sus elementos seguira siendo T/2, pero dado que esta reduccion permite al objeto reducido compartir paquete con otro, por lo que el numero de paquetes optimo se reducira a T-1, lo cual implica que se realizaran T/2 - 1 llamados a *backtracking_aux*.
+>- Por supuesto, incrementar el valor de alguno de los objetos no cambia el tamaño del set, ni la suma redondeada hacia arriba de sus elementos.
+
+Como podemos observar, en ninguno de los casos provocamos un incremento en la cantidad de llamados que deberan hacerse a *backtracking_aux*. Finalmente, podemos concluir que, hasta ahora, la complejidad temporal de nuestro algoritmo es de **O( $ \sum_{b={t \over 2}}^{t} b^t$ )**. Esto, por supuesto, sigue siendo de naturaleza exponencial.
+
+Todo este analisis nos permite realizar una gran poda, deshaciendonos del analisis de la mitad del arbol:
+
+![bt-tree (2)](img\bt-tree2.jpg "bt-tree2.jpg")
+
+#### Aplicación de otra optimización
+
+Pensemos en un caso de ejemplo: un set de tamaño T=4, y evaluaremos si es posible empaquetarlos en B=3 paquetes.
+
+![bt-tree (3)](img\bt-tree3.jpg "bt-tree3.jpg")
+
+*Aclaración: Cada nodo TT-B indica la accion donde el paquete T se guarda en el paquete B.*
+
+Comenzaremos evaluando el objeto T1: ¿Entra en el paquete B1? Si, debido que, por ahora, todos los paquetes se encuentran vacios. Esta es nuestra unica posible accion.
+
+Tomamos el objeto T2: Aqui tenemos dos posibles acciones:
+- Si cabe, guardarlo en B1, que ya posee T1.
+- Si no cabe en B1, entonces lo guardamos en alguno de los paquetes vacios restantes (B2 o B3).
+
+Asumamos que guardamos T2 en B2, porque no entra en B1.
+
+Tomamos el objeto T3: Aqui, se nos suma una posible accion mas:
+- Si cabe, guardarlo en B1, que ya posee T1.
+- Si no cabe en B1, guardarlo en B2, si cabe, que ya posee T2-
+- Si no cabe en B1 ni B2, guardarlo en B3.
+
+Asumamos que guardamos T3 en B3, porque no entra en B1 ni B2.
+
+Tomamos el objeto T4. A partir de aqui, las posibles acciones posibles son las mismas que antes: si entra en Bi, guardarlo en Bi; si no, probar con el siguiente.
+
+**Supongamos que T4 no entra en ninguno de los 3 paquetes (lo cual nos permitiria intuir desde ahora que no existe solución para este set con 3 paquetes)**. Esto quiere decir que no existe solucion guardando T3 en B3. Pero dado que guardar T3 en B3 era nuestra unica accion posible, entonces esto quiere decir no existe solucion al guardar T2 en B2. Entonces, guardamos T2 en B3, y evaluamos nuevamente posibles acciones podemos hacer con T3. 
+
+Hagamos una pausa: acabamos de observar que guardar T2 en el paquete vacio B2 no nos permitio encontrar una solución. ¿Por que mover T2 al otro paquete vacio B3 haria alguna diferencia respecto a esto? Tanto B2 como B3 son etiquetas que hemos puesto para dos paquetes que, al momento de ubicar T2, se encuentran vacios. Es casi natural intuir que mover T2 de un paquete vacio al otro tampoco generara una solucion posible.
+
+Entonces haber ubicado T1 en B1 no nos brindara ninguna solucion: movemos T1 a otro paquete vacio. Pero, nuevamente, y analogamente a la situacion anterior, mover un objeto de un paquete vacio a otro, no provocara algun cambio a la hora de evaluar los siguientes objetos nuevamente. Entonces, finalmente, podemos concluir que no existe un empaquetamiento para 4 objetos en 3 paquetes.
+
+**En general, mover un objeto T de un paquete vacio a otro paquete vacio, no nos permite explorar posibilidades nuevas donde pueda haber una solución.**
+
+En otras palabras, para los primeros paquetes Pi donde i < B, solo debemos evaluar si Pi entra en alguno de los primeros Bi paquetes posiblemente ocupados con maximo un objeto, o guardarlo en un paquete vacio, dejando solo i acciones posibles para los primeros Pi, y B posibilidades para los Pi donde i >= B.
+
+Esto quiere decir que, si antes cada llamada a *backtracking_aux* implicaba b nuevas llamadas recursivas, ahora con esta optimizacion presente, la cantidad de llamadas recursivas se reduce en relacion al valor de B:
+- Sin optimizacion: b * b * b * ... * b = **b^t** llamados recursivos.
+- Con optimizacion: 1 * 2 * 3 * ... * b-1 * b * b * ... * b = **b! * b^(t-b)** llamados recursivos.
+
+Quizas el factorial de b pueda dar indicios de que nuestra complejidad sera peor, pero basta con plantear la inecuacion para llegar a que *b^b > b!*. Esto permite ejecutar la función *backtracking_aux* en **O($b!*b^{t-b}$)**
+
+Graficamente, la poda se veria de la siguiente manera.
+
+![bt-tree (4)](img\bt-tree4.jpg "bt-tree4.jpg")
+
+#### Conclusion
+
+Finalmente, luego de todas las podas analizadas, podemos concluir con rigurosidad que nuestra complejidad algoritmica de todo el algoritmo es **$$O( \sum_{b={t \over 2}}^{t} b! * b ^ {t-b} )$$**
+
+
+---
 4. [Opcional] Implementar alguna otra aproximación (u algoritmo greedy) que les parezca de interés. Comparar sus resultados con los dados por la aproximación del punto 3. Indicar y justificar su complejidad.
 ---
 
