@@ -3,7 +3,9 @@ import os
 import random
 import sys
 
+
 DECIMALS = 3
+
 
 def generate_sample(m):
     """

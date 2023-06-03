@@ -39,12 +39,13 @@ def simulate(samples, f, algorithm_name):
 
 def main():
     # sys.setrecursionlimit(2000)
-    if len(sys.argv) != 3:
-        print("Error: se debe invocar con: ./simulator <datos.json> <E>|<A>|<A2>")
+    if len(sys.argv) != 4:
+        print("Error: se debe invocar con: ./simulator <datos.json> <samples_name> <E>|<A>|<A2>")
         return
 
     filepath = sys.argv[1]
-    algorithm = sys.argv[2]
+    samples_name = sys.argv[2]
+    algorithm = sys.argv[3]
 
     with open(filepath, 'r') as json_file:
         samples = json.load(json_file)
@@ -80,7 +81,7 @@ def main():
     json_dump_results = json.dumps(results, indent=4)
 
     filename = filepath.split("/")[-1]
-    with open(f'../results/{algorithm_name}/{filename}', 'w+') as file:
+    with open(f'../results/{samples_name}/{algorithm_name}/{filename}', 'w+') as file:
         file.write(json_dump_results)
 
 
