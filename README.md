@@ -67,7 +67,7 @@ La salida por salida estándar deberá ser:
 <Tiempo de ejecución en mseg>
 ```
 
-# Resolucion
+# Resolución
 
 ---
 1. Demostrar que el problema de empaquetamiento es NP-Completo.
@@ -94,3 +94,69 @@ Nos aseguramos que, como cada elemento de T proviene de haberse dividido un elem
 Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquetamiento*. Bueno, mejor dicho, utilizaremos la caja negra que resuelve la version de problema de decision (descripto anteriormente), con k = 2 (*...¿se puede empaquetarlos usando **exactamente 2** envases de capacidad 1?*). Una vez aplicado el algoritmo y obtenida la solución, verificamos:
 - Si la cantidad de envases devuelta es 2, entonces cada envase suma un tamaño 1. Multiplicamos cada elemento por C para recuperar los valores originales, y retornamos ambos envases/sets como solucion al problema de particion.
 - Si la cantidad de envases es mayor a 2, esto quiere decir que no existe solucion para el problema de particion.
+
+
+---
+4. [Opcional] Implementar alguna otra aproximación (u algoritmo greedy) que les parezca de interés. Comparar sus resultados con los dados por la aproximación del punto 3. Indicar y justificar su complejidad.
+---
+
+#### Algoritmo
+
+El algoritmo propuesto es una variante de la aproximación del punto 3 con la particularidad de previamente ordenar los elementos de T con el fin de (potencialmente) mejorar la eficiencia de la utilización de los bins, por ejemplo, para aquellas situaciones en las que un objeto grande se empaqueta en un bin que podría haber contenido varios objetos más pequeños, haciendo que se desperdicie la capacidad restante del bin.
+
+#### Procedimiento
+
+```
+Crear una lista de bins solución vacía
+Ordenar T en orden descendente
+Por cada ítem en T:
+    Si el ítem excede la capacidad del bin actual:
+        Añadir el bin actual a la lista de bins solución
+        Actualizar el bin actual con únicamente el nuevo ítem actual
+    Si no la excede
+        Agregarlo al bin actual y actualizar su suma de ítems
+Retornar la lista de bins
+```
+
+#### Código Python
+
+```python
+def greedy_approximation_solution(T): # O(n * log(n))
+    T.sort(reverse=True) # O(n * log(n))
+
+    bins = []
+    current_bin = []
+    current_sum = 0
+
+    for item in T: # O(n)
+        if current_sum + item > BIN_CAPACITY:
+            bins.append(current_bin)
+            current_bin = [item]
+            current_sum = item
+        else:
+            current_bin.append(item)
+            current_sum += item
+
+    bins.append(current_bin)
+
+    return bins
+```
+
+La complejidad del algoritmo es sencilla de calcular debido a la simplicidad del algoritmo propiamente; se ordena de mayor a menor T, ```O(n * log(n))```, y luego se itera por cada uno de los elementos del conjunto T, ```O(n)```, realizando operaciones ```O(1)``` por cada una de sus iteraciones. La parte más costosa del procedimiento es el ordenamiento, por lo tanto, la complejidad final del algoritmo es ```O(n * log(n))```.
+
+#### Análisis de tiempo de ejecución y eficiencia
+
+Para comparar este algoritmo con la aproximación anterior se realizaron ejecuciones con distintos conjuntos de datos de mismo tamaño y se promediaron los tiempos medidos, como se sugirió. Esto se realizó para tamaños de conjunto en un intervalo de 100 a 1000, con un step de 100. Por otro lado, la cantidad de muestras elegida para calcular los promedios fue de 100 debido a que fue el mayor valor (fijo) que el hardware utilizado podía soportar para las simulaciones cuando el tamaño de conjunto se iba acercando a 1000.
+
+Como puede observarse a continuación, donde se grafica el tiempo promedio requerido para la ejecución con un tamaño de conjunto en el intervalo mencionado, nuestra aproximación siempre superó en tiempo a la aproximación de la consigna, aunque siempre tuvieron un comportamiento similar, fácilmente identificable, ya que ambas curvas suelen incrementar sus pendientes en los mismos puntos (a pesar de algunos picos que, creemos, tras múltiples ejecuciones corresponden a ruido generado por retrasos producidos por procesos del sistema en que se realizaron las ejecuciones); los tiempos de ejecución de ambas aproximaciones siempre difirieron en menos de 0.00005 segundos para todos los tamaños de conjunto utilizados en la simulación.
+
+![plot (1)](plots/100-samples/n-vs-mean-time-approximations.png "100-samples/n-vs-mean-time-approximations.png")
+
+Ya vimos que la propuesta que realizamos, aunque se asemeja bastante a la aproximación, siempre la supera en tiempo. Ahora analicemos su eficiencia.
+
+Para esto, veamos qué sucede con las soluciones que proveen estas aproximaciones comparándolas con la solución óptima que provee backtracking.
+
+![plot (1)](plots/100-samples/solutions-comparison.png "100-samples/solutions-comparison.png")
+
+Como esperábamos, nuestra propuesta (muy similar a la aproximación del enunciado pero añadiendo el ordenamiento del conjunto), aunque en muchos puntos coincide con la aproximación, se acerca más a la solución óptima. A partir de esta comparación de soluciones pudimos reafirmar que el ordenamiento permite que los elementos más grandes se empaqueten primero, facilitando una mejor utilización de los bins y reduciendo la cantidad necesaria.
+
