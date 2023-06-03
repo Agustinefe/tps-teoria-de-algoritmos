@@ -95,6 +95,7 @@ Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquet
 - Si la cantidad de envases devuelta es 2, entonces cada envase suma un tamaño 1. Multiplicamos cada elemento por C para recuperar los valores originales, y retornamos ambos envases/sets como solucion al problema de particion.
 - Si la cantidad de envases es mayor a 2, esto quiere decir que no existe solucion para el problema de particion.
 
+
 ---
 4. [Opcional] Implementar alguna otra aproximación (u algoritmo greedy) que les parezca de interés. Comparar sus resultados con los dados por la aproximación del punto 3. Indicar y justificar su complejidad.
 ---
@@ -158,3 +159,4 @@ Para esto, veamos qué sucede con las soluciones que proveen estas aproximacione
 ![plot (1)](plots/100-samples/solutions-comparison.png "100-samples/solutions-comparison.png")
 
 Como esperábamos, nuestra propuesta (muy similar a la aproximación del enunciado pero añadiendo el ordenamiento del conjunto), aunque en muchos puntos coincide con la aproximación, se acerca más a la solución óptima. A partir de esta comparación de soluciones pudimos reafirmar que el ordenamiento permite que los elementos más grandes se empaqueten primero, facilitando una mejor utilización de los bins y reduciendo la cantidad necesaria.
+
