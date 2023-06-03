@@ -1,6 +1,7 @@
 import random
 from math import ceil, floor
 from algorithms import backtracking_solution
+from time import time
 
 EPSILON = 0.00000002
 
@@ -40,8 +41,11 @@ def generate_sample(n_bins, sizeof_T):
 
 def sim():
 
-    for t in range(4, 16):
-        for b in range(2, floor(t/2)):
+    #for t in range(4, 16):
+    for t in range(15, 16):
+        #for b in range(2, floor(t/2)):
+        for b in range(6, 7):
+            start = time()
             for i in range(1000):
                 print(f'{i}) Tamaño: {t}, en {b} bins')
                 resultado = generate_sample(b, t)
@@ -49,7 +53,10 @@ def sim():
                 print()
                 T = flatten(resultado)
                 random.shuffle(T)
+                start_b = time()
                 solucion = backtracking_solution(T)
+                end_b = time()
+                print(end_b - start_b)
                 print(f'Resultado: {solucion}: {len(solucion)}')
                 if len(solucion) <= len(resultado) and all((sum(l) >= 1-EPSILON and sum(l) <= 1+EPSILON) for l in solucion):
                     print(f"Resultado optimo!")
@@ -59,11 +66,13 @@ def sim():
                     print(list(map(lambda x: sum(x), solucion)))
                     print(f'Resultado optimo: {resultado}')
                     return
+            end = time()
+            print(end - start)
             
 
 
-#sim()
-
+sim()
+"""
 T = [0.6, 0.6, 0.6]
 solucion = backtracking_solution(T)
 print(f'{solucion}: {len(solucion)}')
@@ -71,6 +80,8 @@ if len(solucion) == ceil(sum(T)):
     print("Resultado optimo!")
 else:
     print(f'Resultado no optimo: deberia ser {sum(T)}; dio {len(solucion)}')
+"""
+
 
 
 

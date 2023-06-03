@@ -12,17 +12,17 @@ def is_valid(M):
     if not M: return False
     return all(sum(m) <= 1+EPSILON for m in M)
 
-def backtracking_aux(M, T, K, t):
-    if count(M) == len(T): # O(T)
-        return M
+def backtracking_aux(bins, T, t):
+    if count(bins) == len(T): # O(T)
+        return bins
 
-    for k in range(K): # O(K)
-        M[k].append(T[t]) # O(1)
-        if is_valid(M): # O(T)
-            res = backtracking_aux(M, T, K, t+1) # T(T-1)
+    for b in range(0, min(t+1, len(bins))): # O(K)
+        bins[b].append(T[t]) # O(1)
+        if is_valid(bins): # O(T)
+            res = backtracking_aux(bins, T, t+1) # T(T-1)
             if is_valid(res): # O(T)
                 return res
-        M[k].pop() # O(1)
+        bins[b].pop() # O(1)
     
     return None
 
@@ -38,8 +38,8 @@ def backtracking_solution(T):
     global it
     for K in range(base, len(T)+1):
         it = 1
-        M = [[] for _ in range(K)]
-        if (res := backtracking_aux(M, T, K, 0)):
+        bins = [[] for _ in range(K)]
+        if (res := backtracking_aux(bins, T, 0)):
             return res
     return None
 
