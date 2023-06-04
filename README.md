@@ -164,7 +164,7 @@ Dado que no sabemos a priori cual es el optimo de paquetes, deberemos probar con
 
 De esta manera, nuestro "arbol" de posibilidades a evaluar se ve de la siguiente manera:
 
-![bt-tree (1)](img\bt-tree1.jpg "bt-tree1.jpg")
+![bt-tree (1)](img/bt-tree1.jpg "bt-tree1.jpg")
 
 Con lo mencionado anteriormente, la complejidad algoritmica del algoritmo completo
 
@@ -197,13 +197,13 @@ Como podemos observar, en ninguno de los casos provocamos un incremento en la ca
 
 Todo este analisis nos permite realizar una gran poda, deshaciendonos del analisis de la mitad del arbol:
 
-![bt-tree (2)](img\bt-tree2.jpg "bt-tree2.jpg")
+![bt-tree (2)](img/bt-tree2.jpg "bt-tree2.jpg")
 
 #### Aplicación de otra optimización
 
 Pensemos en un caso de ejemplo: un set de tamaño T=4, y evaluaremos si es posible empaquetarlos en B=3 paquetes.
 
-![bt-tree (3)](img\bt-tree3.jpg "bt-tree3.jpg")
+![bt-tree (3)](img/bt-tree3.jpg "bt-tree3.jpg")
 
 *Aclaración: Cada nodo TT-B indica la accion donde el paquete T se guarda en el paquete B.*
 
@@ -242,7 +242,7 @@ Quizas el factorial de b pueda dar indicios de que nuestra complejidad sera peor
 
 Graficamente, la poda se veria de la siguiente manera.
 
-![bt-tree (4)](img\bt-tree4.jpg "bt-tree4.jpg")
+![bt-tree (4)](img/bt-tree4.jpg "bt-tree4.jpg")
 
 #### Conclusion
 
