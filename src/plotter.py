@@ -1,6 +1,7 @@
 import os
 import json
 import platform
+import statistics
 import matplotlib.pyplot as plt
 
 
@@ -9,20 +10,24 @@ def calculate_time_mean(json_data):
     results = json_data['results']
     times = [solution['time'] for solution in results.values()]
     return sum(times) / len(times)
+    #return statistics.median(times)
 
 
 def calculate_means_for_all_files(folder_path):
     axis = []
+
     for filename in os.listdir(folder_path):
         with open(os.path.join(folder_path, filename)) as json_file:
             json_data = json.load(json_file)
             bin_size = json_data['config']['bin_size']
             time_mean = calculate_time_mean(json_data)
             axis.append((bin_size, time_mean))
+
     axis.sort(key=lambda x: x[0])
 
     x = [i[0] for i in axis]
     y = [i[1] for i in axis]
+
     return x,y
 
 
@@ -60,7 +65,7 @@ def plot_algorithms_time_comparison(x1, y1, y2, label_1, label_2, title, file_pa
     plt.show()
 
 
-def extract_json_solutions(a_folder_path, b_folder_path, c_folder_path):
+def extract_json_solutions(result_num, a_folder_path, b_folder_path, c_folder_path):
     a_solutions = []
     b_solutions = []
     c_solutions = []
@@ -69,26 +74,26 @@ def extract_json_solutions(a_folder_path, b_folder_path, c_folder_path):
         with open(os.path.join(a_folder_path, filename)) as json_file:
             json_data = json.load(json_file)
             results = json_data['results']
-            a_solutions.append(results['0']['bins_number'])
+            a_solutions.append(results[result_num]['bins_number'])
     
     for filename in os.listdir(b_folder_path):
         with open(os.path.join(b_folder_path, filename)) as json_file:
             json_data = json.load(json_file)
             results = json_data['results']
-            b_solutions.append(results['0']['bins_number'])
+            b_solutions.append(results[result_num]['bins_number'])
 
     for filename in os.listdir(c_folder_path):
         with open(os.path.join(c_folder_path, filename)) as json_file:
             json_data = json.load(json_file)
             results = json_data['results']
-            c_solutions.append(results['0']['bins_number'])
+            c_solutions.append(results[result_num]['bins_number'])
 
     return a_solutions, b_solutions, c_solutions
 
 
-def plot_algorithms_solution_comparison(folder_path_1, folder_path_2, folder_path_3, algorithm1_name, algorithm2_name, algorithm3_name, save_path, title):
-    results_algo1, results_algo2, results_algo3 = extract_json_solutions(folder_path_1, folder_path_2, folder_path_3)
-    input_sizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+def plot_algorithms_solution_comparison(result_num, folder_path_1, folder_path_2, folder_path_3, algorithm1_name, algorithm2_name, algorithm3_name, save_path, title):
+    results_algo1, results_algo2, results_algo3 = extract_json_solutions(result_num, folder_path_1, folder_path_2, folder_path_3)
+    input_sizes = [4, 6, 8, 10, 12, 13, 14, 15, 16]
 
     plt.scatter(input_sizes, results_algo1, label=algorithm1_name, color='purple')
     plt.plot(input_sizes, results_algo1, color = 'purple')
@@ -110,29 +115,30 @@ def plot_algorithms_solution_comparison(folder_path_1, folder_path_2, folder_pat
 def main():
 
     # n vs mean time - backtracking
-    """
-    folder_path = "../results/backtracking"
+    
+    folder_path = "../results/4-16/backtracking"
     x, y = calculate_means_for_all_files(folder_path)
-    plots_path = "../plots/"
-    plot_algorithms(x, y, "n-vs-mean-time-backtracking.png", plots_path)
-    """
+    plots_path = "../plots/4-16/"
+    plot_algorithms(x, y, "n-vs-mean-time-backtracking-11.png", plots_path)
+
     
     # n vs mean time - approximations comparison
-    """
-    folder_path_approximation = "../results/approximation"
-    folder_path_greedy = "../results/greedy"
     
+    folder_path_approximation = "../results/4-16/approximation"
+    folder_path_greedy = "../results/4-16/greedy"
+
     x1, y1 = calculate_means_for_all_files(folder_path_approximation)
     _, y2 = calculate_means_for_all_files(folder_path_greedy)
-    plots_path = "../plots/"
+    plots_path = "../plots/4-16/"
     plot_algorithms_time_comparison(x1, y1, y2, "Approximation", "Greedy Approximation", "n-vs-mean-time-approximations.png", plots_path)
     """
-    greedy_result_path = "../results/100-samples/greedy"
-    approximation_result_path = "../results/100-samples/approximation"
-    backtracking_result_path = "../results/100-samples/backtracking"
-    plots_path = "../plots/"
-    plot_algorithms_solution_comparison(greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, "solutions-comparison.png")
-
+    greedy_result_path = "../results/4-16/greedy"
+    approximation_result_path = "../results/4-16/approximation"
+    backtracking_result_path = "../results/4-16/backtracking"
+    plots_path = "../plots/4-16/"
+    result_num = '0'
+    plot_algorithms_solution_comparison(result_num, greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, f"solutions-comparison-{result_num}.png")
+    """
 if __name__ == '__main__':
     main()
     

@@ -7,7 +7,14 @@ import sys
 DECIMALS = 3
 
 
-def generate_sample(m):
+def generate_evil_sample(m):
+    """
+    Genera una muestra de m 0.5001
+    """
+    T = [0.1 for _ in range(m*10)]
+    return T
+
+def generate_random_sample(m):
     """
     Genera una muestra de m elementos aleatorios entre a y 1
     """
@@ -22,7 +29,7 @@ def generate_same_size_samples(samples_number, bin_size):
     bins = {}
 
     for i in range(samples_number):
-        sample = generate_sample(bin_size)
+        sample = generate_random_sample(bin_size)
         bins[i] = sample
 
     return bins
