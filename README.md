@@ -97,7 +97,7 @@ Y es aca donde podemos usar *la caja negra que resuelve el problema del empaquet
 
 
 ---
-2. Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución, y realizar gráficos en función de n.
+2. Programar un algoritmo por Backtracking/Fuerza Bruta que busque la solución exacta del problema. Indicar la complejidad del mismo. Realizar mediciones del tiempo de ejecución y realizar gráficos en función de n.
 ---
 
 #### Algoritmo
@@ -242,10 +242,21 @@ Graficamente, la poda se veria de la siguiente manera.
 
 ![bt-tree (4)](img/bt-tree4.jpg "bt-tree4.jpg")
 
-#### Conclusion
+#### Conclusión
 
 Finalmente, luego de todas las podas analizadas, podemos concluir con rigurosidad que nuestra complejidad algoritmica de todo el algoritmo es **$$O( \sum_{b={t \over 2}}^{t} b! * b ^ {t-b} )$$**
 
+#### Análisis de los resultados
+
+Con el algoritmo implementado se realizaron mediciones del tiempo de ejecución requerido para múltiples tamaños de T, llegándose a la conclusión de que utilizando un set random, nuestro hardware podía resolver en un tiempo considerable conjuntos de hasta 16 elementos, esto debido al crecimiento exponencial de las iteraciones en relación al tamaño de T. Dedujimos también que si T no estaba compuesto por elementos aleatorios y, por ejemplo, poseía solo elementos de valor 0.1, uno podía aumentar el tamaño del input tanto como quisiera.
+
+Como a fines de este análisis no nos interesaba el caso feliz, nos dipusimos a construir muestras con el tamaño de T en el rango [4, 16] y con un step de 2. A partir de obtener 100 muestras para cada uno de esos 7 tamaños, calculamos el promedio de tiempo que llevo cada una y graficamos y obtuvimos el siguiente gráfico:
+
+![plot (1)](plots/4-16/n-vs-mean-time-backtracking-original.png "4-16/n-vs-mean-time-backtracking-original.png")
+
+Habiendo una tendencia constante que comienza a aumentar en n=12, decidimos agregar unas mediciones más; n=13 y n=15, con el fin de obtener una visión más detallada del crecimiento exponencial del tiempo de ejecución cuando n aumentaba en el rango [12, 16]:
+
+![plot (2)](plots/4-16/n-vs-mean-time-backtracking-detail.png "4-16/n-vs-mean-time-backtracking-detail.png")
 
 ---
 4. [Opcional] Implementar alguna otra aproximación (u algoritmo greedy) que les parezca de interés. Comparar sus resultados con los dados por la aproximación del punto 3. Indicar y justificar su complejidad.
@@ -301,17 +312,17 @@ Para comparar este algoritmo con la aproximación anterior se realizaron ejecuci
 
 Como puede observarse a continuación, donde se grafica el tiempo promedio requerido para la ejecución con un tamaño de conjunto en el intervalo mencionado, nuestra aproximación siempre superó en tiempo a la aproximación de la consigna, aunque siempre tuvieron un comportamiento similar, fácilmente identificable, ya que ambas curvas suelen incrementar sus pendientes en los mismos puntos (a pesar de algunos picos que, creemos, tras múltiples ejecuciones corresponden a ruido generado por retrasos producidos por procesos del sistema en que se realizaron las ejecuciones); los tiempos de ejecución de ambas aproximaciones siempre difirieron en menos de 0.00005 segundos para todos los tamaños de conjunto utilizados en la simulación.
 
-![plot (1)](plots/4-16/n-vs-mean-time-approximations.png "4-16/n-vs-mean-time-approximations.png")
+![plot (3)](plots/4-16/n-vs-mean-time-approximations.png "4-16/n-vs-mean-time-approximations.png")
 
 Ya vimos que la propuesta que realizamos, aunque se asemeja bastante a la aproximación, siempre la supera en tiempo. Ahora analicemos su eficiencia.
 
-Para esto, veamos qué sucede con las soluciones que proveen estas aproximaciones comparándolas con la solución óptima que provee backtracking.
+Para esto, veamos qué sucede con diferentes soluciones que proveyeron estas aproximaciones comparándolas con la solución óptima que proveyó backtracking.
 
-![plot (1)](plots/4-16/comparison/solutions-comparison-0.png "4-16/comparison/solutions-comparison-0.png")
+![plot (4)](plots/4-16/solutions-comparison-0.png "4-16/solutions-comparison-0.png")
 
-![plot (1)](plots/4-16/comparison/solutions-comparison-25.png "4-16/comparison/solutions-comparison-25.png")
+![plot (5)](plots/4-16/solutions-comparison-25.png "4-16/solutions-comparison-25.png")
 
-![plot (1)](plots/4-16/comparison/solutions-comparison-99.png "4-16/comparison/solutions-comparison-99.png")
+![plot (6)](plots/4-16/solutions-comparison-99.png "4-16/solutions-comparison-99.png")
 
 Como esperábamos, nuestra propuesta (muy similar a la aproximación del enunciado pero añadiendo el ordenamiento del conjunto), aunque en muchos puntos coincide con la aproximación, se acerca más a la solución óptima. A partir de esta comparación de soluciones pudimos reafirmar que el ordenamiento permite que los elementos más grandes se empaqueten primero, facilitando una mejor utilización de los bins y reduciendo la cantidad necesaria.
 
