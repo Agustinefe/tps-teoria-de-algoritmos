@@ -166,8 +166,6 @@ De esta manera, nuestro "arbol" de posibilidades a evaluar se ve de la siguiente
 
 ![bt-tree (1)](img/bt-tree1.jpg "bt-tree1.jpg")
 
-Con lo mencionado anteriormente, la complejidad algoritmica del algoritmo completo
-
 #### Reduciendo el rango de paquetes
 
 Partamos declarando algunas afirmaciones:
@@ -193,7 +191,7 @@ La respuesta a la segunda pregunta es que no: en el peor de los casos, se llamar
 >- Si en cambio reducimos un objeto a un valor menor a 0.5, entonces la suma redondeada hacia arriba de sus elementos seguira siendo T/2, pero dado que esta reduccion permite al objeto reducido compartir paquete con otro, por lo que el numero de paquetes optimo se reducira a T-1, lo cual implica que se realizaran T/2 - 1 llamados a *backtracking_aux*.
 >- Por supuesto, incrementar el valor de alguno de los objetos no cambia el tamaño del set, ni la suma redondeada hacia arriba de sus elementos.
 
-Como podemos observar, en ninguno de los casos provocamos un incremento en la cantidad de llamados que deberan hacerse a *backtracking_aux*. Finalmente, podemos concluir que, hasta ahora, la complejidad temporal de nuestro algoritmo es de **O( $ \sum_{b={t \over 2}}^{t} b^t$ )**. Esto, por supuesto, sigue siendo de naturaleza exponencial.
+Como podemos observar, en ninguno de los casos provocamos un incremento en la cantidad de llamados que deberan hacerse a *backtracking_aux*. Finalmente, podemos concluir que, hasta ahora, la complejidad temporal de nuestro algoritmo es de **O($\sum_{b={t \over 2}}^{t} b^t$ )**. Esto, por supuesto, sigue siendo de naturaleza exponencial.
 
 Todo este analisis nos permite realizar una gran poda, deshaciendonos del analisis de la mitad del arbol:
 
