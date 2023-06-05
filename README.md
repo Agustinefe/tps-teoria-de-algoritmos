@@ -259,6 +259,121 @@ Habiendo una tendencia constante que comienza a aumentar en n=12, decidimos agre
 ![plot (2)](plots/4-16/n-vs-mean-time-backtracking-detail.png "4-16/n-vs-mean-time-backtracking-detail.png")
 
 ---
+3. Considerar el siguiente algoritmo: Se abre el primer envase y se empaqueta el primer objeto, luego por cada uno de los objetos restantes se prueba si cabe en el envase actual que está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el siguiente objeto. Si no entra, se cierra el envase actual, se abre uno nuevo que pasa a ser el envase actual, se empaqueta el objeto y se prosigue con el siguiente.
+Este algoritmo sirve como una aproximación para resolver el problema de empaquetamiento. Implementar dicho algoritmo, analizar su complejidad, y analizar cuán buena aproximación es. Para esto, considerar lo siguiente: Sea I una instancia cualquiera del problema de empaquetamiento, y z(I) una solución óptima para dicha instancia, y sea A(I) la solución aproximada, se define A(I) z(I) ≤ r(A) para todas las instancias posibles. Calcular r(A) para el algoritmo dado, demostrando que la cota está bien calculada. Realizar mediciones utilizando el algoritmo exacto y la aproximación, con el objetivo de verificar dicha relación.
+---
+
+#### Algoritmo
+
+A continuación, se muestra la implementación en Python de la aproximación de la consigna que tiene un procedimiento Greedy debido a su estrategia de tomar la mejor decisión local en función de la información disponible en el momento en cada paso, sin preocuparse por las consecuencias a largo plazo. Se coloca el objeto en el primer envase disponible que puede contenerlo y no se considera la posibilidad de reorganizar los objetos ya colocados en los bins para encontrar una mejor solución global.
+
+
+```python
+def approximation_solution(T): # O(n)
+    """
+    Se va insertando los elementos de T en bins linealmente, si algún
+    elemento no entra en el bin actual, se crea uno nuevo.
+    """
+    bins = []
+    current_bin = []
+    current_sum = 0
+
+    for item in T: # O(n)
+        if current_sum + item > BIN_CAPACITY:
+            bins.append(current_bin)
+            current_bin = [item]
+            current_sum = item
+        else:
+            current_bin.append(item)
+            current_sum += item
+
+    bins.append(current_bin)
+
+    return bins
+```
+
+Fácilmente se observa que el algoritmo cumple con las características Greedy de ser muy simple y eficiente en términos de tiempo de ejecución ya que solo requiere un recorrido lineal de los elementos de T y, por lo tanto, **la complejidad es ```O(n)```**.
+
+A pesar de esto, debido a su enfoque local sus soluciones no siempre coincidirán con la solución óptima, pero lo que sí podemos hacer es analizar la cota superior en la relación entre la solución de este algoritmo y la solución óptima.
+
+#### Cota superior del algoritmo
+
+Definiendo ```A(I) z(I) ≤ r(A)``` para todas las instancias posibles, donde:
+
+```
+I: instancia cualquiera del problema de empaquetamiento
+z(I): solución óptima para dicha instancia
+A(I): solución aproximada
+```
+
+En primer lugar, para cualquier solución pero, en particular para z(I), la suma de los elementos de I es una cota inferior:
+
+```
+z(I) >= sum(I)
+```
+
+Importante: se deberia redondear hacia el entero mayor o igual más inmediato.
+
+Ahora consideremos el siguiente planteo: es imposible para 2 bins contiguos estar llenos cuanto mucho hasta la mitad, porque eso implicaría que en algún momento habiendo un bin lleno cuanto mucho hasta la mitad (pudiéndose aún insertar elementos) se abrió otro para colocar un elemento de cuanto mucho 0.5 (que podría haber cabido en el bin anterior).
+
+Sea ```B = {B1, ..., BA}``` el conjunto de los A bins solución, donde Bi representa cada uno de los bins, entonces:
+
+```
+sum(B1) + sum(B2) > 1, … , sum(BA-1) + sum(BA) > 1
+```
+
+Si combinamos esas desigualdades, obtenemos la siguiente cota para la sumatoria de los elementos de los bins, dado que tomé A elementos de a pares y cada par era estrictamente mayor a 1:
+
+```
+sum(B1) + sum(B2) + … + sum(BA-1) + sum(BA) > A(I)/2  ->  sum(Bi) > A(I)/2, i ∈ [1, A]
+```
+
+Debido a que la sumatoria total de los elementos en cada bin es igual a la sumatoria de los elementos de la instancia original I:
+
+```
+∑ sum(Bi) = sum(I)  ->  sum(I) > A(I)/2
+```
+
+Ahora tenemos dos inecuaciones, combinémoslas:
+
+```
+z(I) >= sum(I) (1)
+sum(I) > A(I)/2 (2)
+
+-> z(I) >= sum(I) > A(I)/2
+```
+
+Por transitividad, z(I) está acotado también. Despejemos...
+
+```
+z(I) > A(I)/2 
+-> 2 z(I) > A(I)
+-> 2 z(I) > A(I)
+-> 2 > A(I)/z(I)
+-> A(I)/z(I) < 2
+-> R(A) = 2
+```
+
+Por lo tanto, la cota superior encontrada indica que para cualquier instancia del algoritmo de aproximación, su solución tendrá cuanto mucho el doble de bins que la solución óptima.
+
+
+#### Análisis empírico de la relación
+
+Para verificar el cumplimiento de la relación obtenida realizamos gráficos colocando en el eje X el número de instancia I (arbitrario) y en el eje Y el resultado de la expresión A(I)/Z(I) utilizando múltiples muestras de tamaño de set fijo. A continuación, observemos dos gráficos para tamaño de set 8 y 10 respectivamente, utilizando 100 muestras.
+
+![relation-plot (1)](plots/4-16/relation-8-100.png "4-16/relation-8-100.png")
+
+![relation-plot (2)](plots/4-16/relation-10-100.png "4-16/relation-10-100.png")
+
+Como puede observarse para estos gráficos con 100 muestras, la cota siempre se cumplió e incluso fue bastante menor. Repetimos este procedimiento con múltiples tamaños de set y siempre obtuvimos resultados similares. Es por esto que decidimos reiterar el procedimiento pero utilizando muestras aún mayores.
+
+![relation-plot (1)](plots/4-16/relation-8-100000.png "4-16/relation-8-100000.png")
+
+![relation-plot (2)](plots/4-16/relation-10-100000.png "4-16/relation-10-100000.png")
+
+En estos gráficos, ahora con muestras de 100000 elementos (aunque utilizando los mismos tamaños de set que en el experimento anterior) pudimos identificar instancias del problema del empaquetamiento en que la relación (o *approximation ratio* alcanzó el valor 1.8, bastante más cercano a la cota, pero jamás excediéndola.
+
+---
 4. [Opcional] Implementar alguna otra aproximación (u algoritmo greedy) que les parezca de interés. Comparar sus resultados con los dados por la aproximación del punto 3. Indicar y justificar su complejidad.
 ---
 
