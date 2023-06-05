@@ -5,6 +5,26 @@ import statistics
 import matplotlib.pyplot as plt
 
 
+def calculate_relation(filename_approximation, filename_backtracking):
+    axis = []
+
+    with open(filename_approximation, "r") as json_file:
+        json_data_approximation = json.load(json_file)
+    with open(filename_backtracking, "r") as json_file:
+        json_data_backtracking = json.load(json_file)
+
+        bin_size = json_data_approximation['config']['bin_size']
+        for r in json_data_approximation['results']:
+            relation = json_data_approximation['results'][r]['bins_number'] / json_data_backtracking['results'][r]['bins_number']
+            axis.append((r, relation))
+
+    axis.sort(key=lambda x: x[0])
+
+    x = [i[0] for i in axis]
+    y = [i[1] for i in axis]
+
+    return x,y
+
 
 def calculate_time_mean(json_data):
     results = json_data['results']
@@ -65,6 +85,16 @@ def plot_algorithms_time_comparison(x1, y1, y2, label_1, label_2, title, file_pa
     plt.show()
 
 
+def plot_relation(x, y, title, file_path, bin_size):
+    plt.plot(x, y)
+    plt.xticks([i for i in range(0, 100, 10)])
+    plt.xlabel('# de muestra')
+    plt.ylabel('A(I)/z(I)')
+    plt.title(f'A(I)/z(I) por muestra [bin_size={bin_size}] [100 muestras]')
+    save_plot(get_filename(file_path), title)
+    plt.show()
+
+
 def extract_json_solutions(result_num, a_folder_path, b_folder_path, c_folder_path):
     a_solutions = []
     b_solutions = []
@@ -112,10 +142,11 @@ def plot_algorithms_solution_comparison(result_num, folder_path_1, folder_path_2
 
     plt.show()
 
+
 def main():
 
     # n vs mean time - backtracking
-    
+    """
     folder_path = "../results/4-16/backtracking"
     x, y = calculate_means_for_all_files(folder_path)
     plots_path = "../plots/4-16/"
@@ -131,7 +162,7 @@ def main():
     _, y2 = calculate_means_for_all_files(folder_path_greedy)
     plots_path = "../plots/4-16/"
     plot_algorithms_time_comparison(x1, y1, y2, "Approximation", "Greedy Approximation", "n-vs-mean-time-approximations.png", plots_path)
-    """
+    
     greedy_result_path = "../results/4-16/greedy"
     approximation_result_path = "../results/4-16/approximation"
     backtracking_result_path = "../results/4-16/backtracking"
@@ -139,6 +170,15 @@ def main():
     result_num = '0'
     plot_algorithms_solution_comparison(result_num, greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, f"solutions-comparison-{result_num}.png")
     """
+
+    bin_size='16'
+    x, y = calculate_relation(f"../results/4-16/approximation/samples_number=100-bin_size={bin_size}.json",
+                             f"../results/4-16/backtracking/samples_number=100-bin_size={bin_size}.json")
+
+    plots_path = "../plots/"
+    plot_relation(x, y, f"relation-{bin_size}.png", plots_path, bin_size)
+    
+
 if __name__ == '__main__':
     main()
     
