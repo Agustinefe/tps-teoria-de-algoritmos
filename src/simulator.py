@@ -1,4 +1,5 @@
 import datetime
+import os
 import sys
 import json
 import time
@@ -81,7 +82,12 @@ def main():
     json_dump_results = json.dumps(results, indent=4)
 
     filename = filepath.split("/")[-1]
-    with open(f'../results/{samples_name}/{algorithm_name}/{filename}', 'w+') as file:
+    filepath = f'../results/{samples_name}/{algorithm_name}/{filename}'
+
+    if not os.path.exists(filepath):
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+    with open(filepath, 'w+') as file:
         file.write(json_dump_results)
 
 

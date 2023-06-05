@@ -86,11 +86,10 @@ def plot_algorithms_time_comparison(x1, y1, y2, label_1, label_2, title, file_pa
 
 
 def plot_relation(x, y, title, file_path, bin_size):
-    plt.plot(x, y)
-    plt.xticks([i for i in range(0, 100, 10)])
-    plt.xlabel('# de muestra')
+    plt.scatter(x, y)
+    plt.xticks([i for i in range(0, 100001, 10000)])
     plt.ylabel('A(I)/z(I)')
-    plt.title(f'A(I)/z(I) por muestra [bin_size={bin_size}] [100 muestras]')
+    plt.title(f'A(I)/z(I) por muestra [bin_size={bin_size}] [100000 muestras]')
     save_plot(get_filename(file_path), title)
     plt.show()
 
@@ -171,9 +170,9 @@ def main():
     plot_algorithms_solution_comparison(result_num, greedy_result_path, approximation_result_path, backtracking_result_path, "Greedy", "Approximation", "Backtracking", plots_path, f"solutions-comparison-{result_num}.png")
     """
 
-    bin_size='16'
-    x, y = calculate_relation(f"../results/4-16/approximation/samples_number=100-bin_size={bin_size}.json",
-                             f"../results/4-16/backtracking/samples_number=100-bin_size={bin_size}.json")
+    bin_size='8'
+    x, y = calculate_relation(f"../results/aprox-testing/approximation/samples_number=100000-bin_size={bin_size}.json",
+                             f"../results/aprox-testing/backtracking/samples_number=100000-bin_size={bin_size}.json")
 
     plots_path = "../plots/"
     plot_relation(x, y, f"relation-{bin_size}.png", plots_path, bin_size)

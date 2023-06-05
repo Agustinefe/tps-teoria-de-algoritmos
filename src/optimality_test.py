@@ -1,7 +1,8 @@
 import random
 from math import ceil, floor
-from algorithms import backtracking_solution
+from algorithms import backtracking_solution, approximation_solution
 from time import time
+from generator import generate_random_sample
 
 EPSILON = 0.00000002
 
@@ -71,18 +72,33 @@ def sim():
             
 
 
-sim()
-"""
-T = [0.6, 0.6, 0.6]
-solucion = backtracking_solution(T)
-print(f'{solucion}: {len(solucion)}')
-if len(solucion) == ceil(sum(T)):
-    print("Resultado optimo!")
-else:
-    print(f'Resultado no optimo: deberia ser {sum(T)}; dio {len(solucion)}')
-"""
+#sim()
+
+count = 0
+max_rel = 1
+for i in range(0, 100000):
+
+    T = generate_sample(6, 12)
+    sample = flatten(T)
+    random.shuffle(sample)
+    backtracking = backtracking_solution(sample)
+    approximation = approximation_solution(sample)
+    relation = len(approximation) / len(backtracking)
+    if (relation > 1.5):
+        print(f"{i}) ALERTA: HUBO UNO DE MAS DE 1.5")
+        print(f'Aproximacion: {approximation}')
+        print(f'Optimo: {backtracking}')
+        print(f'Relacion: {relation}')
+        if relation > max_rel:
+            max_rel = relation
+
+        print(f'Maxima relacion hasta ahora: {max_rel}')
+
+        count += 1
 
 
+print(f'Flasheos totales: {count}')
+print(f'Maxima relacion: {max_rel}')
 
 
 
