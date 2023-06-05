@@ -236,7 +236,7 @@ Esto quiere decir que, si antes cada llamada a *backtracking_aux* implicaba b nu
 - Sin optimizacion: b * b * b * ... * b = **b^t** llamados recursivos.
 - Con optimizacion: 1 * 2 * 3 * ... * b-1 * b * b * ... * b = **b! * b^(t-b)** llamados recursivos.
 
-Quizas el factorial de b pueda dar indicios de que nuestra complejidad sera peor, pero basta con plantear la inecuacion para llegar a que *b^b > b!*. Esto permite ejecutar la función *backtracking_aux* en **O($b!*b^{t-b}$)**
+Quizas el factorial de b pueda dar indicios de que nuestra complejidad sera peor, pero basta con plantear la inecuacion para llegar a que *b^b > b!*. Esto permite ejecutar la función *backtracking_aux* en **O($b! * b^{t-b}$)**
 
 Graficamente, la poda se veria de la siguiente manera.
 
