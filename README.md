@@ -246,6 +246,8 @@ Graficamente, la poda se veria de la siguiente manera.
 
 Finalmente, luego de todas las podas analizadas, podemos concluir con rigurosidad que nuestra complejidad algoritmica de todo el algoritmo es **$$O( \sum_{b={t \over 2}}^{t} b! * b ^ {t-b} )$$**
 
+Cabe aclarar que no necesariamente la sumatoria comienza desde t/2 y llega hasta t, estrictamente. Lo que buscamos reflejar en la sumatoria es que, en el peor de los casos, nuestro algoritmo debera probar empaquetar el set con t/2 numeros distintos de paquetes. Por supuesto, eso quiere decir que la suma de los valores de un set podria dar menos que t/2, y aun asi, como mucho, nuestro algoritmo iterara, a partir de ese valor, sobre un maximo de t/2 numeros consecutivos. Esto tambien nos permite aclarar que en el peor de los casos, ademas de iterar sobre t/2 numeros, esos numeros se podrian encontrar entre t/2 y t, lo cual llevaria, efectivamente, al peor caso de todos.
+
 #### Análisis de los resultados
 
 Con el algoritmo implementado se realizaron mediciones del tiempo de ejecución requerido para múltiples tamaños de T, llegándose a la conclusión de que utilizando un set random, nuestro hardware podía resolver en un tiempo considerable conjuntos de hasta 16 elementos, esto debido al crecimiento exponencial de las iteraciones en relación al tamaño de T. Dedujimos también que si T no estaba compuesto por elementos aleatorios y, por ejemplo, poseía solo elementos de valor 0.1, uno podía aumentar el tamaño del input tanto como quisiera.
@@ -257,6 +259,8 @@ Como a fines de este análisis no nos interesaba el caso feliz, nos dipusimos a 
 Habiendo una tendencia constante que comienza a aumentar en n=12, decidimos agregar unas mediciones más; n=13 y n=15, con el fin de obtener una visión más detallada del crecimiento exponencial del tiempo de ejecución cuando n aumentaba en el rango [12, 16]:
 
 ![plot (2)](plots/4-16/n-vs-mean-time-backtracking-detail.png "4-16/n-vs-mean-time-backtracking-detail.png")
+
+Es evidente la naturaleza exponencial del algoritmo. Observamos que a partir de una muestra de tamaño 12, el algoritmo comienza a crecer abruptamente en relacion a su tiempo de ejecucion; algo propio y esperado de los algoritmos de complejidad exponencial, categoria en el cual entra nuestro algoritmo.
 
 ---
 3. Considerar el siguiente algoritmo: Se abre el primer envase y se empaqueta el primer objeto, luego por cada uno de los objetos restantes se prueba si cabe en el envase actual que está abierto. Si es así, se lo agrega a dicho envase, y se sigue con el siguiente objeto. Si no entra, se cierra el envase actual, se abre uno nuevo que pasa a ser el envase actual, se empaqueta el objeto y se prosigue con el siguiente.
