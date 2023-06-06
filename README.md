@@ -144,7 +144,7 @@ def backtracking_solution(T):
     return None
 ```
 
-Evaluemos un caso particular de la funcion *backtracking_aux*. Esta funcion evalua si se pueden empaquetar los T objetos en K paquetes, y devuelve el empaquetamiento. Si no existe un empaquetamiento con K paquetes, devuelve None. El algoritmo funciona de la siguiente manera: siendo *bins* el conjunto de paquetes solucion (parcial):
+Evaluemos el caso particular de la funcion *backtracking_aux*. Esta funcion evalua si se pueden empaquetar los T objetos en K paquetes, y devuelve el empaquetamiento. Si no existe un empaquetamiento con K paquetes, devuelve None. El algoritmo funciona de la siguiente manera: siendo *bins* el conjunto de paquetes solucion (parcial):
 
 - Evaluamos si los *bins* poseen todos los objetos de T: si es asi, devolvemos M como solucion definitiva.
 
@@ -181,17 +181,19 @@ La respuesta a la segunda pregunta es que no: en el peor de los casos, se llamar
 
 >Imaginemos a un set de tamaño T donde cada elemento en T vale 0.5+Ɛ, siendo Ɛ un numero tan pequeño que tiende a 0 pero que no llega a serlo. Podriamos definir a este set como el set con la cantidad de elementos mas pequeños que no pueden compartir paquetes entre ellos.
 >
->sum(setT) = T*(0.5+Ɛ) ≈ **T/2 + Ɛ**, lo cual redondeado hacia arriba es **T/2**.
+>sum(setT) = T*(0.5+Ɛ) ≈ **T/2 + Ɛ**, lo cual redondeado hacia abajo es **T/2**.
 >
 >Sin embargo, dado que cada elemento es mayor a 0.5, no pueden existir mas de dos elementos dentro de un mismo paquete. Esto quiere decir que el numero de paquetes optimos para este set es, precisamente, T. Entonces, nuestro algoritmo probara encontrar un empaquetamiento con un numero de paquetes desde T/2 hasta T. Ahora, evaluemos todos los casos donde modifcamos ligeramente el set T:
 >
->- Si incrementamos la cantidad de elementos del set agregando otro 0.5+Ɛ (o un elemento de mayor valor), entonces, dependiendo si T es par o impar, la suma redondeada hacia arriba de sus elementos se incrementara en 1. Independientemente de esto, si incrementamos la cantidad de elementos en dos 0.5+Ɛ, inevitablemente la suma redondeada se incrementara en 1, por lo que las llamadas a *backtracking_aux* aun seran T/2, probando con paquetes desde T/2 a T.
-    - Si en cambio decrementamos la cantidad de elementos del set, pasara lo contrario.
->- Si agregamos un objeto de valor menor a 0.5+Ɛ, el set tendra tamaño T'=T+1, y la suma redondeada hacia arriba de sus elementos, en el peor de los caso, seguira siendo la misma: T/2. Pero esto tambien quiere decir que este ultimo objeto agregado podra compartir paquete con cualquier otro de los elementos de valor 0.5+Ɛ, por lo que su cantidad de paquetes optima seguira siendo T (no T'), provocando que *backtracking_aux* aun se siga llamando T/2 veces.
->- Si en cambio reducimos un objeto a un valor menor a 0.5, entonces la suma redondeada hacia arriba de sus elementos seguira siendo T/2, pero dado que esta reduccion permite al objeto reducido compartir paquete con otro, por lo que el numero de paquetes optimo se reducira a T-1, lo cual implica que se realizaran T/2 - 1 llamados a *backtracking_aux*.
->- Por supuesto, incrementar el valor de alguno de los objetos no cambia el tamaño del set, ni la suma redondeada hacia arriba de sus elementos.
+>- **Si incrementamos la cantidad de elementos del set agregando otro 0.5+Ɛ** (o un elemento de mayor valor), entonces, dependiendo si T es par o impar, la suma redondeada hacia arriba de sus elementos se incrementara en 1. Independientemente de esto, si incrementamos la cantidad de elementos en dos 0.5+Ɛ, inevitablemente la suma redondeada se incrementara en 1, por lo que las llamadas a *backtracking_aux* aun seran T/2, probando con paquetes desde T/2 a T.
+    - **Si en cambio decrementamos la cantidad de elementos del set**, pasara lo contrario.
+>- **Si agregamos un objeto de valor menor a 0.5**, el set tendra tamaño T'=T+1, y la suma redondeada hacia arriba de sus elementos, en el peor de los caso, seguira siendo la misma: T/2. Pero esto tambien quiere decir que este ultimo objeto agregado podra compartir paquete con cualquier otro de los elementos de valor 0.5+Ɛ, por lo que su cantidad de paquetes optima seguira siendo T (no T'), provocando que *backtracking_aux* aun se siga llamando T/2 veces.
+>- **Si en cambio reducimos un objeto a un valor menor a 0.5**, entonces la suma redondeada hacia arriba de sus elementos seguira siendo T/2, pero dado que esta reduccion permite al objeto reducido compartir paquete con otro, por lo que el numero de paquetes optimo se reducira a T-1, lo cual implica que se realizaran T/2 - 1 llamados a *backtracking_aux*.
+>- Por supuesto, **incrementar el valor de alguno de los objetos** no cambia el tamaño del set, ni la suma redondeada hacia arriba de sus elementos.
 
 Como podemos observar, en ninguno de los casos provocamos un incremento en la cantidad de llamados que deberan hacerse a *backtracking_aux*. Finalmente, podemos concluir que, hasta ahora, la complejidad temporal de nuestro algoritmo es de **O($\sum_{b={t \over 2}}^{t} b^t$ )**. Esto, por supuesto, sigue siendo de naturaleza exponencial.
+
+>Cabe aclarar que no necesariamente la sumatoria comienza desde t/2 y llega hasta t, estrictamente. Lo que buscamos reflejar en la sumatoria es que, en el peor de los casos, nuestro algoritmo debera probar empaquetar el set con t/2 numeros distintos de paquetes. Por supuesto, eso quiere decir que la suma de los valores de un set podria dar menos que t/2, y aun asi, como mucho, nuestro algoritmo iterara, a partir de ese valor, sobre un maximo de t/2 numeros consecutivos. Esto tambien nos permite aclarar que en el peor de los casos, ademas de iterar sobre t/2 numeros, esos numeros se podrian encontrar entre t/2 y t, lo cual llevaria, efectivamente, al **peor** peor caso de todos.
 
 Todo este analisis nos permite realizar una gran poda, deshaciendonos del analisis de la mitad del arbol:
 
@@ -203,7 +205,7 @@ Pensemos en un caso de ejemplo: un set de tamaño T=4, y evaluaremos si es posib
 
 ![bt-tree (3)](img/bt-tree3.jpg "bt-tree3.jpg")
 
-*Aclaración: Cada nodo TT-B indica la accion donde el paquete T se guarda en el paquete B.*
+*Aclaración: Cada nodo Tt-b indica la accion donde el objeto t se guarda en el paquete b.*
 
 Comenzaremos evaluando el objeto T1: ¿Entra en el paquete B1? Si, debido que, por ahora, todos los paquetes se encuentran vacios. Esta es nuestra unica posible accion.
 
@@ -245,8 +247,6 @@ Graficamente, la poda se veria de la siguiente manera.
 #### Conclusión
 
 Finalmente, luego de todas las podas analizadas, podemos concluir con rigurosidad que nuestra complejidad algoritmica de todo el algoritmo es **$$O( \sum_{b={t \over 2}}^{t} b! * b ^ {t-b} )$$**
-
-Cabe aclarar que no necesariamente la sumatoria comienza desde t/2 y llega hasta t, estrictamente. Lo que buscamos reflejar en la sumatoria es que, en el peor de los casos, nuestro algoritmo debera probar empaquetar el set con t/2 numeros distintos de paquetes. Por supuesto, eso quiere decir que la suma de los valores de un set podria dar menos que t/2, y aun asi, como mucho, nuestro algoritmo iterara, a partir de ese valor, sobre un maximo de t/2 numeros consecutivos. Esto tambien nos permite aclarar que en el peor de los casos, ademas de iterar sobre t/2 numeros, esos numeros se podrian encontrar entre t/2 y t, lo cual llevaria, efectivamente, al peor caso de todos.
 
 #### Análisis de los resultados
 
