@@ -370,7 +370,7 @@ z(I) > A(I)/2
 
 Se demuestra de forma análoga;
 
-Sea ```B = {B1, ..., BA-1}``` el conjunto de los A bins solución, donde A-1 es impar y Bi representa cada uno de los bins, entonces, todas las sumas de elementos de bins contiguos tendrán un valor mayor a 1, a excepción de la suma del último elemento (individual por ser una cantidad impar) que podrá tomar cualquier valor. No detallaremos cada paso dado que de aquí en más son análogos a la demostración del caso par.
+Sea ```B = {B1, ..., BA-1}``` el conjunto de los A-1 bins solución, donde A-1 es impar y Bi representa cada uno de los bins, entonces, todas las sumas de elementos de bins contiguos tendrán un valor mayor a 1, a excepción de la suma del último elemento (individual por ser una cantidad impar) que podrá tomar cualquier valor. No detallaremos cada paso dado que de aquí en más son análogos a la demostración del caso par.
 
 ```
 sum(B1) + sum(B2) > 1, … , sum(BA-1) > 0 -> sum(BA) + sum(B2) + … + sum(BA-1) > (A(I)-1)/2  ->  sum(Bi) > (A(I)-1)/2
