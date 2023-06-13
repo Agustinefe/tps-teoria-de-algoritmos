@@ -79,7 +79,13 @@ Demostraremos que el problema de empaquetamiento es NP mediante una version de p
 
 *Dado un conjunto de n objetos cuyos tamaños son {T1, T2, · · · , Tn}, con Ti ∈ (0, 1], ¿se puede empaquetarlos usando **exactamente k** envases de capacidad 1?*
 
-Sencillamente, para verificar que la solucion es correcta, basta con contar la cantidad de envases. Esto implica una complejidad O(k), complejidad que es evidentemente polinomial.
+Sencillamente, para verificar que la solución es correcta, basta con:
+
+- Contar la cantidad de bins, que implica una complejidad O(k).
+- Cotejar que la suma de los elementos de cada bin sea 1 o menos. Se recorre cada uno de los k bins y se suman los elementos de los objetos que contiene, lo cual será O(n).
+- Confirmar que las particiones obtenidas del empaquetamiento son subsets disjuntos del set original. Esto se puede realizar en O(n), por ejemplo, construyendo dos diccionarios de ocurrencias (uno para el set original y otro para el conjunto de subsets). El primero puede construirse utilizando como clave cada elemento del set y como valor la cantidad de ocurrencias, y el segundo de la misma manera pero iterando por cada uno de los elementos de cada uno de los subsets (bins), y si estos no coincidieran, la solución no sería correcta. Construir cada diccionario es O(n), así realizar la comparación de los mismos, por lo que en total toda esta verificación sería O(n).
+
+En resumen, cada chequeo individual es O(n) por lo que efectivamente la verificación es polinomial.
 
 ### ¿Algún problema NP-completo se puede reducir a este, mediante operaciones polinomiales?
 
@@ -318,9 +324,11 @@ z(I) >= sum(I)
 
 Importante: se deberia redondear hacia el entero mayor o igual más inmediato.
 
+##### Demostración para A par
+
 Ahora consideremos el siguiente planteo: es imposible para 2 bins contiguos estar llenos cuanto mucho hasta la mitad, porque eso implicaría que en algún momento habiendo un bin lleno cuanto mucho hasta la mitad (pudiéndose aún insertar elementos) se abrió otro para colocar un elemento de cuanto mucho 0.5 (que podría haber cabido en el bin anterior).
 
-Sea ```B = {B1, ..., BA}``` el conjunto de los A bins solución, donde Bi representa cada uno de los bins, entonces:
+Sea ```B = {B1, ..., BA}``` el conjunto de los A bins solución, donde A es par y Bi representa cada uno de los bins, entonces:
 
 ```
 sum(B1) + sum(B2) > 1, … , sum(BA-1) + sum(BA) > 1
@@ -355,6 +363,32 @@ z(I) > A(I)/2
 -> 2 z(I) > A(I)
 -> 2 > A(I)/z(I)
 -> A(I)/z(I) < 2
+-> R(A) = 2
+```
+
+##### Demostración para A impar
+
+Se demuestra de forma análoga;
+
+Sea ```B = {B1, ..., BA-1}``` el conjunto de los A bins solución, donde A-1 es impar y Bi representa cada uno de los bins, entonces, todas las sumas de elementos de bins contiguos tendrán un valor mayor a 1, a excepción de la suma del último elemento (individual por ser una cantidad impar) que podrá tomar cualquier valor. No detallaremos cada paso dado que de aquí en más son análogos a la demostración del caso par.
+
+```
+sum(B1) + sum(B2) > 1, … , sum(BA-1) > 0 -> sum(BA) + sum(B2) + … + sum(BA-1) > (A(I)-1)/2  ->  sum(Bi) > (A(I)-1)/2
+
+-> ∑ sum(Bi) = sum(I)  ->  sum(I) > (A(I)-1)/2
+
+z(I) >= sum(I) (1)
+sum(I) > (A(I)-1)/2 (2)
+
+-> z(I) >= sum(I) > (A(I)-1)/2
+-> z(I) > (A(I)-1)/2 
+-> 2 z(I) > (A(I)-1)
+-> 2 z(I) > (A(I)-1)
+-> 2 > (A(I)-1)/z(I)
+-> (A(I)-1)/z(I) < 2
+-> (A(I)-1) < 2 z(I)
+-> A(I) < 2 z(I) + 1
+-> A(I) <= 2 z(I)
 -> R(A) = 2
 ```
 
