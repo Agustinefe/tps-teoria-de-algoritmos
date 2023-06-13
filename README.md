@@ -324,7 +324,7 @@ z(I) >= sum(I)
 
 Importante: se deberia redondear hacia el entero mayor o igual más inmediato.
 
-##### Demostración para A par
+##### Demostración para cantidad de bins par
 
 Ahora consideremos el siguiente planteo: es imposible para 2 bins contiguos estar llenos cuanto mucho hasta la mitad, porque eso implicaría que en algún momento habiendo un bin lleno cuanto mucho hasta la mitad (pudiéndose aún insertar elementos) se abrió otro para colocar un elemento de cuanto mucho 0.5 (que podría haber cabido en el bin anterior).
 
@@ -366,7 +366,7 @@ z(I) > A(I)/2
 -> R(A) = 2
 ```
 
-##### Demostración para A impar
+##### Demostración para cantidad de bins impar
 
 Se demuestra de forma análoga;
 
